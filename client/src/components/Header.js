@@ -10,7 +10,7 @@ render() {
         <li><a href="../">Explainers</a></li>
         <li><a href="../">Topics</a></li>
         <li><a href="../">Podcast</a></li>
-        <li class="is-active"><a href="#" aria-current="page">News</a></li>
+        <li class="is-active"><a href="#" aria-current="page">Latest</a></li>
     </ul>
     </nav>
     <section class="hero is-info welcome is-small">
@@ -21,7 +21,7 @@ render() {
              Curadiv    
             </h1>
             <h3 class="subtitle">
-            Wellness and Knowledge at your fingertips
+            Curated Knowledge.  Unlimited Potential.
             </h3>
         </div>
     </div>

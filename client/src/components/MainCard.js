@@ -4,11 +4,19 @@ import React, { Component } from 'react';
 class MainCard extends Component {
 render() {
     return (
+      <div>
+        Lorem eiusmod consectetur culpa commodo ea aliqua est deserunt.
+      </div>
+    );
+}
+}
 
+export default MainCard;
 
+/*
 
-<div className="columns">
-  <div className="column">
+<div className={columns}>
+  <div className={column>
     <div className="card">
       <div className="card-image">
         <figure className="image is-4by3"> <img src="https://source.unsplash.com/random/800x600" alt="Image"></img></figure>
@@ -36,11 +44,4 @@ render() {
     
   </div>
 </div>
-
-
-
-    );
-}
-}
-
-export default MainCard;
+*/

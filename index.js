@@ -7,7 +7,7 @@ require('./models/userModel');
 
 
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://curadiv_dev:abc123@ds161062.mlab.com:61062/curadiv_dev');
+mongoose.connect('mongodb://igor_dev:abcdef123@ds161062.mlab.com:61062/igor_dev');
 
 const app = express();
 app.use(bodyParser.json());
