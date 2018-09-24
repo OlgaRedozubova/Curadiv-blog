@@ -1,7 +1,7 @@
 {
-  "name": "scalendar",
+  "name": "curadiv",
   "version": "1.0.0",
-  "description": "calendar",
+  "description": "",
   "scripts": {
     "start": "nodemon server"
   },
@@ -25,7 +25,7 @@
   ],
   "devDependencies": {},
   "main": "index.js",
-  "author": "Olga Redozubova <olgared82@gmail.com>",
-  "license": "MIT",
+  "author": "",
+  "license": "",
   "private": true
 }

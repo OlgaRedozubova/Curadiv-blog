@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import User from './user';
 import { sortFunction } from '../../lib/array-helpers'
 
-import {rateUser, removeUser} from "../../stores/reducers/users";
+import {rateUser, removeUser} from "../../stores/_reducers/users";
 
 // class Users extends Component{
 //     render(){

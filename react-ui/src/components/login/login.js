@@ -23,7 +23,7 @@ export default class Login extends React.Component {
             <article className={newClassName}>
 
                 <Form title='Login' login flip/>
-                <img alt="" className="safe" src={require('../../assets/images/safe-open.svg')}/>
+                {/*<img alt="" className="safe" src={require('../../assets/images/safe-open.svg')}/>*/}
                 {/*<Info/>*/}
 
             </article>

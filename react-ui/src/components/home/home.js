@@ -5,7 +5,7 @@ import { articleActions } from '../../stores/_actions/article.action';
 
 class Home extends Component {
 
-    componentWillMount() {
+    componentDidMount() {
         //this.props.dispatch(articleActions.getAll());
         this.props.dispatch(articleActions.fetchArticles());
         console.log('componentDidMount => this =>', this);
@@ -22,16 +22,15 @@ class Home extends Component {
         }
         return (
             <div className="col-md-6 col-md-offset-3">
-                <h1>Home</h1>
-                <p>You're logged in with React!!</p>
-                <h3>All registered users:</h3>
+                <h1>Curadiv</h1>
+                <h3>Curated Knowledge. Unlimited Potential</h3>
 
                 <ul>
                     {!loading && articles &&
 
                     articles.map((article, index) =>
                         <li key={article.id}>
-                            {article.title + ' ' + article.subTitle}
+                            {article.title + ' ' + article.subtitle}
                             {/*{*/}
                                 {/*article.deleting ? <em> - Deleting...</em>*/}
                                     {/*: article.deleteError ? <span className="text-danger"> - ERROR: {article.deleteError}</span>*/}

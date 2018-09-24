@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { NavLink, withRouter } from 'react-router-dom';
+import { Navbar } from 'react-bulma-components';
 
 //helpes
 import ClassNames from 'classnames';
@@ -17,38 +18,23 @@ export default class NavBar extends Component {
         const isLoggedIn = false;
         return(
             <div className={newClassName}>
-                <nav className="column">
-                    <div className="menu">
-                        <div className="NavBar-link-wrapper">
-                            <NavLink className="NavBar-link" to="/" activeClassName="selected">
-                                {i18n.t('menu.home')}
-                            </NavLink>
-                        </div>
-                        <div className="NavBar-link-wrapper">
-                            <NavLink className="NavBar-link" to="/FAQ" activeClassName="selected">
-                                {i18n.t('menu.faq')}
-                            </NavLink>
-                        </div>
-                        <div className="NavBar-link-wrapper">
-                            <NavLink className="NavBar-link" to="/about" activeClassName="selected">
-                                {i18n.t('menu.about')}
-                            </NavLink>
-                        </div>
-                        {/*<div className="NavBar-link-wrapper">*/}
-                            {/*<NavLink className="NavBar-link" to="/articles" activeClassName="selected">*/}
-                                {/*{i18n.t('menu.about')}*/}
-                            {/*</NavLink>*/}
-                        {/*</div>*/}
-                        <div className="NavBar-link-wrapper">
-                            {/*{isLoggedIn && <LogOut className="NavBar-link">{i18n.t('menu.logout')}</LogOut>}*/}
-                            {!isLoggedIn && (
-                                <NavLink className="NavBar-link" to="/login" activeClassName="selected">
-                                    {i18n.t('menu.login')}
-                                </NavLink>
-                            )}
-                        </div>
-                    </div>
-                </nav>
+                <Navbar color = 'info' fixed='top' display="flex">
+                    <Navbar.Item display="flex">
+                        <NavLink className="NavBar-link" to="/" activeClassName="selected">
+                            {i18n.t('menu.home')}
+                        </NavLink>
+                    </Navbar.Item>
+                    <Navbar.Item display="flex">
+                        <NavLink className="NavBar-link" to="/admin" activeClassName="selected">
+                            Admin
+                        </NavLink>
+                    </Navbar.Item>
+                    <Navbar.Item display="flex">
+                        <NavLink className="NavBar-link" to="/login" activeClassName="selected">
+                            {i18n.t('menu.login')}
+                        </NavLink>
+                    </Navbar.Item>
+                </Navbar>
             </div>
         )
     }
