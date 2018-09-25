@@ -6,6 +6,7 @@ import Home from "./home/home";
 import Login from "./login/login";
 import Admin from "./admin/admin";
 import Article from "./article/article";
+import ArticleEdit from "./article/article-edit";
 
 export default class Routes extends Component {
     render() {
@@ -13,6 +14,7 @@ export default class Routes extends Component {
             <Switch>
                 <Route exact path="/" component={Home} />
                 <Route path="/admin" component={Admin} />
+                <Route path="/article-edit" component={ArticleEdit} />
                 <Route path="/login" component={Login} redirect/>
                 <Route path="/article/:id" component={Article} />
             </Switch>

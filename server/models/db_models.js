@@ -1,22 +1,31 @@
 const mongoose = require('mongoose');
 
 module.exports = function (table, db) {
-    //
     const create = (data) => {
-        const row = new table ({
-            _id: new mongoose.Types.ObjectId(),
-            name: {
-                firstName: data.firstName,
-                lastName: data.lastName
-            },
-            biography: data.biography,
-            twitter: data.twitter,
-            facebook: data.facebook
-        });
-        row.save(function(err) {
-            if (err) throw err;
-
-            console.log('Author successfully saved.');
+        return new Promise(async(resolve, reject) => {
+           try {
+               const article = {
+                   _id: new mongoose.Types.ObjectId(),
+                   title: data.title,
+                   subtitle: data.subtitle,
+                   author: data.author,
+                   slot: data.slot,
+                   splash: data.splash,
+                   image1: data.image1,
+                   image2: data.image2,
+                   body: data.body,
+                   deleted: false,
+                   archived: false,
+               };
+               table.create(article, function (err, obj) {
+                   if (err) throw err;
+                   console.log('Article successfully saved.', obj);
+                   resolve(obj);
+               });
+           } catch (e) {
+               console.log('ERROR=>', e);
+               reject(e);
+           }
         });
     };
 

@@ -4,12 +4,14 @@ import {connect} from "react-redux";
 import { articleActions } from '../../stores/_actions/article.action';
 
 import { Columns, Container, Table, Button } from 'react-bulma-components';
+import { Link } from 'react-router-dom';
 
 class Admin extends Component {
     constructor(props){
         super(props);
         this.onClick = this.onClick.bind(this);
         this.state = {
+            articleList: [],
             isChecked: false,
             idArticle: ''
         }
@@ -27,11 +29,28 @@ class Admin extends Component {
     onChange( value, article){
         console.log('onchange', value, article);
         this.setState({isChecked:value, idArticle:article._id});
-        console.log('state =>', this.state);
+        const list = this.state.articleList;
+        if (value) {
+            if (list.indexOf(article._id)< 0) {
+                list.push(article._id)
+            }
+        } else {
+            if (list.indexOf(article._id)>= 0) {
+                list.splice(list.indexOf(article._id), 1);
+            }
+        }
+        this.setState({articleList: list});
+        console.log('list =>', list);
+        console.log('articleList =>', this.state.articleList);
+
         //this.setState({[key]:value}, {
           //   isChecked: !this.state.isChecked
         // })
     }
+    // addArticle = () => {
+    //     console.log('Add Article');
+    //
+    // }
     render() {
         const {  error, loading,articles } = this.props;
      //   console.log('render => this =>', error, loading, articles);
@@ -49,7 +68,9 @@ class Admin extends Component {
                     <Button>Edit</Button>
                     <Button>Arh</Button>
                     <Button>Del</Button>
-                    <Button>Add</Button>
+                    <Link to={`/article-edit`}>
+                        <Button>Add</Button>
+                    </Link>
                 </Container>
                 <Container>
                     <Table>
@@ -86,37 +107,6 @@ class Admin extends Component {
                     </Table>
 
                 </Container>
-                <div>
-                    {/*<Button variant="fab" color="primary" aria-label="Add" >*/}
-                        {/*<AddIcon />*/}
-                    {/*</Button>*/}
-                    {/*<Button variant="fab" color="secondary" aria-label="Edit" >*/}
-                        {/*<Icon>edit_icon</Icon>*/}
-                    {/*</Button>*/}
-                    {/*<Button variant="extendedFab" aria-label="Delete" >*/}
-                        {/*<NavigationIcon  />*/}
-                        {/*Extended*/}
-                    {/*</Button>*/}
-                    {/*<Button variant="fab" disabled aria-label="Delete">*/}
-                        {/*<DeleteIcon />*/}
-                    {/*</Button>*/}
-                </div>
-                <ul>
-                    {!loading && articles &&
-
-                    articles.map((article, index) =>
-                        <li key={article.id}>
-                            {article.title + ' ' + article.subTitle}
-                            {/*{*/}
-                            {/*article.deleting ? <em> - Deleting...</em>*/}
-                            {/*: article.deleteError ? <span className="text-danger"> - ERROR: {article.deleteError}</span>*/}
-                            {/*: <span> - <a onClick={this.handleDeleteUser(article.id)}>Delete</a></span>*/}
-                            {/*}*/}
-                        </li>
-                    )
-                    }
-                </ul>
-                }
             </div>
         )
     }

@@ -24,6 +24,18 @@ module.exports = {
             res.status(500).send({message: e});
         }
     },
+    new: (db) => async (req, res) => {
+        try {
+            const form = req.body;
+            console.log('NEW => form=>', form);
+            const db_Article = db_model(Article, db);
+            const article = await db_Article.create(form);
+            res.status(200).json({message: 'User was successfully created.', message_code: 'user_created'});
+        } catch (e) {
+            console.log('ERROR => ', e);
+            res.status(500).send({message: e});
+        }
+    },
     showAll: (db) => async (req, res) => {
         try {
             const db_Article = db_model(Article, db);
