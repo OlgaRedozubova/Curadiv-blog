@@ -5,6 +5,7 @@ import { Route as RRR, Switch, withRouter, Redirect } from 'react-router-dom';
 import Home from "./home/home";
 import Login from "./login/login";
 import Admin from "./admin/admin";
+import Article from "./article/article";
 
 export default class Routes extends Component {
     render() {
@@ -13,6 +14,7 @@ export default class Routes extends Component {
                 <Route exact path="/" component={Home} />
                 <Route path="/admin" component={Admin} />
                 <Route path="/login" component={Login} redirect/>
+                <Route path="/article/:id" component={Article} />
             </Switch>
         )
     }

@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 
 import {connect} from "react-redux";
 import { articleActions } from '../../stores/_actions/article.action';
-import { Hero, Container,Content, Heading, Section, Level, Box, Media, Image } from 'react-bulma-components';
+import { Hero, Container,Content, Heading, Section, Level, Box, Media, Image, Card } from 'react-bulma-components';
+
+//#components
+import BoxCard from '../box-card/box-card';
 
 class Home extends Component {
 
@@ -25,32 +28,84 @@ class Home extends Component {
             <div>
 
                 <Hero color="info">
+                    <Container className="is-fluid">
                     <Hero.Body>
                        <Heading>Curadivo</Heading>
                         <Heading subtitle size={3}>
                             Curated Knowledge. Unlimited Potential
                         </Heading>
                     </Hero.Body>
+                    </Container>
                 </Hero>
 
-                <Section>
-                    <Box>
-                        <Media>
+                <Section className="is-paddingless">
+                    <Container className="is-fluid ">
+                        <Box>
+                            <Media>
 
-                            <Media.Item >
-                                <Content>
-                                    <p>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis
-                                    </p>
-                                </Content>
-                            </Media.Item>
+                                <Media.Item >
+                                    <Content>
+                                        <p>
+                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis
+                                        </p>
+                                    </Content>
+                                </Media.Item>
 
-                            <Media.Item position="right" size={5}>
-                                <Image
-                                    src ={require('../../assets/images/01.png')}/>
-                            </Media.Item>
-                        </Media>
-                    </Box>
+                                <Media.Item position="right" size={5}>
+                                    <Image
+                                        src ={require('../../assets/images/01.png')}/>
+                                </Media.Item>
+                            </Media>
+                        </Box>
+                    </Container>
+                </Section>
+                <Section className="is-paddingless">
+                    <Container className="is-fluid is-clearfix">
+                        {!loading && articles &&
+
+                            articles.map((article, index) =>
+                                <BoxCard article = {article}/>
+                            )
+                        }
+
+                        {/*<Box>*/}
+                            {/*<Card>*/}
+                                {/*<Card.Image size="4by3"  src ={require('../../assets/images/01.png')}/>*/}
+                                {/*<Card.Content>*/}
+                                    {/*<Content>*/}
+                                        {/*<p>*/}
+                                            {/*Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis*/}
+                                        {/*</p>*/}
+                                    {/*</Content>*/}
+                                {/*</Card.Content>*/}
+                            {/*</Card>*/}
+                        {/*</Box>*/}
+                        {/*<Box>*/}
+                            {/*<Card>*/}
+                                {/*<Card.Image size="4by3"  src ={require('../../assets/images/01.png')}/>*/}
+                                {/*<Card.Content>*/}
+                                    {/*<Content>*/}
+                                        {/*<p>*/}
+                                            {/*Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis*/}
+                                        {/*</p>*/}
+                                    {/*</Content>*/}
+                                {/*</Card.Content>*/}
+                            {/*</Card>*/}
+                        {/*</Box>*/}
+                        {/*<Box>*/}
+                            {/*<Card>*/}
+                                {/*<Card.Image size="4by3"  src ={require('../../assets/images/01.png')}/>*/}
+                                {/*<Card.Content>*/}
+                                    {/*<Content>*/}
+                                        {/*<p>*/}
+                                            {/*Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis*/}
+                                        {/*</p>*/}
+                                    {/*</Content>*/}
+                                {/*</Card.Content>*/}
+                            {/*</Card>*/}
+                        {/*</Box>*/}
+                    </Container>
+
                 </Section>
                 <ul>
                     {!loading && articles &&
@@ -68,6 +123,7 @@ class Home extends Component {
                     }
                 </ul>
                 }
+
             </div>
         )
     }

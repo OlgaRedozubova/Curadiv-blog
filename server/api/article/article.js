@@ -4,16 +4,18 @@ const Article = require('../../models/article');
 module.exports = {
     show: (db) => async (req, res) => {
         try {
-            const article_id = (req.article || {}).id;
+            const article_id = req.params.id;
+
             if (!article_id) {
                 res.status(404).send({message: 'Article not found'})
             } else {
                 const Acticle = db_model(Article, db);
-                const article = Acticle.findById(article_id);
+                const article = await Acticle.findById(article_id);
                 if (!article) {
                     res.status(404).send({message: 'Article not found'})
                 } else {
-                    res.status(200).json({data: article});
+                    console.log('article=>', article);
+                    res.status(200).json(article);
                 }
             }
 
