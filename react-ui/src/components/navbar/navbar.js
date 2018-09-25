@@ -18,18 +18,18 @@ export default class NavBar extends Component {
         const isLoggedIn = false;
         return(
             <div className={newClassName}>
-                <Navbar color = 'info' fixed='top' display="flex">
-                    <Navbar.Item display="flex">
-                        <NavLink className="NavBar-link" to="/" activeClassName="selected">
+                <Navbar className="nav-right nav-menu is-flex is-hidden-mobile" color = 'info'>
+                    <Navbar.Item className="nav-items">
+                        <NavLink className="is-tab is-hidden-mobile is-active" to="/" activeClassName="selected">
                             {i18n.t('menu.home')}
                         </NavLink>
                     </Navbar.Item>
-                    <Navbar.Item display="flex">
+                    <Navbar.Item >
                         <NavLink className="NavBar-link" to="/admin" activeClassName="selected">
                             Admin
                         </NavLink>
                     </Navbar.Item>
-                    <Navbar.Item display="flex">
+                    <Navbar.Item >
                         <NavLink className="NavBar-link" to="/login" activeClassName="selected">
                             {i18n.t('menu.login')}
                         </NavLink>

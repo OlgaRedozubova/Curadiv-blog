@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import {connect} from "react-redux";
 import { articleActions } from '../../stores/_actions/article.action';
+import { Hero, Container,Content, Heading, Section, Level, Box, Media, Image } from 'react-bulma-components';
 
 class Home extends Component {
 
@@ -21,10 +22,36 @@ class Home extends Component {
             return <div>Loading...</div>;
         }
         return (
-            <div className="col-md-6 col-md-offset-3">
-                <h1>Curadiv</h1>
-                <h3>Curated Knowledge. Unlimited Potential</h3>
+            <div>
 
+                <Hero color="info">
+                    <Hero.Body>
+                       <Heading>Curadivo</Heading>
+                        <Heading subtitle size={3}>
+                            Curated Knowledge. Unlimited Potential
+                        </Heading>
+                    </Hero.Body>
+                </Hero>
+
+                <Section>
+                    <Box>
+                        <Media>
+
+                            <Media.Item >
+                                <Content>
+                                    <p>
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis
+                                    </p>
+                                </Content>
+                            </Media.Item>
+
+                            <Media.Item position="right" size={5}>
+                                <Image
+                                    src ={require('../../assets/images/01.png')}/>
+                            </Media.Item>
+                        </Media>
+                    </Box>
+                </Section>
                 <ul>
                     {!loading && articles &&
 
