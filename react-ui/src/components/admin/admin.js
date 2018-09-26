@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 
 import {connect} from "react-redux";
-import { articleActions } from '../../stores/_actions/article.action';
+import { articleActions, onEditArticle, onRemoveArticle } from '../../stores/_actions/article.action';
 
 import { Columns, Container, Table, Button } from 'react-bulma-components';
 import { Link } from 'react-router-dom';
+import {removeUser} from "../../stores/_reducers/users";
 
 class Admin extends Component {
     constructor(props){
@@ -51,6 +52,31 @@ class Admin extends Component {
     //     console.log('Add Article');
     //
     // }
+    editArticle = (e) => {
+      const { articleList } = this.state;
+      console.log('articleList.length=> ', articleList.length);
+      if (articleList.length < 1 ) {
+            e.preventDefault();
+            alert('Select Articles!');
+      } else {
+          if (articleList.length > 1 ) {
+              e.preventDefault();
+              alert('Select one Article!');
+          }
+      }
+
+    };
+    onClickDel = (e) => {
+        const { articleList } = this.state;
+        console.log('articleList.length=> ', articleList.length);
+        if (articleList.length < 1 ) {
+            e.preventDefault();
+            alert('Select Articles!');
+        } else {
+            this.props.dispatch(articleActions.onRemoveArticle(articleList));
+            //this.props.onRemoveArticle(articleList)
+        }
+    };
     render() {
         const {  error, loading,articles } = this.props;
      //   console.log('render => this =>', error, loading, articles);
@@ -65,9 +91,15 @@ class Admin extends Component {
             <div >
                 <h1>Admin page</h1>
                 <Container>
-                    <Button>Edit</Button>
+                    {/*<Button>Edit</Button>*/}
+                    <Link to={`/article-edit/${this.state.articleList[0]}`} onClick={this.editArticle}>
+                        <Button>Edit</Button>
+                    </Link>
+                    {/*<Button onClick={this.editArticle}>*/}
+                        {/*Edit*/}
+                    {/*</Button>*/}
                     <Button>Arh</Button>
-                    <Button>Del</Button>
+                    <Button onClick={this.onClickDel}>Del</Button>
                     <Link to={`/article-edit`}>
                         <Button>Add</Button>
                     </Link>
@@ -118,5 +150,14 @@ const mapStateToProps = state =>
         loading: state.articles.loading,
         error: state.articles.error,
     });
+
+// const mapDispatchToProps = dispatch => ({
+//     onRemoveArticle(list) {
+//         dispatch(removeArticle(id))
+//     },
+//     onEditArticle(id) {
+//         dispatch(editArticle(id));
+//     }
+// })
 
 export default connect(mapStateToProps)(Admin);

@@ -29,6 +29,34 @@ module.exports = function (table, db) {
         });
     };
 
+    const update = (data) => {
+        return new Promise(async(resolve, reject) => {
+            try {
+                table.findById(data.id, function(err, atricle){
+                    if (err) throw err;
+
+                    article.title = data.title;
+                    article.subtitle = data.subtitle;
+                    article.author = data.author;
+                    article.slot = data.slot;
+                    article.splash = data.splash;
+                    article.image1 = data.image1;
+                    article.image2 = data.image2;
+                    article.body = data.body;
+
+                    atricle.save(function(err, obj) {
+                        if (err) throw err;
+                        console.log('Article successfully updated.', obj);
+                        resolve(obj)
+                    })
+                });
+            } catch (e) {
+                console.log('ERROR=>', e);
+                reject(e);
+            }
+        });
+    };
+
     const find = (params = {}) => {
         return new Promise(async(resolve, reject) => {
            try {
@@ -85,5 +113,5 @@ module.exports = function (table, db) {
     };
 
 
-    return {create, find,findById, deleteOne, deleteMany}
+    return {create, update, find,findById, deleteOne, deleteMany}
 };

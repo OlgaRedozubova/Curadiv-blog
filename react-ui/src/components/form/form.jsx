@@ -1,211 +1,265 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import axios from 'axios';
+//components
 
-import {connect} from "react-redux";
 
-//helpers
-import ClassNames from 'classnames';
-import i18n from '../../utils/i18n';
 
 //components
-import InputWrapper from './input';
-import {do_by_login, onLoginFailed} from "../../stores/_actions/auth";
-import axios from "axios/index";
-
+import { Button, Container, Section, Columns, Hero, Heading} from 'react-bulma-components';
+import { Field, Label, Control, Input, Textarea } from 'react-bulma-components/lib/components/form';
 
 //style
 import './form.css';
 
 
-const styles = theme => ({
-    container: {
-        display: 'flex',
-        flexWrap: 'wrap',
-    },
-    textField: {
-        marginLeft: theme.spacing.unit,
-        marginRight: theme.spacing.unit,
-        width: 200,
-    },
-    dense: {
-        marginTop: 19,
-    },
-    menu: {
-        width: 200,
-    },
-});
-
 
 class Form extends Component {
-    static defaultProps = {
-        isSignUp: false
-    };
-
     constructor (props) {
         super(props);
+        const isEdit = this.props.id.length > 0;
         this.form = React.createRef();
-        this.onContinue = this.onContinue.bind(this);
-        this.onLogin = this.onLogin.bind(this);
-        this.onFormValueChanged = this.onFormValueChanged.bind(this);
+        this.onNewArticle = this.onNewArticle.bind(this);
         this.state = {
-            checked: false,
-            isValid: false,
-            buttonDisabled: false,
-            isValidRecaptcha: false,
-            form: {
-                invite_code: '',
-                email: '',
-                password: '',
-                full_name: ''
-            },
-            error: undefined
+            title: '',
+            subtitle: '',
+            author: '',
+            slot: '',
+            splash:'',
+            image1:'',
+            image2:'',
+            body: '',
+            deleted: false,
+            archived: false,
+            isEdit: isEdit,
+        };
+    }
+    componentDidMount() {
+        const {id} = this.props;
+        if (id) {
+            console.log('!!componentDidMount=>')
+            axios.get(`/api/articles/${id}`)
+                .then(res => {
+                    const article = res.data;
+                    console.log('res=>', res);
+                    this.setState({
+                        title: article.title,
+                        subtitle: article.subtitle,
+                        author: article.author,
+                        slot: article.slot,
+                        splash: article.splash,
+                        image1: article.image1,
+                        image2: article.image2,
+                        body: article.body,
+                        // deleted: false,
+                        // archived: false,
+                        // isEdit: isEdit,
+                    });
+                })
+                .catch(err => {
+                    console.log('err => ', err);
+                })
+            }
+
+    }
+
+    onNewArticle (formData) {
+        const {history} = this.props;
+        console.log('history => ');
+        if (formData) {
+            axios.post('/api/articles', formData)
+                .then(res => {
+                    const article = res.data;
+                    console.log('res=>', article);
+                    //history.push(`/admin`);
+                    window.location.href = '/admin'
+                    //this.setState({ article });
+                })
+                .catch(err => {
+                    console.log('err => ', err);
+                })
         }
+
     }
 
-    onFormValueChanged(field, value) {
-        this.setState({form: {[field]: value}});
-        console.log('value =>', value);
-        // if (!this.props.login) {
-        // 	this.oState.isValid = validateEmail(this.form.email) && this.form.full_name !== '' && this.form.password !== '';
-        // }
+    onEditArticle (formData) {
+        const {history, id} = this.props;
+        if (formData) {
+            axios.put('/api/articles', formData)
+                .then(res => {
+                    const article = res.data;
+                    console.log('res=>', article);
+                    //history.push(`/admin`);
+                    window.location.href = '/admin'
+                    //this.setState({ article });
+                })
+                .catch(err => {
+                    console.log('err => ', err);
+                })
+        }
+
     }
 
-    onContinue(e) {
-        console.log('onContinue');
-        this.setState({error: undefined});
+    onChange = (e) => {
+        // event to update state when form inputs change
         e.preventDefault();
-
-        this.props.location.hash = '';
-        const {login} = this.props;
-
-        if (!login) {
-            // if (this.recaptchaInstance) this.recaptchaInstance.execute();
-            // if (!this.state.checked) {
-            //     this.checkIfTermsAccepted(this.onSignUp);
-            //     return;
-            // }
-        //    return this.onSignUp();
-        }
-
-        this.onLogin();
-    }
-
-    onLogin() {
-        const form = this.state.form;
-        const {history, login, auth, invite} = this.props;
-        const {onLogin} = auth;
-
-        if (form.email !== '' && form.password !== '') {
-            // if (validateEmail(form.email)) {
-                onLogin(form)
-                    .then(response => {
-                        // GA_login('login-email', 'login', 'email');
-                        // if (login) this.goToDashboard();
-                        console.log('onLogin response => ', response);
-                    })
-                    .catch(error => {
-                        console.log('onLogin error => ', error);
-                        // if (error.status === 422) {
-                        //     invite.updateSignUpEmail(form.email);
-                        //     sessionStorage.setItem('email', form.email);
-                        //     history.push(`/verification`)
-                        // } else {
-                        //     this.oState.error = i18n.t('messages.' + error.message_code);
-                        // }
-                    })
-            // } else {
-            //     this.oState.error = i18n.t('forms.invalidEmail');
-            // }
+        switch (e.target.name) {
+            case 'splash':
+                this.setState({ splash: e.target.files[0] });
+                break;
+            case 'image1':
+                this.setState({ image1: e.target.files[0] });
+                break;
+            case 'image2':
+                this.setState({ image2: e.target.files[0] });
+                break;
+            default:
+                this.setState({ [e.target.name]: e.target.value });
         }
     };
 
+    onSubmit = (e) => {
+        e.preventDefault();
+        const { title, subtitle, author, slot, splash, image1, image2, body} = this.state;
+        let formData = new FormData();
+        console.log('this.state => ', this.state, title);
+
+        formData.append('id', this.props.id);
+        formData.append('title', title);
+        formData.append('subtitle', subtitle);
+        formData.append('author', author);
+        formData.append('slot', slot);
+        formData.append('splash', splash);
+        formData.append('image1', image1);
+        formData.append('image2', image2);
+        formData.append('body', body);
+
+        console.log('onContinue => ', formData);
+        const {isEdit} = this.state;
+        if (!isEdit) {
+            //New Article
+            return this.onNewArticle(formData)
+        } else {
+            return this.onEditArticle(formData)
+        }
+
+    }
     render() {
-        const { classes } = this.props;
-        const {buttonDisabled, error, form, checked} = this.state;
-        const {className, login, invite, flip, auth} = this.props;
-        const newClassName = ClassNames('Form', className);
-        console.log('auth => ', this.props.auth);
-
+        const { title, subtitle, author, slot, splash, image1, image2, body} = this.state;
         return (
-            <div className={classes.root} ref={this.form}>
-                <form onSubmit={this.onContinue} classeName = {classes.root} noValidate autoComplete="off">
-                    {/*<FormControl component="fieldset" variant="filled">*/}
-                        {/*<TextField*/}
-                            {/*id="filled-email-input"*/}
-                            {/*type="email"*/}
-                            {/*name="email"*/}
-                            {/*autoComplete="email"*/}
-                            {/*margin="normal"*/}
-                            {/*//variant="filled"*/}
-                            {/*label={i18n.t('forms.email')}*/}
-                            {/*value={form.email}*/}
-                            {/*error={error === 'Invalid email address'}*/}
-                            {/*// required={true}*/}
-                            {/*onChange={e => this.onFormValueChanged('email', e.target.value)}*/}
-                            {/*// onSetValue={this.SetValue}*/}
-                            {/*// isLogin={this.props.login}*/}
-                        {/*/>*/}
-                        {/*<TextField*/}
-                            {/*type="password"*/}
-                            {/*id="filled-password-input"*/}
-                            {/*label={i18n.t('forms.password')}*/}
-                            {/*autoComplete="current-password"*/}
-                            {/*margin="normal"*/}
-                            {/*//variant="filled"*/}
-                            {/*value={form.password}*/}
-                            {/*// required={true}*/}
-                            {/*onChange={e => this.onFormValueChanged('password', e.target.value)}*/}
-                            {/*// onSetValue={this.SetValue}*/}
-                            {/*// isLogin={this.props.login}*/}
-                        {/*/>*/}
-                        {/*<Button variant="contained" color="primary" >Login*/}
-                        {/*</Button>*/}
-                    {/*</FormControl>*/}
+            <div>
+                <form className="form__ArticleEdit" onSubmit={this.onSubmit}>
+                    <Field>
+                        <Control>
+                            <Input
+                                type="text"
+                                name="title"
+                                value={title}
+                                onChange={this.onChange}
+                                required={true}
+                                placeholder="Title"
+                            />
+                        </Control>
+                    </Field>
 
 
-                    {/*<Button primary fat submit className="shadow btn" disabled={buttonDisabled}>*/}
-                        {/*<span className="label">{login ? i18n.t('forms.login') : i18n.t('forms.sign_up')}</span>*/}
-                    {/*</Button>*/}
+                    <Field>
+                        <Control>
+                            <Input
+                                type="text"
+                                name="subtitle"
+                                value={subtitle}
+                                onChange={this.onChange}
+                                required={true}
+                                placeholder="Subtitle"
+                            />
+                        </Control>
+                    </Field>
+                    <Field>
+                        <Control>
+                            <Input
+                                type="text"
+                                name="author"
+                                value={author}
+                                onChange={this.onChange}
+                                required={true}
+                                placeholder="Author"
+                            />
+                        </Control>
+                    </Field>
+
+                    <Columns>
+                        <Columns.Column>
+                            <Field>
+                                <Label>Splash image</Label>
+                                <Control>
+
+                                    <input
+                                        type="file"
+                                        name="splash"
+                                        onChange={this.onChange}
+                                    />
+                                </Control>
+                            </Field>
+                            <Field>
+                                <Label>Image 1</Label>
+                                <Control>
+                                    <input
+                                        type="file"
+                                        name="image1"
+                                        onChange={this.onChange}
+                                    />
+                                </Control>
+                            </Field>
+                            <Field>
+                                <Label>Image 2</Label>
+                                <Control>
+                                    <input
+                                        type="file"
+                                        name="image2"
+                                        onChange={this.onChange}
+                                    />
+                                </Control>
+                            </Field>
+                        </Columns.Column>
+                        <Columns.Column size={2}>
+                            <Field>
+                                <Label>Slot</Label>
+                                <Control>
+                                    <Input
+                                        onChange={this.onChange}
+                                        name="slot"
+                                        type="number"
+                                        min="1"
+                                        max="12"
+                                        required={true}
+                                        value={slot}
+                                    />
+                                </Control>
+                            </Field>
+                        </Columns.Column>
+                    </Columns>
+
+                    <Field>
+                        <Label>Message</Label>
+                        <Control>
+                                <Textarea
+                                    onChange={this.onChange}
+                                    name="body"
+                                    placeholder="Body"
+                                    // required={true}
+                                    value={body}
+                                />
+                        </Control>
+                    </Field>
+                    <div className="buttons is-right">
+                        <Button className="is-danger" type="submit">
+                            Submit
+                        </Button>
+                    </div>
                 </form>
             </div>
         )
     }
 }
 
-// Form.propTypes = {
-//     classes: PropTypes.object.isRequired,
-// };
-
 export default Form;
-
-// const mapStateToProps = state =>
-//     ({
-//         auth: [...state.auth]//.sort(sortFunction(state.sort))
-//     });
-
-// const mapDispatchToProps = dispatch =>
-//     ({
-//         onLogin (form){
-//             return dispatch => {
-//                 axios.get('/api/user/login', {...form})
-//                     .then(response => {
-//                         dispatch(do_by_login(response))
-//                     })
-//                     .catch(error => {
-//                         dispatch(onLoginFailed(error))
-//                     })
-//             }
-//         },
-//
-//         // onRemove(id) {
-//         //     dispatch(removeUser(id))
-//         // },
-//         // onRate(id, rating) {
-//         //     dispatch(rateUser(id, rating))
-//         // }
-//     });
-//
-// export default connect(
-//     mapStateToProps,
-//     mapDispatchToProps
-// )(Form);

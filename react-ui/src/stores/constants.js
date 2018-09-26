@@ -3,6 +3,7 @@ const constants = {
     FETCH_ARTICLES_SUCCESS: "FETCH_ARTICLES_SUCCESS",
     FETCH_ARTICLES_FAILURE: "FETCH_ARTICLES_FAILURE",
 
+    EDIT_ARTICLE_BEGIN: "EDIT_ARTICLE_BEGIN",
     //--------------------------------------------
 
     ON_LOGOUT: "ON_LOGOUT",

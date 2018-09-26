@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
+import { Hero, Container,Content, Heading, Section, Level, Box, Media, Image, Card } from 'react-bulma-components';
+
+//style
+import './article.css';
+
 class Article extends Component {
     constructor (props) {
         super(props);
@@ -48,11 +53,29 @@ class Article extends Component {
     render() {
         console.log('render => ', this.state.article);
         return(
-            <div>
+            <div className="article">
+                <Hero color="info">
+                    <Container className="is-fluid">
+                        <Hero.Body>
+                            <Heading>Curadiv</Heading>
+                        </Hero.Body>
+                    </Container>
+                </Hero>
+                <Section className="is-paddingless">
+                    <Container className="is-fluid">
+                        <Media>
+                            <Media.Item>
+                                <Image
+                                 src='https://gallery.yopriceville.com/var/resizes/Free-Clipart-Pictures/Ribbons-and-Banners-PNG/Banner_Green_Deco_Clip_Art_PNG_Image.png?m=1507172115'/>
+                            </Media.Item>
+                        </Media>
+                    </Container>
+                </Section>
                 {this.state.article._id}
                 {this.state.article.title}
                 {this.state.article.subtitle}
                 {this.state.article.body}
+                {this.state.article.splash}
             </div>
         )
     }

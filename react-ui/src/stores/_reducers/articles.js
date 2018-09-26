@@ -56,6 +56,10 @@ export const articles = (state = {}, action) => {
                 error: action.payload.error,
                 items: []
             };
+        case C.EDIT_ARTICLE_BEGIN:
+            return {
+                item: action.payload.article
+            };
 
 //---------------------------------
         case C.GETALL_REQUEST:

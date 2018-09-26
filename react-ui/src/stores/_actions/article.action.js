@@ -3,7 +3,20 @@ import C from '../constants';
 
 export const articleActions = {
     fetchArticles,
+    onRemoveArticle,
+    onEditArticle
 };
+
+
+function onRemoveArticle(list) {
+    //dispatch(removeArticle(id))
+}
+
+function onEditArticle(id) {
+     //   dispatch(editArticle(id));
+
+    //function
+}
 
 function fetchArticles() {
     return dispatch => {

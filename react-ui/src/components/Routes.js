@@ -14,6 +14,7 @@ export default class Routes extends Component {
             <Switch>
                 <Route exact path="/" component={Home} />
                 <Route path="/admin" component={Admin} />
+                <Route path="/article-edit/:id" component={ArticleEdit} />
                 <Route path="/article-edit" component={ArticleEdit} />
                 <Route path="/login" component={Login} redirect/>
                 <Route path="/article/:id" component={Article} />
