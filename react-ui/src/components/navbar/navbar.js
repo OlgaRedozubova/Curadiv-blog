@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { NavLink, withRouter } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { Navbar } from 'react-bulma-components';
 
 //helpes
@@ -10,12 +10,12 @@ import './navbar-style.css';
 
 export default class NavBar extends Component {
     render() {
-        const { className, sticky, withBtn, uiStore, invite, auth } = this.props;
+        const { className, sticky } = this.props;
         const newClassName = ClassNames('NavBar', className, {
             sticky: sticky,
             //active: sticky && uiStore.scrollPosition > 80
         });
-        const isLoggedIn = false;
+
         return(
             <div className={newClassName}>
                 <Navbar className="nav-right nav-menu is-flex is-hidden-mobile" color = 'info'>

@@ -14,6 +14,7 @@ export const store = createStore(
 );
 
 export default store;
+
 // import stateData from './initialState';
 //
 // import stores from './reducers';

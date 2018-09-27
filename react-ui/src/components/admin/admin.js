@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 
 import {connect} from "react-redux";
-import { articleActions, onEditArticle, onRemoveArticle } from '../../stores/_actions/article.action';
+import { articleActions } from '../../stores/_actions/article';
 
-import { Columns, Container, Table, Button } from 'react-bulma-components';
+import { Container, Table, Button } from 'react-bulma-components';
 import { Link } from 'react-router-dom';
-import {removeUser} from "../../stores/_reducers/users";
+
 
 class Admin extends Component {
     constructor(props){

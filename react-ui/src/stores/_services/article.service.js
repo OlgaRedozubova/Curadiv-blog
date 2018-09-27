@@ -1,6 +1,7 @@
 export const articleService = {
     getAll,
     getById,
+    getArticle
 };
 
 // Handle HTTP errors since fetch won't.
@@ -13,6 +14,10 @@ function handleErrors(response) {
 
 function getAll(){
     return fetch("/api/articles").then(handleErrors).then(res => res.json());
+}
+
+function getArticle(id){
+    return fetch(`/api/articles/${id}`).then(handleErrors).then(res => res.json());
 }
 
 function getById(id) {

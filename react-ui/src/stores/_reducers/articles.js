@@ -56,6 +56,12 @@ export const articles = (state = {}, action) => {
                 error: action.payload.error,
                 items: []
             };
+        case C.SELECT_ARTICLE:
+            return {
+                ...state,
+                selectArticle: action.payload.article,
+            };
+//------------------------------------------
         case C.EDIT_ARTICLE_BEGIN:
             return {
                 item: action.payload.article

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route as RRR, Switch, withRouter, Redirect } from 'react-router-dom';
+import { Route as RRR, Switch, Redirect } from 'react-router-dom';
 
 //components
 import Home from "./home/home";

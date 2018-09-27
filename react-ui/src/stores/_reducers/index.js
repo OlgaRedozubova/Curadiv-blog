@@ -5,20 +5,16 @@ import auth from './auth';
 import users from './users';
 import sort from './sort';
 import articles from './articles';
+import article from './article';
 
 
 const stores = combineReducers({
     articles,
+    article,
     configure,
     auth,
     users,
     sort,
-    // invite,
-    // UiStore,
-    // UserStore,
-    // users,
-    // friends,
-    // contacts,
 });
 
 export default stores;

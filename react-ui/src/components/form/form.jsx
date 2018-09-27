@@ -5,7 +5,7 @@ import axios from 'axios';
 
 
 //components
-import { Button, Container, Section, Columns, Hero, Heading} from 'react-bulma-components';
+import { Button,   Columns} from 'react-bulma-components';
 import { Field, Label, Control, Input, Textarea } from 'react-bulma-components/lib/components/form';
 
 //style
@@ -63,14 +63,12 @@ class Form extends Component {
     }
 
     onNewArticle (formData) {
-        const {history} = this.props;
         console.log('history => ');
         if (formData) {
             axios.post('/api/articles', formData)
                 .then(res => {
                     const article = res.data;
                     console.log('res=>', article);
-                    //history.push(`/admin`);
                     window.location.href = '/admin'
                     //this.setState({ article });
                 })
@@ -82,7 +80,7 @@ class Form extends Component {
     }
 
     onEditArticle (formData) {
-        const {history, id} = this.props;
+
         if (formData) {
             axios.put('/api/articles', formData)
                 .then(res => {
@@ -144,7 +142,7 @@ class Form extends Component {
 
     }
     render() {
-        const { title, subtitle, author, slot, splash, image1, image2, body} = this.state;
+        const { title, subtitle, author, slot, body} = this.state;
         return (
             <div className="form__ArticleEdit">
                 <form className="form__ArticleEdit" onSubmit={this.onSubmit}>

@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import { BrowserRouter} from 'react-router-dom';
-//import logo from '../logo.svg';
-import Users from './users/users';
 
 import {languages} from "../utils/constants";
 //helpers

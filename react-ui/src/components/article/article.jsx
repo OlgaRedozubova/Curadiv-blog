@@ -1,57 +1,32 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import {connect} from "react-redux";
+import { bindActionCreators } from 'redux';
 
-import { Hero, Container,Content, Heading, Section, Level, Box, Media, Image, Card } from 'react-bulma-components';
+import { Hero, Container, Heading, Section, Media, Image, Content } from 'react-bulma-components';
+
+import {fetchArticle} from '../../stores/_actions/article';
 
 //style
 import './article.css';
 
+
 class Article extends Component {
-    constructor (props) {
-        super(props);
-        //this.getArticle = this.getArticle.bind(this);
-        this.state = {
-            article: {}
-        }
-
+    componentWillMount() {
+        const {params} = this.props.match;
+        console.log('componentWillMount=>', this.props);
+        this.props.fetchArticle(params.id);
+        // if (!this.props.selectArticle){
+        //     this.props.fetchArticle();
+        // }
     }
 
-    getArticle = (id) => {
-        return axios
-            .get(`/api/articles/${id}`)
-            .then(response => {
-                return Promise.resolve(response.data.article)
-            })
-            .cache(error => {
-                return Promise.reject(error)
-            })
-    };
-
-    componentDidMount() {
-        const { match } = this.props;
-        const {id} = match.params;
-
-        if (id) {
-            axios.get(`/api/articles/${id}`)
-                .then(res => {
-                    const article = res.data;
-                    console.log('res=>', res);
-                    this.setState({ article });
-                })
-                .catch(err => {
-                    console.log('err => ', err);
-                })
-            // this.getArticle(id)
-            //     .then(response => {
-            //         console.log('!response =>', response)
-            //     })
-            //     .catch(error => {
-            //         console.log('!!error=>', error);
-            //     })
-        }
-    }
     render() {
-        console.log('render => ', this.state.article);
+        const { selectArticle, loading, article } = this.props;
+
+        if (loading || !article) {
+            return <div>Loading...</div>;
+        }
+
         return(
             <div className="article">
                 <Hero color="info">
@@ -64,22 +39,51 @@ class Article extends Component {
                 <Section className="is-paddingless">
                     <Container className="is-fluid">
                         <Media>
-                            <Media.Item>
-                                <Image
-                                 src='https://gallery.yopriceville.com/var/resizes/Free-Clipart-Pictures/Ribbons-and-Banners-PNG/Banner_Green_Deco_Clip_Art_PNG_Image.png?m=1507172115'/>
+                            <Media.Item className="is-fluid">
+                                {article.splash &&
+                                    <Image
+                                        src={require('../../assets/images/' + article.splash)}/>
+                                }
+
                             </Media.Item>
                         </Media>
                     </Container>
                 </Section>
-                {this.state.article._id}
-                {this.state.article.title}
-                {this.state.article.subtitle}
-                {this.state.article.body}
-                {this.state.article.splash}
+                <Section className="is-paddingless">
+                    <Container className="is-fluid">
+                        <Media>
+                            <Media.Item className="is-fluid">
+                                <Content>
+                                    <h1 className=".title">{article.title}</h1>
+                                    <h2 className=".subtitle">{article.subtitle}</h2>
+                                    <h3 className=".subtitle">{article.author}</h3>
+
+                                    <p>
+                                        {article.body}
+                                    </p>
+                                </Content>
+                            </Media.Item>
+                        </Media>
+                    </Container>
+                </Section>
             </div>
         )
     }
 
 }
 
-export default Article;
+const mapStateToProps = state =>
+    ({
+        selectArticle: state.articles.selectArticle,
+        article: state.article.items,
+        loading: state.article.loading,
+        error: state.article.error,
+    });
+
+const mapActionToProps = (dispatch) => {
+    return {
+        fetchArticle: bindActionCreators(fetchArticle, dispatch)
+    }
+};
+
+export default connect(mapStateToProps, mapActionToProps)(Article);
