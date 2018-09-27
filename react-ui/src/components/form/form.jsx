@@ -146,7 +146,7 @@ class Form extends Component {
     render() {
         const { title, subtitle, author, slot, splash, image1, image2, body} = this.state;
         return (
-            <div>
+            <div className="form__ArticleEdit">
                 <form className="form__ArticleEdit" onSubmit={this.onSubmit}>
                     <Field>
                         <Control>

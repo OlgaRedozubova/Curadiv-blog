@@ -32,7 +32,7 @@ module.exports = function (table, db) {
     const update = (data) => {
         return new Promise(async(resolve, reject) => {
             try {
-                table.findById(data.id, function(err, atricle){
+                table.findById(data.id, function(err, article){
                     if (err) throw err;
 
                     article.title = data.title;
@@ -44,7 +44,7 @@ module.exports = function (table, db) {
                     article.image2 = data.image2;
                     article.body = data.body;
 
-                    atricle.save(function(err, obj) {
+                    article.save(function(err, obj) {
                         if (err) throw err;
                         console.log('Article successfully updated.', obj);
                         resolve(obj)

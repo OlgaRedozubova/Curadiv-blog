@@ -78,7 +78,7 @@ module.exports = {
             console.log('PUT => ',data, req.body);
 
             const db_Article = db_model(Article, db);
-            const article = await db_Article.create(data);
+            const article = await db_Article.update(data);
             //res.status(200).json({message: 'User was successfully created.', message_code: 'user_created'});
             res.status(200).json(article);
         } catch (e) {
