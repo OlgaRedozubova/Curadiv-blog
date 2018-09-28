@@ -1,2 +1,14 @@
+.hero .hero-body {
+  padding: 1.5rem; }
+
 .section-two .card {
   min-height: 315px; }
+
+.content .subtitle {
+  color: red; }
+
+.content .title {
+  font-size: 1.2rem; }
+
+.content .subtitle {
+  font-size: 1rem; }

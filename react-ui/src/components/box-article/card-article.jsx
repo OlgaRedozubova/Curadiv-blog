@@ -17,8 +17,8 @@ class CardArticle extends Component {
                         }
                         <Card.Content>
                             <Content>
-                                <h3 className=".subtitle">{article.subtitle}</h3>
-                                <h2 className=".title">{article.title}</h2>
+                                <h3 className="subtitle">{article.subtitle}</h3>
+                                <h2 className="title">{article.title}</h2>
                             </Content>
                         </Card.Content>
                     </Card>

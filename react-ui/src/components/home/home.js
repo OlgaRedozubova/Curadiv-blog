@@ -69,7 +69,7 @@ class Home extends Component {
 
                 <div>
                 {articlesSection1 &&
-                    <Section className="is-paddingless">
+                    <Section className="is-paddingless section-one">
                         <Container className="is-fluid ">
                             <BigBoxArticle article = {articlesSection1[0]} onClick={this.props.selectArticle}/>
                         </Container>

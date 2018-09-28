@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-import { Content, Box, Media, Image } from 'react-bulma-components';
+import { Content, Box, Media, Image, Columns } from 'react-bulma-components';
+
 
 
 class BoxArticle extends Component {
@@ -11,20 +12,24 @@ class BoxArticle extends Component {
         return (
             <Box onClick={()=>this.props.onClick(article)}>
                 <Link to={`/article/${article._id}`} className="navbar-brand">
-                    <Media>
-                        <Media.Item position="left">
-                        {article.splash &&
-                            <Image src={require('../../assets/images/' + article.splash)}/>
-                        }
+                    <Columns>
+                        <Columns.Column>
 
-                        </Media.Item>
-                        <Media.Item>
-                            <Content>
-                                <h4 className=".subtitle">{article.subtitle}</h4>
-                                <h3 className=".title">{article.title}</h3>
-                            </Content>
-                        </Media.Item>
-                    </Media>
+                                {article.splash &&
+                                <Image src={require('../../assets/images/' + article.splash)}/>
+                                }
+
+
+                        </Columns.Column>
+                        <Columns.Column>
+
+                        <Content>
+                            <h4 className="subtitle">{article.subtitle}</h4>
+                            <h3 className="title">{article.title}</h3>
+                        </Content>
+
+                        </Columns.Column>
+                    </Columns>
                 </Link>
             </Box>
         )
