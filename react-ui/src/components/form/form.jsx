@@ -23,10 +23,11 @@ class Form extends Component {
         this.form = React.createRef();
         this.onNewArticle = this.onNewArticle.bind(this);
         this.state = {
+            form: {},
             title: '',
             subtitle: '',
             author: '',
-            slot: '',
+            slot: '0',
             splash:'',
             image1:'',
             image2:'',
@@ -43,70 +44,45 @@ class Form extends Component {
 
     componentDidMount() {
         const {id, article} = this.props;
-        if (!article){
-            console.log('Component(Article) => componentWillMount => fetchArticle => id=', id);
-            this.props.fetchArticle(id)
-                .then((res) => {
-                    this.setState({
-                        title: res.title,
-                        subtitle: res.subtitle,
-                        author: res.author,
-                        slot: res.slot,
-                        splash: res.splash,
-                        image1: res.image1,
-                        image2: res.image2,
-                        body: res.body,
-                        deleted: false,
-                        archived: false,
+        if (id)
+            if (!article) {
+                console.log('Component(Article) => componentWillMount => fetchArticle => id=', id);
+                this.props.fetchArticle(id)
+                    .then((res) => {
+                        this.setState({
+                            title: res.title,
+                            subtitle: res.subtitle,
+                            author: res.author,
+                            slot: res.slot,
+                            splash: res.splash,
+                            image1: res.image1,
+                            image2: res.image2,
+                            body: res.body,
+                            deleted: false,
+                            archived: false,
+                        });
+                        console.log('>>> res=>', this.state);
                     });
-                    console.log('>>> res=>', this.state);
+            } else {
+                this.setState({
+                    title: article.title,
+                    subtitle: article.subtitle,
+                    author: article.author,
+                    slot: article.slot,
+                    splash: article.splash,
+                    image1: article.image1,
+                    image2: article.image2,
+                    body: article.body,
+                    deleted: false,
+                    archived: false,
                 });
-        } else {
-            this.setState({
-                title: article.title,
-                subtitle: article.subtitle,
-                author: article.author,
-                slot: article.slot,
-                splash: article.splash,
-                image1: article.image1,
-                image2: article.image2,
-                body: article.body,
-                deleted: false,
-                archived: false,
-            });
 
-        }
+            }
+
     }
 
 
-    // componentDidMount() {
-    //     const {id} = this.props;
-    //     if (id) {
-    //         console.log('!!componentDidMount=>')
-    //         axios.get(`/api/articles/${id}`)
-    //             .then(res => {
-    //                 const article = res.data;
-    //                 console.log('res=>', res);
-    //                 this.setState({
-    //                     title: article.title,
-    //                     subtitle: article.subtitle,
-    //                     author: article.author,
-    //                     slot: article.slot,
-    //                     splash: article.splash,
-    //                     image1: article.image1,
-    //                     image2: article.image2,
-    //                     body: article.body,
-    //                     // deleted: false,
-    //                     // archived: false,
-    //                     // isEdit: isEdit,
-    //                 });
-    //             })
-    //             .catch(err => {
-    //                 console.log('err => ', err);
-    //             })
-    //         }
-    //
-    // }
+
 
     onNewArticle (formData) {
         console.log('history => ');
@@ -190,8 +166,10 @@ class Form extends Component {
         formData.append('slot', slot);
         formData.append('splash_f', splash_f);
         formData.append('image1_f', image1_f);
-        formData.append('image2_F', image2_f);
+        formData.append('image2_f', image2_f);
         formData.append('body', body);
+        formData.append('deleted', false);
+        formData.append('archived', false);
 
         console.log('onContinue => ', formData);
 
@@ -205,7 +183,7 @@ class Form extends Component {
         const { title, subtitle, author, slot, body, splash, image1, image2} = this.state;
         const { loading, article, error } = this.props;
 
-        if (loading || !article) {
+        if (loading ) {
             return <div>Loading...</div>;
         }
         if (error) {
@@ -302,10 +280,10 @@ class Form extends Component {
                                         onChange={this.onChange}
                                         name="slot"
                                         type="number"
-                                        min="1"
+                                        min="0"
                                         max="12"
                                         required={true}
-                                        value={+slot}
+                                        value={slot.toString()}
                                     />
                                 </Control>
                             </Field>

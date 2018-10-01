@@ -48,6 +48,7 @@ class Home extends Component {
         const articlesSection3_1 = this.slotToSection(articles, [5, 7, 9]);
         const articlesSection3_2 = this.slotToSection(articles, [6, 8, 10]);
 
+        console.log('articlesSection1 => ', articlesSection1)
 
         if (error) {
             return <div>Error! {error.message}</div>;
@@ -68,7 +69,7 @@ class Home extends Component {
                 </Hero>
 
                 <div>
-                {articlesSection1 &&
+                {articlesSection1 && articlesSection1.length > 0 &&
                     <Section className="is-paddingless section-one">
                         <Container className="is-fluid ">
                             <BigBoxArticle article = {articlesSection1[0]} onClick={this.props.selectArticle}/>

@@ -10,7 +10,7 @@ import {fetchAdminArticles, addSelectArticles, delSelectArticles, clearSelectArt
     deleteArticles
     } from '../../stores/_actions/article';
 
-import { Container, Table, Button, Section } from 'react-bulma-components';
+import { Container, Table, Button, Section, Level, Box, Heading } from 'react-bulma-components';
 import Icon from 'react-bulma-components/lib/components/icon';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit, faArchive, faTrashAlt, faPlusCircle } from '@fortawesome/free-solid-svg-icons'
@@ -21,6 +21,7 @@ import { bindActionCreators } from "redux";
 
 //style
 import './admin.css';
+import {Control, Field, Input, Label} from "react-bulma-components/lib/components/form";
 
 
 
@@ -34,7 +35,9 @@ class Admin extends Component {
             articleList: [],
             isChecked: false,
             idArticle: '',
-            selectedArticles: []
+            selectedArticles: [],
+            selectArticleArchive: {},
+            restoreSlot: '0'
         }
     }
 
@@ -60,6 +63,12 @@ class Admin extends Component {
         } else {
             this.props.delSelectArticles(article._id);
         }
+    }
+    onSelectArchive(value, article) {
+        console.log('1 onSelectArchive => ', value, article);
+        this.setState({selectArticleArchive: {...article},
+            restoreSlot: article.slot});
+        console.log('2 onSelectArchive => ', value, this.state.selectArticleArchive);
     }
 
     editArticle = (e) => {
@@ -100,6 +109,24 @@ class Admin extends Component {
                 });
         }
     };
+    onDeleteArchive = () => {
+        const { selectArticleArchive } = this.state;
+
+        if (!selectArticleArchive) {
+            alert('Select article!!!')
+        } else {
+            let list = [];
+            list.push(selectArticleArchive);
+            this.props.deleteArticles(list)
+                .then(res => {
+                    this.setState({
+                        articles: [...res.articles],
+                        archive: [...res.archive]
+                    });
+                    // this.props.clearSelectArticles();
+                });
+        }
+    };
 
     onArchive = () => {
         //addArchive
@@ -122,22 +149,30 @@ class Admin extends Component {
 
     onRestore = () => {
         //addArchive
-        const {selectArticles} = this.props;
+        const { restoreSlot, selectArticleArchive } = this.state;
+        console.log('3 onSelectArchive => ',restoreSlot, selectArticleArchive);
+        if (!restoreSlot) {
+            alert('Please input RestoreSlot');
+        }
 
-        if (!selectArticles || !selectArticles.length || selectArticles.length < 1 ) {
+
+        if (!selectArticleArchive) {
             alert('Select article!!!')
         } else {
-            this.props.restoreArchive(selectArticles)
+            this.props.restoreArchive(selectArticleArchive)
                 .then(res => {
-                    // res.articles.map(item => Object.assign(item, {isChecked: false}));
                     this.setState({
                         articles: [...res.articles],
                         archive: [...res.archive]
                     });
-                    this.props.clearSelectArticles();
+                   // this.props.clearSelectArticles();
                 });
         }
     };
+    onChangeSlot = (e) => {
+        e.preventDefault();
+        this.setState({ [e.target.name]: e.target.value });
+    }
 
     onClickDel = (e) => {
         const { articleList } = this.state;
@@ -152,7 +187,7 @@ class Admin extends Component {
 
     render() {
         const { error, loading, articles, archive } = this.props;
-
+        const { restoreSlot } = this.state;
         if (error)   { return <div>Error! {error.message}</div> }
         if (loading || !articles ) { return <div>Loading...</div> }
 
@@ -166,8 +201,8 @@ class Admin extends Component {
                         <Table>
                             <thead>
                             <tr>
-                                <th className="is-2">Check</th>
-                                <th className="is_2">Slot</th>
+                                <th className="is-narrow"></th>
+                                <th className="is-narrow">Slot</th>
                                 <th className="is-4">
                                     <div className="is-right">
 
@@ -234,39 +269,56 @@ class Admin extends Component {
                         <Table>
                             <thead>
                             <tr>
-                                <th className="is-2">Check</th>
-                                <th className="is_2">Slot</th>
+                                <th className="is-narrow"></th>
+
                                 <th className="is-4">
-                                    <div className="is-right">
-                                        <Button onClick={this.onRestore}>Restore</Button>
+
+                                        <Level renderAs="nav">
+
+                                                <Level.Item className="has-text-centered">
+                                                    <Heading size={5} subtitle>
+                                                        <strong>Archive</strong>
+                                                        <Icon className="icon icon is-medium fa-lg is-light" color="success">
+                                                            <FontAwesomeIcon icon={faArchive} />
+                                                        </Icon>
+                                                    </Heading>
+                                                </Level.Item>
+                                                <Level.Item>
+
+                                                </Level.Item>
 
 
-                                        {/*<Link to={`/article-edit/${idArticle}`} onClick={this.editArticle}>*/}
-                                            {/*<Icon className="icon icon is-medium fa-lg">*/}
-                                                {/*<FontAwesomeIcon icon={faEdit} />*/}
-                                            {/*</Icon>*/}
-                                        {/*</Link>*/}
+                                            <Level.Side align="right">
 
-                                        {/*<Link to={`/article-edit/${idArticle}`} onClick={this.editArticle}>*/}
-                                            {/*<Icon className="icon icon is-medium fa-lg is-light" color="success">*/}
-                                                {/*<FontAwesomeIcon icon={faArchive} />*/}
-                                            {/*</Icon>*/}
-                                        {/*</Link>*/}
-                                        {/*<Link to={`/article-edit/${idArticle}`} onClick={this.editArticle}>*/}
-                                            {/*<Icon className="icon icon is-medium fa-lg has-text-danger">*/}
-                                                {/*<FontAwesomeIcon icon={faTrashAlt} />*/}
-                                            {/*</Icon>*/}
-                                        {/*</Link>*/}
-
-                                        {/*<Link to={`/article-edit`} onClick={()=>this.props.newArticle()}>*/}
-                                            {/*<Icon className="icon icon is-medium fa-lg" color="info">*/}
-                                                {/*<FontAwesomeIcon icon={faPlusCircle} />*/}
-                                            {/*</Icon>*/}
-                                        {/*</Link>*/}
+                                                <Level.Item>
+                                                    <Field kind="addons">
+                                                        <Control>
+                                                            <Button renderAs="button" onClick={this.onRestore}>Restore</Button>
+                                                        </Control>
+                                                        <Control>
+                                                            <Input
+                                                                onChange={this.onChangeSlot}
+                                                                name="restoreSlot"
+                                                                type="number"
+                                                                min="0"
+                                                                max="12"
+                                                                required={true}
+                                                                value={restoreSlot}
+                                                            />
+                                                        </Control>
 
 
-                                        {/*<Button onClick={this.onClickDel}>Del</Button>*/}
-                                    </div>
+
+                                                        <Button renderAs="a" className="is-text" onClick={this.onDeleteArchive}>
+                                                            <Icon className="icon icon is-medium fa-lg has-text-danger">
+                                                                <FontAwesomeIcon icon={faTrashAlt} />
+                                                            </Icon>
+                                                        </Button>
+                                                    </Field>
+                                                </Level.Item>
+                                            </Level.Side>
+                                        </Level>
+
                                 </th>
                             </tr>
                             </thead>
@@ -275,13 +327,11 @@ class Admin extends Component {
                             archive.map((article, index) =>
                                 <tr key={index}>
                                     <td>
-                                        <input type="radio" name="check"
-                                               onChange={(e)=>this.onChange(e.target.checked, article)}
+                                        <input type="radio" name="radio"
+                                               onChange={(e)=>this.onSelectArchive(e.target.checked, article)}
                                         />
                                     </td>
-                                    <td>
-                                        {article.slot}
-                                    </td>
+
                                     <td>
                                         {article.title}
                                     </td>

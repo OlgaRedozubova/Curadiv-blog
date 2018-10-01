@@ -33,6 +33,7 @@ module.exports = {
     },
     new: (db) => async (req, res) => {
         try {
+
             const data = { ...req.body,
                 splash: req.files.splash_f ? req.files.splash_f[0].filename : '',
                 image1: req.files.image1_f ? req.files.image1_f[0].filename : '',
@@ -40,6 +41,7 @@ module.exports = {
 
             const db_Article = db_model(Article, db);
             const article = await db_Article.create(data);
+
             res.status(200).json(article);
         } catch (e) {
             something_wrong(req, e);
@@ -116,9 +118,10 @@ module.exports = {
 
     restoreArchive: (db) => async(req, res) => {
         try {
-            const list = req.body;
 
-            await articlesArchived(db, list, false);
+            const article = {...req.body, archived: false};
+            const db_Article = db_model(Article, db);
+            await db_Article.update(article);
 
             const data = await getAllData(db);
 
@@ -177,7 +180,8 @@ const  articlesArchived = async(db, list, isArchived = false) => {
 
 const getAllData = async (db) => {
     const db_Article = db_model(Article, db);
-    const articles = await db_Article.find({deleted: false, archived: false});
+    const articles = await db_Article.find({deleted: false,archived: false});
     const archive = await db_Article.find({deleted: false, archived: true});
+
     return {articles, archive}
 };

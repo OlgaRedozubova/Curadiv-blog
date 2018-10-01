@@ -147,11 +147,11 @@ export function deleteArticles(list) {
 
 
 //ADD_ARCHIVE_BEGIN
-export function restoreArchive(list) {
+export function restoreArchive(article) {
     return (dispatch) => {
         dispatch(request(C.RESTORE_ARCHIVE_BEGIN));
-        if (list) {
-            return axios.post('/api/admin/restore', list)
+        if (article) {
+            return axios.post('/api/admin/restore', article)
                 .then(res => {
                     console.log('res=>', res.data);
                     dispatch(success(res.data, C.RESTORE_ARCHIVE_SUCCESS));
