@@ -1,5 +1,6 @@
 import { articleService } from '../_services/article.service';
 import C from '../constants';
+import axios from "axios/index";
 
 export const articleActions = {
     fetchArticles,
@@ -13,7 +14,22 @@ export function selectArticle (article){
        type: C.SELECT_ARTICLE,
        payload: { article }
    }
-};
+}
+
+export function editArticle (article) {
+    return {
+        type: C.EDIT_ARTICLE,
+        payload: { article }
+    }
+}
+
+//NEW_ARTICLE
+export function newArticle (article) {
+    return {
+        type: C.NEW_ARTICLE,
+        payload: { article }
+    }
+}
 
 export function addSelectArticles (article){
     return {
@@ -35,76 +51,129 @@ export function clearSelectArticles (){
     }
 };
 
-
-export function editArticle (article) {
+export function clearArticle () {
     return {
-        type: C.EDIT_ARTICLE,
-        payload: { article }
+        type: C.CLEAR_ARTICLE,
     }
+
 }
 
 //-----------------------------------------------------
-function request(){
-    return {type: C.FETCH_ARTICLES_BEGIN}
+function request(action_type){
+    return {type: action_type}
 }
 
-function success(articles){
+function success(data, action_type){
     return {
-        type: C.FETCH_ARTICLES_SUCCESS,
-        payload: { articles }
+        type: action_type,
+        payload: { data }
     }
 }
 
-function failure (error){
+function failure (error, action_type){
     return {
-        type: C.FETCH_ARTICLES_FAILURE,
+        type: action_type,
         payload: { error }
     }
 }
 
 export function fetchArticles() {
     return (dispatch) => {
-        dispatch(request());
+        dispatch(request(C.FETCH_ARTICLES_BEGIN));
         return articleService.getAll()
             .then(json => {
-                console.log('json => ', json);
-                dispatch(success(json));
+                dispatch(success(json, C.FETCH_ARTICLES_SUCCESS));
                 return json;
             })
             .catch(error => {
-                dispatch(failure(error))
+                dispatch(failure(error, C.FETCH_ARTICLES_FAILURE))
                 return error
             });
     };
 }
 
-export function fetchArticle(id) {
+export function fetchAdminArticles() {
     return (dispatch) => {
-        dispatch(requestArticle());
-        return articleService.getArticle(id)
-            .then(json => {
-                console.log('json => ', json);
-                dispatch(successArticle(json));
-                return json;
+        dispatch(request(C.FETCH_ADMIN_ARTICLES_BEGIN));
+        return articleService.getAdminArticles()
+            .then(res => {
+                dispatch(success(res, C.FETCH_ADMIN_ARTICLES_SUCCESS));
+                return res;
             })
-            .catch(error => dispatch(failureArticle(error)));
+            .catch(error => {
+                dispatch(failure(error, C.FETCH_ADMIN_ARTICLES_FAILURE));
+                return error
+            });
+    };
+}
+//----------------------------------------------------------------------------------------------------------------------
+//ADD_ARCHIVE_BEGIN
+export function addArchive(list) {
+    return (dispatch) => {
+        dispatch(request(C.ADD_ARCHIVE_BEGIN));
+        if (list) {
+            return axios.post('/api/admin/archive', list)
+                .then(res => {
+                    console.log('res=>', res.data);
+                    dispatch(success(res.data, C.ADD_ARCHIVE_SUCCESS));
+                    return res.data;
+                })
+                .catch(error => {
+                    dispatch(failure(error, C.ADD_ARCHIVE_FAILURE));
+                    return error
+                })
+        }
     };
 }
 
-function requestArticle(){
-    return {type: C.FETCH_ARTICLE_BEGIN}
+//deleteArticles
+export function deleteArticles(list) {
+    return (dispatch) => {
+        dispatch(request(C.DEL_ARTICLE_BEGIN));
+        if (list) {
+            return axios.post('/api/admin/articles', {list, type:'delete'})
+                .then(res => {
+                    console.log('res=>', res.data);
+                    dispatch(success(res.data, C.DEL_ARTICLE_SUCCESS));
+                    return res.data;
+                })
+                .catch(error => {
+                    dispatch(failure(error, C.DEL_ARTICLE_FAILURE));
+                    return error
+                })
+        }
+    };
 }
 
-function successArticle(article){
-    return {
-        type: C.FETCH_ARTICLE_SUCCESS,
-        payload: { article }
-    }
+
+//ADD_ARCHIVE_BEGIN
+export function restoreArchive(list) {
+    return (dispatch) => {
+        dispatch(request(C.RESTORE_ARCHIVE_BEGIN));
+        if (list) {
+            return axios.post('/api/admin/restore', list)
+                .then(res => {
+                    console.log('res=>', res.data);
+                    dispatch(success(res.data, C.RESTORE_ARCHIVE_SUCCESS));
+                    return res.data;
+                })
+                .catch(error => {
+                    dispatch(failure(error, C.RESTORE_ARCHIVE_FAILURE));
+                    return error
+                })
+        }
+    };
 }
 
-function failureArticle (error){
-    return {
-        type: C.FETCH_ARTICLE_FAILURE,
-        payload: { error }
-    }
+export function fetchArticle(id) {
+    return (dispatch) => {
+        dispatch(request(C.FETCH_ARTICLE_BEGIN));
+        return articleService.getArticle(id)
+            .then(json => {
+                dispatch(success(json, C.FETCH_ARTICLE_SUCCESS));
+                return json;
+            })
+            .catch(error => dispatch(failure(error, C.FETCH_ARTICLE_FAILURE)));
+    };
 }
+

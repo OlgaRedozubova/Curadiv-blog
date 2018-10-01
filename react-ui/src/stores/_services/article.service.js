@@ -1,7 +1,8 @@
 export const articleService = {
     getAll,
     getById,
-    getArticle
+    getArticle,
+    getAdminArticles
 };
 
 // Handle HTTP errors since fetch won't.
@@ -14,6 +15,10 @@ function handleErrors(response) {
 
 function getAll(){
     return fetch("/api/articles").then(handleErrors).then(res => res.json());
+}
+
+function getAdminArticles(){
+    return fetch("/api/admin/articles").then(handleErrors).then(res => res.json());
 }
 
 function getArticle(id){

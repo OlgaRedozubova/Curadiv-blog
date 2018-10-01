@@ -28,6 +28,8 @@ export const article = (state = {}, action) => {
                 loading: false,
                 items: action.payload.article,
             };
+        case C.CLEAR_ARTICLE :
+            return {};
 
         case C.EDIT_ARTICLE:
             return {
@@ -35,7 +37,12 @@ export const article = (state = {}, action) => {
                 loading: false,
                 items: action.payload.article,
             };
-
+        case C.NEW_ARTICLE:
+            return {
+                ...state,
+                loading: false,
+                items: {},
+            };
         default:
             return state
     }

@@ -183,7 +183,7 @@ class Form extends Component {
 
         let formData = new FormData();
 
-        formData.append('id', this.props.id);
+        formData.append('_id', this.props.id);
         formData.append('title', title);
         formData.append('subtitle', subtitle);
         formData.append('author', author);
@@ -305,7 +305,7 @@ class Form extends Component {
                                         min="1"
                                         max="12"
                                         required={true}
-                                        value={slot}
+                                        value={+slot}
                                     />
                                 </Control>
                             </Field>

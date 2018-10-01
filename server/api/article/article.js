@@ -65,7 +65,7 @@ module.exports = {
     showAll: (db) => async (req, res) => {
         try {
             const db_Article = db_model(Article, db);
-            const articles = await db_Article.find();
+            const articles = await db_Article.find({deleted: false});
 
             if (!articles) {
                 res.status(404).send({message: 'Articles not found'})
@@ -76,5 +76,108 @@ module.exports = {
         } catch (e) {
             something_wrong(req, e);
         }
+    },
+    editArticles: (db) => async (req, res) => {
+        try {
+            const list = req.body.list;
+            const type = req.body.type;
+            console.log('req.body => ', type, list);
+            if (type === 'delete') {
+                await articlesDelete(db, list, true);
+
+                const data = await getAllData(db);
+
+                if (!data.articles || !data.archive) {
+                    res.status(404).send({message: 'Articles not found'})
+                } else {
+                    res.status(200).json(data);
+                }
+            }
+
+        } catch (e) {
+            something_wrong(req, e);
+        }
+    },
+    showAllAdmin: (db) => async (req, res) => {
+        try {
+
+            const data = await getAllData(db);
+
+            if (!data.articles || !data.archive) {
+                res.status(404).send({message: 'Articles not found'})
+            } else {
+                res.status(200).json(data);
+            }
+
+        } catch (e) {
+            something_wrong(req, e);
+        }
+    },
+
+    restoreArchive: (db) => async(req, res) => {
+        try {
+            const list = req.body;
+
+            await articlesArchived(db, list, false);
+
+            const data = await getAllData(db);
+
+
+            if (!data.articles || !data.archive) {
+                res.status(404).send({message: 'Articles not found'})
+            } else {
+                res.status(200).json(data);
+            }
+
+
+
+        } catch (e) {
+            something_wrong(req, e);
+        }
+    },
+
+    addArchive: (db) => async(req, res) => {
+        try {
+            const list = req.body;
+            console.log('req.body => ', req.body);
+
+            await articlesArchived(db, list, true);
+
+            const data = await getAllData(db);
+
+            if (!data.articles || !data.archive) {
+                res.status(404).send({message: 'Articles not found'})
+            } else {
+                res.status(200).json(data);
+            }
+
+        } catch (e) {
+            something_wrong(req, e);
+        }
     }
+};
+
+const  articlesDelete = async(db, list, isDeleted = false) => {
+    const db_Article = db_model(Article, db);
+
+    for (let i = 0; i < list.length; i++ ){
+        const data = {...list[i], deleted: isDeleted};
+        await db_Article.update(data);
+    }
+};
+
+const  articlesArchived = async(db, list, isArchived = false) => {
+    const db_Article = db_model(Article, db);
+
+    for (let i = 0; i < list.length; i++ ){
+        const data = {...list[i], archived: isArchived};
+        await db_Article.update(data);
+    }
+};
+
+const getAllData = async (db) => {
+    const db_Article = db_model(Article, db);
+    const articles = await db_Article.find({deleted: false, archived: false});
+    const archive = await db_Article.find({deleted: false, archived: true});
+    return {articles, archive}
 };

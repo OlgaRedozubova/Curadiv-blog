@@ -36,7 +36,7 @@ module.exports = function (table, db) {
         return new Promise(async(resolve, reject) => {
             const log_str = `[${table}:update(${JSON.stringify(data)}...)]`;
             try {
-                table.findById(data.id, function(err, article){
+                table.findById(data._id, function(err, article){
                     if (err) throw err;
 
                     article.title = data.title;
@@ -47,6 +47,8 @@ module.exports = function (table, db) {
                     article.image1 = data.image1;
                     article.image2 = data.image2;
                     article.body = data.body;
+                    article.archived = data.archived;
+                    article.deleted = data.deleted;
 
                     article.save(function(err, obj) {
                         if (err) throw err;
@@ -61,6 +63,8 @@ module.exports = function (table, db) {
             }
         });
     };
+
+
 
     const find = (params = {}) => {
         return new Promise(async(resolve, reject) => {

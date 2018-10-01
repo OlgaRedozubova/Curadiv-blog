@@ -1,11 +1,27 @@
 import React, { Component } from 'react';
 
 import {connect} from "react-redux";
-import {fetchArticles, addSelectArticles, delSelectArticles, clearSelectArticles, selectArticle} from '../../stores/_actions/article';
+import {fetchAdminArticles, addSelectArticles, delSelectArticles, clearSelectArticles, clearArticle,
+    //selectArticle,
+    editArticle,
+    newArticle,
+    addArchive,
+    restoreArchive,
+    deleteArticles
+    } from '../../stores/_actions/article';
 
-import { Container, Table, Button } from 'react-bulma-components';
+import { Container, Table, Button, Section } from 'react-bulma-components';
+import Icon from 'react-bulma-components/lib/components/icon';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEdit, faArchive, faTrashAlt, faPlusCircle } from '@fortawesome/free-solid-svg-icons'
+
+
 import { Link } from 'react-router-dom';
 import { bindActionCreators } from "redux";
+
+//style
+import './admin.css';
+
 
 
 class Admin extends Component {
@@ -14,18 +30,24 @@ class Admin extends Component {
         this.onClick = this.onClick.bind(this);
         this.state = {
             articles: [],
+            archive: [],
             articleList: [],
             isChecked: false,
-            idArticle: ''
+            idArticle: '',
+            selectedArticles: []
         }
     }
 
     componentWillMount() {
         this.props.clearSelectArticles();
-        this.props.fetchArticles()
+        this.props.clearArticle();
+        this.props.fetchAdminArticles()
             .then(res => {
-                res.map(item => Object.assign(item, {isChecked: false}));
-                this.setState({articles: [...res]})
+                // res.articles.map(item => Object.assign(item, {isChecked: false}));
+                this.setState({
+                    articles: [...res.articles],
+                    archive: [...res.archive]
+                })
             });
     }
     onClick = (e, article) => {
@@ -46,17 +68,75 @@ class Admin extends Component {
 
 
       if(selectArticles && selectArticles.length===1) {
-          this.props.selectArticle(selectArticles[0]);
+          //this.props.selectArticle(selectArticles[0]);
+          this.props.editArticle(selectArticles[0]);
       }
 
       if (!selectArticles || !selectArticles.length || selectArticles.length < 1 ) {
             e.preventDefault();
+            alert('Select article!!!')
       } else {
           if (selectArticles.length > 1 ) {
               e.preventDefault();
+              alert('Select one article!!!')
           }
       }
 
+    };
+    onDelete = () => {
+        const {selectArticles} = this.props;
+
+        if (!selectArticles || !selectArticles.length || selectArticles.length < 1 ) {
+            alert('Select article!!!')
+        } else {
+            this.props.deleteArticles(selectArticles)
+                .then(res => {
+                    // res.articles.map(item => Object.assign(item, {isChecked: false}));
+                    this.setState({
+                        articles: [...res.articles],
+                        archive: [...res.archive]
+                    });
+                    this.props.clearSelectArticles();
+                });
+        }
+    };
+
+    onArchive = () => {
+        //addArchive
+        const {selectArticles} = this.props;
+
+        if (!selectArticles || !selectArticles.length || selectArticles.length < 1 ) {
+            alert('Select article!!!')
+        } else {
+            this.props.addArchive(selectArticles)
+                .then(res => {
+                // res.articles.map(item => Object.assign(item, {isChecked: false}));
+                    this.setState({
+                        articles: [...res.articles],
+                        archive: [...res.archive]
+                    });
+                    this.props.clearSelectArticles();
+            });
+        }
+    };
+
+    onRestore = () => {
+        //addArchive
+        const {selectArticles} = this.props;
+
+        if (!selectArticles || !selectArticles.length || selectArticles.length < 1 ) {
+            alert('Select article!!!')
+        } else {
+            this.props.restoreArchive(selectArticles)
+                .then(res => {
+                    // res.articles.map(item => Object.assign(item, {isChecked: false}));
+                    this.setState({
+                        articles: [...res.articles],
+                        archive: [...res.archive]
+                    });
+                    this.props.clearSelectArticles();
+                });
+        }
     };
 
     onClickDel = (e) => {
@@ -71,7 +151,7 @@ class Admin extends Component {
     };
 
     render() {
-        const { error, loading, articles } = this.props;
+        const { error, loading, articles, archive } = this.props;
 
         if (error)   { return <div>Error! {error.message}</div> }
         if (loading || !articles ) { return <div>Loading...</div> }
@@ -81,48 +161,139 @@ class Admin extends Component {
         return (
             <div >
                 <h1>Admin page</h1>
-                <Container>
-                    <Link to={`/article-edit/${idArticle}`} onClick={this.editArticle}>
-                        <Button>Edit</Button>
-                    </Link>
-                    <Button>Arh</Button>
-                    <Button onClick={this.onClickDel}>Del</Button>
-                    <Link to={`/article-edit`}>
-                        <Button>Add</Button>
-                    </Link>
-                </Container>
-                <Container>
-                    <Table>
-                        <thead>
+                <Section>
+                    <Container className="notification">
+                        <Table>
+                            <thead>
                             <tr>
                                 <th className="is-2">Check</th>
                                 <th className="is_2">Slot</th>
-                                <th className="is-5">Title</th>
+                                <th className="is-4">
+                                    <div className="is-right">
+
+                                        <Link to={`/article-edit/${idArticle}`} onClick={this.editArticle}>
+                                            <Button className="is-text">
+                                                <Icon className="icon icon is-medium fa-lg">
+                                                    <FontAwesomeIcon icon={faEdit} />
+                                                </Icon>
+                                            </Button>
+                                        </Link>
+
+                                        <Button className="is-text" onClick={this.onArchive}>
+                                            <Icon className="icon icon is-medium fa-lg is-light" color="success">
+                                                <FontAwesomeIcon icon={faArchive} />
+                                            </Icon>
+                                        </Button>
+
+                                        <Button className="is-text" onClick={this.onDelete}>
+                                            <Icon className="icon icon is-medium fa-lg has-text-danger">
+                                                <FontAwesomeIcon icon={faTrashAlt} />
+                                            </Icon>
+                                        </Button>
+
+
+                                        <Link to={`/article-edit`} onClick={()=>this.props.newArticle()}>
+                                            <Button className="is-text">
+                                                <Icon className="icon icon is-medium fa-lg" color="info">
+                                                    <FontAwesomeIcon icon={faPlusCircle} />
+                                                </Icon>
+                                            </Button>
+                                        </Link>
+
+
+                                        {/*<Button onClick={this.onClickDel}>Del</Button>*/}
+                                    </div>
+                                </th>
                             </tr>
-                        </thead>
-                        <tbody>
-                        { articles && articles.length > 0 &&
+                            </thead>
+                            <tbody>
+                            { articles && articles.length > 0 &&
                             articles.map((article, index) =>
-                            <tr key={index}>
-                                <td>
-                                    <input type="checkbox" name="check"
-                                           onChange={(e)=>this.onChange(e.target.checked, article)}
-                                    />
-                                </td>
-                                <td>
-                                    {article.slot}
-                                </td>
-                                <td className="is-fullwidth">
-                                    {article.title}
-                                </td>
+                                <tr key={index}>
+                                    <td>
+                                        <input type="checkbox" name="check"
+                                               onChange={(e)=>this.onChange(e.target.checked, article)}
+                                        />
+                                    </td>
+                                    <td>
+                                        {article.slot}
+                                    </td>
+                                    <td>
+                                        {article.title}
+                                    </td>
+                                </tr>
+
+                            )
+                            }
+                            </tbody>
+                        </Table>
+                    </Container>
+                </Section>
+                <Section className="archive">
+                    <Container className="notification">
+                        <Table>
+                            <thead>
+                            <tr>
+                                <th className="is-2">Check</th>
+                                <th className="is_2">Slot</th>
+                                <th className="is-4">
+                                    <div className="is-right">
+                                        <Button onClick={this.onRestore}>Restore</Button>
+
+
+                                        {/*<Link to={`/article-edit/${idArticle}`} onClick={this.editArticle}>*/}
+                                            {/*<Icon className="icon icon is-medium fa-lg">*/}
+                                                {/*<FontAwesomeIcon icon={faEdit} />*/}
+                                            {/*</Icon>*/}
+                                        {/*</Link>*/}
+
+                                        {/*<Link to={`/article-edit/${idArticle}`} onClick={this.editArticle}>*/}
+                                            {/*<Icon className="icon icon is-medium fa-lg is-light" color="success">*/}
+                                                {/*<FontAwesomeIcon icon={faArchive} />*/}
+                                            {/*</Icon>*/}
+                                        {/*</Link>*/}
+                                        {/*<Link to={`/article-edit/${idArticle}`} onClick={this.editArticle}>*/}
+                                            {/*<Icon className="icon icon is-medium fa-lg has-text-danger">*/}
+                                                {/*<FontAwesomeIcon icon={faTrashAlt} />*/}
+                                            {/*</Icon>*/}
+                                        {/*</Link>*/}
+
+                                        {/*<Link to={`/article-edit`} onClick={()=>this.props.newArticle()}>*/}
+                                            {/*<Icon className="icon icon is-medium fa-lg" color="info">*/}
+                                                {/*<FontAwesomeIcon icon={faPlusCircle} />*/}
+                                            {/*</Icon>*/}
+                                        {/*</Link>*/}
+
+
+                                        {/*<Button onClick={this.onClickDel}>Del</Button>*/}
+                                    </div>
+                                </th>
                             </tr>
+                            </thead>
+                            <tbody>
+                            { archive && archive.length > 0 &&
+                            archive.map((article, index) =>
+                                <tr key={index}>
+                                    <td>
+                                        <input type="radio" name="check"
+                                               onChange={(e)=>this.onChange(e.target.checked, article)}
+                                        />
+                                    </td>
+                                    <td>
+                                        {article.slot}
+                                    </td>
+                                    <td>
+                                        {article.title}
+                                    </td>
+                                </tr>
 
-                        )
-                        }
-                        </tbody>
-                    </Table>
+                            )
+                            }
+                            </tbody>
+                        </Table>
+                    </Container>
+                </Section>
 
-                </Container>
             </div>
         )
     }
@@ -131,18 +302,30 @@ class Admin extends Component {
 const mapStateToProps = state =>
     ({
         articles: state.articles.items,
+        archive: state.articles.archive,
         loading: state.articles.loading,
         error: state.articles.error,
         selectArticles: state.selectArticles
+
     });
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        fetchArticles: bindActionCreators(fetchArticles, dispatch),
+        fetchAdminArticles: bindActionCreators(fetchAdminArticles, dispatch),
         addSelectArticles: bindActionCreators(addSelectArticles, dispatch),
         delSelectArticles: bindActionCreators(delSelectArticles, dispatch),
         clearSelectArticles: bindActionCreators(clearSelectArticles, dispatch),
-        selectArticle: bindActionCreators(selectArticle, dispatch),
+        clearArticle: bindActionCreators(clearArticle, dispatch),
+        //selectArticle: bindActionCreators(selectArticle, dispatch),
+
+        editArticle:  bindActionCreators(editArticle, dispatch),
+        newArticle:  bindActionCreators(newArticle, dispatch),
+
+        //--------
+        addArchive: bindActionCreators(addArchive, dispatch),
+        restoreArchive: bindActionCreators(restoreArchive, dispatch),
+        deleteArticles: bindActionCreators(deleteArticles, dispatch),
+
     }
 };
 

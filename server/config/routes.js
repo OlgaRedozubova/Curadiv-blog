@@ -22,6 +22,13 @@ const upload = multer({ storage });
 
 module.exports = (app, db) => {
     app.get('/api/articles', articles.showAll(db));
+
+    app.get('/api/admin/articles', articles.showAllAdmin(db));
+    app.post('/api/admin/articles', articles.editArticles(db));
+
+    app.post('/api/admin/archive', articles.addArchive(db));
+    app.post('/api/admin/restore', articles.restoreArchive(db));
+
     app.get("/api/articles/:id", articles.show(db));
     app.post("/api/articles", upload.fields([{ name: 'splash_f', maxCount: 1 }, { name: 'image1_f', maxCount: 1 }, { name: 'image2_f', maxCount: 1 }]), articles.new(db));
     app.put("/api/articles", upload.fields([

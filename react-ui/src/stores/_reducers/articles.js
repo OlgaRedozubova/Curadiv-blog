@@ -13,7 +13,7 @@ export const articles = (state = {}, action) => {
             return {
                 ...state,
                 loading: false,
-                items: action.payload.articles
+                items: action.payload.data
             };
         case C.FETCH_ARTICLES_FAILURE:
             return {
@@ -22,6 +22,111 @@ export const articles = (state = {}, action) => {
                 error: action.payload.error,
                 items: []
             };
+//------------------------------------------------------------
+        case C.FETCH_ADMIN_ARTICLES_BEGIN:
+            return {
+                ...state,
+                loading: true,
+                error: null
+            };
+        case C.FETCH_ADMIN_ARTICLES_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                items: action.payload.data.articles,
+                archive: action.payload.data.archive
+            };
+        case C.FETCH_ADMIN_ARTICLES_FAILURE:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload.error,
+                items: [],
+                archive: []
+            };
+//--------------------------------------------------------
+        case C.ADD_ARCHIVE_BEGIN:
+            return {
+                ...state,
+                loading: true,
+                error: null
+            };
+        case C.ADD_ARCHIVE_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                items: action.payload.data.articles,
+                archive: action.payload.data.archive
+            };
+        case C.ADD_ARCHIVE_FAILURE:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload.error,
+                items: [],
+                archive: []
+            };
+//--------------------------------------------------------
+        case C.RESTORE_ARCHIVE_BEGIN:
+            return {
+                ...state,
+                loading: true,
+                error: null
+            };
+        case C.RESTORE_ARCHIVE_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                items: action.payload.data.articles,
+                archive: action.payload.data.archive
+            };
+        case C.RESTORE_ARCHIVE_FAILURE:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload.error,
+                items: [],
+                archive: []
+            };
+//DEL_ARTICLE
+//--------------------------------------------------------
+        case C.DEL_ARTICLE_BEGIN:
+            return {
+                ...state,
+                loading: true,
+                error: null
+            };
+        case C.DEL_ARTICLE_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                items: action.payload.data.articles,
+                archive: action.payload.data.archive
+            };
+        case C.DEL_ARTICLE_FAILURE:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload.error,
+                items: [],
+                archive: []
+            };
+//----------------------------------------------------------------------------------------------------------------------
+
+        // case C.ADD_ARCHIVE:
+        //     return {
+        //         ...state,
+        //         loading: false,
+        //         items: action.payload.data.articles,
+        //         archive: action.payload.data.archive
+        //     };
+        // case C.DEL_ARCHIVE:
+        //     return {
+        //         ...state,
+        //         loading: false,
+        //         items: action.payload.data.articles,
+        //         archive: action.payload.data.archive
+        //     };
         default:
             return state
     }
