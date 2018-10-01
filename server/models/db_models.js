@@ -1,8 +1,10 @@
 const mongoose = require('mongoose');
+const logger = require('heroku-logger');
 
 module.exports = function (table, db) {
     const create = (data) => {
         return new Promise(async(resolve, reject) => {
+           const log_str = `[${table}:create(${JSON.stringify(data)}...)]`;
            try {
                const article = {
                    _id: new mongoose.Types.ObjectId(),
@@ -19,11 +21,12 @@ module.exports = function (table, db) {
                };
                table.create(article, function (err, obj) {
                    if (err) throw err;
-                   console.log('Article successfully saved.', obj);
+                   //console.log('Article successfully saved.', obj);
+                   logger.info(`${log_str} Article successfully saved.: ${JSON.stringify(obj)}`);
                    resolve(obj);
                });
            } catch (e) {
-               console.log('ERROR=>', e);
+               logger.error(`${log_str} Error: ${e.stack}`);
                reject(e);
            }
         });
@@ -31,6 +34,7 @@ module.exports = function (table, db) {
 
     const update = (data) => {
         return new Promise(async(resolve, reject) => {
+            const log_str = `[${table}:update(${JSON.stringify(data)}...)]`;
             try {
                 table.findById(data.id, function(err, article){
                     if (err) throw err;
@@ -46,12 +50,13 @@ module.exports = function (table, db) {
 
                     article.save(function(err, obj) {
                         if (err) throw err;
-                        console.log('Article successfully updated.', obj);
+                        //console.log('Article successfully updated.',obj);
+                        logger.info(`${log_str} Article successfully updated: ${JSON.stringify(obj)}`);
                         resolve(obj)
                     })
                 });
             } catch (e) {
-                console.log('ERROR=>', e);
+                logger.error(`${log_str} Error: ${e.stack}`);
                 reject(e);
             }
         });
@@ -59,13 +64,14 @@ module.exports = function (table, db) {
 
     const find = (params = {}) => {
         return new Promise(async(resolve, reject) => {
+           let log_str = `[${table}:find(${JSON.stringify(params)}...)]`;
            try {
                table.find(params).exec(function (err, list) {
                    if (err) throw err;
                    resolve(list)
                });
            } catch (e) {
-               console.log('ERROR=>', e);
+               logger.error(`${log_str} Error: ${e.stack}`);
                reject(e);
            }
         });
@@ -73,12 +79,13 @@ module.exports = function (table, db) {
 
     const findById = (id) => {
         return new Promise(async(resolve, reject) => {
+            let log_str = `[${table}:findById(${id})]`;
             try {
                 table.findById(id)
                     .then(obj => resolve(obj))
                     .catch(err => reject(err));
             } catch (e) {
-                console.log('ERROR=>', e);
+                logger.error(`${log_str} Error: ${e.stack}`);
                 reject(e);
             }
         });
@@ -86,13 +93,14 @@ module.exports = function (table, db) {
 
     const deleteOne = (params = {}) => {
         return new Promise(async(resolve, reject) => {
+            let log_str = `[${table}:find(${JSON.deleteOne(params)}...)]`;
             try {
                 table.deleteOne(params, function (err, obj) {
                     if (err) throw err;
                     resolve(obj)
                 });
             } catch (e) {
-                console.log('ERROR=>', e);
+                logger.error(`${log_str} Error: ${e.stack}`);
                 reject(e);
             }
         });
@@ -100,13 +108,14 @@ module.exports = function (table, db) {
 
     const deleteMany = (params = {}) => {
         return new Promise(async(resolve, reject) => {
+            let log_str = `[${table}:find(${JSON.deleteMany(params)}...)]`;
             try {
                 table.deleteMany(params, function (err, obj) {
                     if (err) throw err;
                     resolve(obj)
                 });
             } catch (e) {
-                console.log('ERROR=>', e);
+                logger.error(`${log_str} Error: ${e.stack}`);
                 reject(e);
             }
         });

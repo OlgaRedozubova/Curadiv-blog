@@ -1,5 +1,11 @@
+const logger = require('heroku-logger');
 const db_model = require('../../models/db_models');
 const Article = require('../../models/article');
+
+const something_wrong = (req, e) => {
+    logger.error(`path:'${req.path}' api:user | Error: ` + e);
+    return req.res.status(500).send({message: 'Something went wrong', message_code: '500', error: `${e}`}); //e.stack
+};
 
 module.exports = {
     show: (db) => async (req, res) => {
@@ -12,16 +18,17 @@ module.exports = {
                 const Acticle = db_model(Article, db);
                 const article = await Acticle.findById(article_id);
                 if (!article) {
-                    res.status(404).send({message: 'Article not found'})
+                    const msg = `User with id: '${article_id}' not found`;
+                    logger.warn(msg);
+                    res.status(404).send({message: msg})
                 } else {
-                    console.log('article=>', article);
+                    logger.info(`article:show: (${JSON.stringify(article)})`);
                     res.status(200).json(article);
                 }
             }
 
         } catch (e) {
-            console.log('ERROR => ', e);
-            res.status(500).send({message: e});
+            something_wrong(req, e);
         }
     },
     new: (db) => async (req, res) => {
@@ -35,8 +42,7 @@ module.exports = {
             const article = await db_Article.create(data);
             res.status(200).json(article);
         } catch (e) {
-            console.log('ERROR => ', e);
-            res.status(500).send({message: e});
+            something_wrong(req, e);
         }
     },
     edit: (db) => async (req, res) => {
@@ -46,15 +52,14 @@ module.exports = {
                 splash: req.files.splash_f ? req.files.splash_f[0].filename : '',
                 image1: req.files.image1_f ? req.files.image1_f[0].filename : '',
                 image2: req.files.image2_f ? req.files.image2_f[0].filename : ''};
-            console.log('PUT => ',data, req.body);
 
+            logger.info(`article:edit: data =>(${JSON.stringify(data)}), req.body =>(${JSON.stringify(req.body)})`);
             const db_Article = db_model(Article, db);
             const article = await db_Article.update(data);
 
             res.status(200).json(article);
         } catch (e) {
-            console.log('ERROR => ', e);
-            res.status(500).send({message: e});
+            something_wrong(req, e);
         }
     },
     showAll: (db) => async (req, res) => {
@@ -69,8 +74,7 @@ module.exports = {
             }
 
         } catch (e) {
-            console.log('showAll => ERROR => ', e);
-            res.status(500).send({message: e});
+            something_wrong(req, e);
         }
     }
 };

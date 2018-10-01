@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const logger = require('heroku-logger');
 
 const db = require('./config/database');
 
@@ -17,5 +18,5 @@ require('./config/routes')(app, db);
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, function () {
-    console.log(`Example app listening on port ${PORT}!`);
+    logger.info(`Example app listening on port ${PORT}!`);
 });

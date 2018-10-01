@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "nodemon server"
+    "start": "nodemon server",
+    "heroku-postbuild": "cd react-ui/ && yarn install && yarn install --only=dev --no-shrinkwrap && yarn run build",
+    "postinstall": "cd react-ui/ && yarn install && yarn build"
   },
   "cacheDirectories": [
     "node_modules",
@@ -14,6 +16,7 @@
     "express": "^4.16.3",
     "fs": "^0.0.1-security",
     "fs-extra": "^7.0.0",
+    "heroku-logger": "^0.3.1",
     "mongodb": "^3.1.6",
     "mongoose": "^5.2.16",
     "multer": "^1.3.1",
@@ -21,7 +24,7 @@
     "path": "^0.12.7",
     "uuid": "^3.3.2"
   },
-  "repository": "",
+  "repository": "https://github.com/Makermed/curadiv.git",
   "keywords": [
     "node",
     "heroku",
