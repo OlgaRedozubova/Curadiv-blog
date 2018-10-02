@@ -186,7 +186,7 @@ class Admin extends Component {
     };
 
     render() {
-        const { error, loading, articles, archive } = this.props;
+        const { error, loading, articles, archive, podcast } = this.props;
         const { restoreSlot } = this.state;
         if (error)   { return <div>Error! {error.message}</div> }
         if (loading || !articles ) { return <div>Loading...</div> }
@@ -259,6 +259,24 @@ class Admin extends Component {
                                 </tr>
 
                             )
+                            }
+                            { podcast && podcast.length > 0 &&
+                                podcast.map((podcast, index) =>
+                                    <tr key={index}>
+                                        <td>
+                                            <input type="checkbox" name="check"
+                                                   onChange={(e)=>this.onChange(e.target.checked, podcast)}
+                                            />
+                                        </td>
+                                        <td>
+                                            Podcast
+                                        </td>
+                                        <td>
+                                            {podcast.author}
+                                        </td>
+                                    </tr>
+
+                                )
                             }
                             </tbody>
                         </Table>
@@ -353,6 +371,7 @@ const mapStateToProps = state =>
     ({
         articles: state.articles.items,
         archive: state.articles.archive,
+        podcast: state.articles.podcast,
         loading: state.articles.loading,
         error: state.articles.error,
         selectArticles: state.selectArticles

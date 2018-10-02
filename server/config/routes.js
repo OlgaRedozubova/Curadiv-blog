@@ -2,6 +2,7 @@ require('dotenv').config();
 const logger = require('heroku-logger');
 const express = require('express');
 const articles = require('../api/article/article');
+const admin_articles = require('../api/admin/articles');
 const multer = require('multer');
 const uuidv4 = require('uuid/v4');
 const path = require('path');
@@ -22,19 +23,21 @@ const upload = multer({ storage });
 
 module.exports = (app, db) => {
     app.get('/api/articles', articles.showAll(db));
-
-    app.get('/api/admin/articles', articles.showAllAdmin(db));
-    app.post('/api/admin/articles', articles.editArticles(db));
-
-    app.post('/api/admin/archive', articles.addArchive(db));
-    app.post('/api/admin/restore', articles.restoreArchive(db));
-
     app.get("/api/articles/:id", articles.show(db));
-    app.post("/api/articles", upload.fields([{ name: 'splash_f', maxCount: 1 }, { name: 'image1_f', maxCount: 1 }, { name: 'image2_f', maxCount: 1 }]), articles.new(db));
+
+    app.get('/api/admin/articles', admin_articles.showAllAdmin(db));
+    app.post('/api/admin/articles', admin_articles.editArticles(db));
+
+    app.post('/api/admin/archive', admin_articles.addArchive(db));
+    app.post('/api/admin/restore', admin_articles.restoreArchive(db));
+
+
+    app.post("/api/articles", upload.fields([{ name: 'splash_f', maxCount: 1 }, { name: 'image1_f', maxCount: 1 }, { name: 'image2_f', maxCount: 1 }]),
+        admin_articles.new(db));
     app.put("/api/articles", upload.fields([
         { name: 'splash_f', maxCount: 1 },
         { name: 'image1_f', maxCount: 1 },
-        { name: 'image2_f', maxCount: 1 }]), articles.edit(db));
+        { name: 'image2_f', maxCount: 1 }]), admin_articles.edit(db));
     //--------------------------------------------------------
 
 

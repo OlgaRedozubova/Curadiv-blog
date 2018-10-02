@@ -6,20 +6,23 @@ module.exports = function (table, db) {
         return new Promise(async(resolve, reject) => {
            const log_str = `[${table}:create(${JSON.stringify(data)}...)]`;
            try {
-               const article = {
-                   _id: new mongoose.Types.ObjectId(),
-                   title: data.title,
-                   subtitle: data.subtitle,
-                   author: data.author,
-                   slot: data.slot,
-                   splash: data.splash,
-                   image1: data.image1,
-                   image2: data.image2,
-                   body: data.body,
-                   deleted: false,
-                   archived: false,
-               };
-               table.create(article, function (err, obj) {
+                //---------------------------
+               // const article = {
+               //     _id: new mongoose.Types.ObjectId(),
+               //     title: data.title,
+               //     subtitle: data.subtitle,
+               //     author: data.author,
+               //     slot: data.slot,
+               //     splash: data.splash,
+               //     image1: data.image1,
+               //     image2: data.image2,
+               //     body: data.body,
+               //     deleted: false,
+               //     archived: false,
+               // };
+               data._id = new mongoose.Types.ObjectId();
+               data.archived = false;
+               table.create(data, function (err, obj) {
                    if (err) throw err;
                    //console.log('Article successfully saved.', obj);
                    logger.info(`${log_str} Article successfully saved.: ${JSON.stringify(obj)}`);
@@ -36,21 +39,32 @@ module.exports = function (table, db) {
         return new Promise(async(resolve, reject) => {
             const log_str = `[${table}:update(${JSON.stringify(data)}...)]`;
             try {
-                table.findById(data._id, function(err, article){
+                table.findById(data._id, function(err, item){
                     if (err) throw err;
 
-                    article.title = data.title;
-                    article.subtitle = data.subtitle;
-                    article.author = data.author;
-                    article.slot = data.slot;
-                    article.splash = data.splash;
-                    article.image1 = data.image1;
-                    article.image2 = data.image2;
-                    article.body = data.body;
-                    article.archived = data.archived;
-                    article.deleted = data.deleted;
+                    let i = 0;
+                    for (let k in data) {
+                        if (data.hasOwnProperty(k)) {
+                            i++;
+                            item[k]=data[k];
+                            // fields.push(k);
+                            // expresions.push('$' + i);
+                            // values.push(data[k]);
+                        }
+                    }
 
-                    article.save(function(err, obj) {
+                    // article.title = data.title;
+                    // article.subtitle = data.subtitle;
+                    // article.author = data.author;
+                    // article.slot = data.slot;
+                    // article.splash = data.splash;
+                    // article.image1 = data.image1;
+                    // article.image2 = data.image2;
+                    // article.body = data.body;
+                    // article.archived = data.archived;
+                    // article.deleted = data.deleted;
+
+                    item.save(function(err, obj) {
                         if (err) throw err;
                         //console.log('Article successfully updated.',obj);
                         logger.info(`${log_str} Article successfully updated: ${JSON.stringify(obj)}`);

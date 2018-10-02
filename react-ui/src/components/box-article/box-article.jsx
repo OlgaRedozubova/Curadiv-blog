@@ -24,7 +24,7 @@ class BoxArticle extends Component {
                         <Columns.Column>
 
                         <Content>
-                            <h4 className="subtitle">{article.subtitle}</h4>
+                            <h4 className="SURtitle">{article.SURtitle}</h4>
                             <h3 className="title">{article.title}</h3>
                         </Content>
 

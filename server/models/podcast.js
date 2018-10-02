@@ -1,16 +1,9 @@
 const mongoose = require('mongoose');
 
-const articleSchema = mongoose.Schema({
+const podcastSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
-    title: String,
-    SURtitle: String,
-    subtitle: String,
     author: String,
-    slot: Number,
     splash: String,
-    image1: String,
-    image2: String,
-    body: String,
     archived: Boolean,
     created: {
         type: Date,
@@ -22,6 +15,6 @@ const articleSchema = mongoose.Schema({
     },
 });
 
-const Article = mongoose.model('Article', articleSchema);
+const Podcast = mongoose.model('Podcast', podcastSchema);
 
-module.exports = Article;
+module.exports = Podcast;

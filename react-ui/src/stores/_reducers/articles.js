@@ -13,14 +13,16 @@ export const articles = (state = {}, action) => {
             return {
                 ...state,
                 loading: false,
-                items: action.payload.data
+                items: action.payload.data.articles,
+                podcast: action.payload.data.podcast
             };
         case C.FETCH_ARTICLES_FAILURE:
             return {
                 ...state,
                 loading: false,
                 error: action.payload.error,
-                items: []
+                items: [],
+                podcast: []
             };
 //------------------------------------------------------------
         case C.FETCH_ADMIN_ARTICLES_BEGIN:
@@ -34,7 +36,8 @@ export const articles = (state = {}, action) => {
                 ...state,
                 loading: false,
                 items: action.payload.data.articles,
-                archive: action.payload.data.archive
+                archive: action.payload.data.archive,
+                podcast: action.payload.data.podcast
             };
         case C.FETCH_ADMIN_ARTICLES_FAILURE:
             return {
@@ -42,7 +45,8 @@ export const articles = (state = {}, action) => {
                 loading: false,
                 error: action.payload.error,
                 items: [],
-                archive: []
+                archive: [],
+                podcast: []
             };
 //--------------------------------------------------------
         case C.ADD_ARCHIVE_BEGIN:

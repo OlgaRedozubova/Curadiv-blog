@@ -3,13 +3,14 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import {connect} from "react-redux";
 import { selectArticle, fetchArticles } from '../../stores/_actions/article';
-import { Hero, Container, Heading, Section, Columns } from 'react-bulma-components';
+import { Hero, Container, Heading, Section, Columns, Tile, Content, Box, Level, Media, Image } from 'react-bulma-components';
 
 
 //#components
 import BoxArticle from  '../box-article/box-article';
 import CardArticle from  '../box-article/card-article';
 import BigBoxArticle from "../box-article/big-box-article";
+import Podcast from "./podcast";
 
 //style
 import './home.css';
@@ -37,7 +38,7 @@ class Home extends Component {
     };
 
     render() {
-        const {  error, loading,articles } = this.props;
+        const {  error, loading,articles, podcast } = this.props;
         if (loading || !articles) {
             return <div>Loading...</div>;
         }
@@ -58,57 +59,65 @@ class Home extends Component {
             <div>
 
                 <Hero color="info">
-                    <Container className="is-fluid">
+                    <Container >
                     <Hero.Body>
-                       <Heading>Curadivo</Heading>
+                       <Heading>Curadiv</Heading>
                         <Heading subtitle size={3}>
                             Curated Knowledge. Unlimited Potential
                         </Heading>
                     </Hero.Body>
                     </Container>
                 </Hero>
+                <Section className="is-paddingless section-one">
+                    <Container>
+                        {articlesSection1 && articlesSection1.length > 0 &&
+                        <BigBoxArticle article = {articlesSection1[0]} onClick={this.props.selectArticle}/>
+                        }
+                    </Container>
+                    <Container>
+                        <Columns className="is-desktop">
+                            {articlesSection2 &&
+                                articlesSection2.map((article) =>
+                                <Columns.Column className="is-flex-mobile is-center">
+                                    <CardArticle article = {article} onClick={this.props.selectArticle}/>
+                                </Columns.Column>
+                                )
+                            }
+                        </Columns>
+                    </Container>
 
-                <div>
-                {articlesSection1 && articlesSection1.length > 0 &&
-                    <Section className="is-paddingless section-one">
-                        <Container className="is-fluid ">
-                            <BigBoxArticle article = {articlesSection1[0]} onClick={this.props.selectArticle}/>
-                        </Container>
-                    </Section>
-                }
+                    {/*<Container>*/}
+                        {/*<Tile vertical>*/}
 
-                {articlesSection2 &&
-                    <Section className="is-paddingless section-two">
-                        <Container className="is-fluid is-clearfix">
-                            <Columns>
-                                {articlesSection2 &&
-                                    articlesSection2.map((article) =>
-                                        <Columns.Column key={article._id}>
-                                            <CardArticle article = {article} onClick={this.props.selectArticle}/>
-                                        </Columns.Column>
-                                    )
-                                }
-                            </Columns>
-                        </Container>
-                    </Section>
-                }
-                    <Hero color="info" className="is-fluid">
-                        <Container className="is-fluid">
-                            <Hero.Body>
-                                <Heading>Curadivo</Heading>
-                                <Heading subtitle size={3}>
-                                    Curated Knowledge. Unlimited Potential
-                                </Heading>
-                            </Hero.Body>
-                        </Container>
-                    </Hero>
+                            {/*<Tile kind="parent" >*/}
+                                {/*{articlesSection2 &&*/}
+                                    {/*articlesSection2.map((article) =>*/}
+                                        {/*<Tile className="is-desktop" renderAs="article" kind="child" key={article._id}>*/}
+                                            {/*<CardArticle article = {article} onClick={this.props.selectArticle}/>*/}
+                                        {/*</Tile>*/}
+                                    {/*)*/}
+                                {/*}*/}
+                            {/*</Tile>*/}
+                        {/*</Tile>*/}
+                    {/*</Container>*/}
+                </Section>
+
+
+                <Section className="is-paddingless">
+                    <Container className="has-background-info">
+                        {podcast &&
+                            <Podcast podcast={podcast[0]}/>
+                        }
+                    </Container>
+                </Section>
+
 
 
                 {articlesSection3_1 &&
                     <Section className="is-paddingless section-two">
-                        <Container className="is-fluid is-clearfix">
+                        <Container className="is-clearfix">
 
-                            <Columns>
+                            <Columns className="is-desktop">
                                 <Columns.Column>
                                     {articlesSection3_1 &&
                                         articlesSection3_1.map((article) =>
@@ -128,7 +137,7 @@ class Home extends Component {
                         </Container>
                     </Section>
                 }
-                </div>
+
             </div>
         )
     }
@@ -137,6 +146,7 @@ class Home extends Component {
 const mapStateToProps = state =>
     ({
         articles: state.articles.items,
+        podcast: state.articles.podcast,
         loading: state.articles.loading,
         error: state.articles.error,
     });
