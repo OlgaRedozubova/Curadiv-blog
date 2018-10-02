@@ -78,7 +78,7 @@ class Home extends Component {
                         <Columns className="is-desktop">
                             {articlesSection2 &&
                                 articlesSection2.map((article) =>
-                                <Columns.Column className="is-flex-mobile is-center">
+                                <Columns.Column className="is-flex-tablet is-center">
                                     <CardArticle article = {article} onClick={this.props.selectArticle}/>
                                 </Columns.Column>
                                 )

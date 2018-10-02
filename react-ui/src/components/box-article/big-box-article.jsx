@@ -27,7 +27,7 @@ class BigBoxArticle extends Component {
                                 </Columns.Column>
                                 <Columns.Column >
                                     <Media.Item position="right">
-                                        {getImage(article.splash)}
+                                        {getImage(article.splash, "is-780x440")}
                                         {/*{getImage(article.splash, "is-735x418")}*/}
                                         {/*<Image src={require('../../assets/images/'+article.splash)} className="is-735x418"/>*/}
                                     </Media.Item>

@@ -13,7 +13,7 @@ class CardArticle extends Component {
                 <Link to={`/article/${article._id}`} className="navbar-brand">
                     <Card className="is-shadowless">
                         {article.splash &&
-                        <Card.Image src={require('../../assets/images/' + article.splash)}/>
+                        <Card.Image src={require('../../assets/images/' + article.splash)} className="is-378x214"/>
                         }
                         <Card.Content>
                             <Content>

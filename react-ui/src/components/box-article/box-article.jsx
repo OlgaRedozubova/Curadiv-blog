@@ -16,7 +16,7 @@ class BoxArticle extends Component {
                         <Columns.Column>
 
                                 {article.splash &&
-                                <Image src={require('../../assets/images/' + article.splash)}/>
+                                <Image src={require('../../assets/images/' + article.splash)} className="is-266x152"/>
                                 }
 
 
