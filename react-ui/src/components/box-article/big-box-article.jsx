@@ -9,11 +9,11 @@ class BigBoxArticle extends Component {
     render() {
         const { article } = this.props;
         return (
-            <Box className="is-shadowless is-paddingless-bottom" onClick={()=>this.props.onClick(article)}>
+            <Box className="BigBoxArticle is-shadowless is-paddingless-bottom is-full-width" onClick={()=>this.props.onClick(article)}>
                 <div className="is-border-bottom">
                     <Link to={`/article/${article._id}`} className="navbar-brand">
-                        <Media className="is-fluid">
-                            <Columns className="is-desktop">
+                        <Media className="is-full-width">
+                            <Columns gapless breakpoint="tablet" className="is-full-width">
                                 <Columns.Column>
                                     <Media.Item>
                                         <Content>
@@ -25,11 +25,24 @@ class BigBoxArticle extends Component {
                                     </Media.Item>
 
                                 </Columns.Column>
-                                <Columns.Column >
+                                <Columns.Column
+                                                // mobile={{
+                                                //     size: 'three-quarters',
+                                                // }}
+                                                tablet={{
+                                                    size: 'two-thirds',
+                                                }}
+                                                desktop={{
+                                                    size: 'two-thirds',
+                                                }}
+                                                widescreen={{
+                                                    size: 'two-thirds',
+                                                }}
+                                                fullhd={{
+                                                    size: 'two-thirds',
+                                                }}>
                                     <Media.Item position="right">
-                                        {getImage(article.splash, "is-780x440")}
-                                        {/*{getImage(article.splash, "is-735x418")}*/}
-                                        {/*<Image src={require('../../assets/images/'+article.splash)} className="is-735x418"/>*/}
+                                        {getImage(article.splash)}
                                     </Media.Item>
                                 </Columns.Column>
                             </Columns>

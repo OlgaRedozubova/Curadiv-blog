@@ -1,3 +1,5 @@
+@import "../../assets/stylesheets/css_variables";
+
 .hero {
   .hero-body {
     padding: 1.5rem;
@@ -9,8 +11,46 @@
   }
 }
 .section-one {
+  .BigBoxArticle{
+    .image {
+      max-width: 853px;
+    }
+  }
+  .CardArticle {
+    @media #{$media-tablet}{
+      .columns{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+    .image {
+      max-width: 432px;
+      margin: 0 auto;
+    }
+  }
   .is-box {
     padding: 0 1.25rem;
+  }
+}
+.BoxArticle {
+  .box{
+    height: 200px;
+    .image {
+      max-width: 266px;
+    }
+    .content.column{
+      padding: 15px;
+    }
+  }
+
+}
+.Podcast {
+  .image {
+    max-width: 340px;
+  }
+  .has-text-centered {
+    margin: auto;
   }
 }
 .content {
@@ -26,27 +66,24 @@
     font-size: 1rem
   }
 }
-.is-780x440 {
-  width: 780px;
-  height: 480px;
-}
-.is-378x214 {
-  width: 378px;
-  height: 214px;
-}
-.is-266x152 {
-  width: 266px;
-  height: 152px;
-}
+//.is-780x440 {
+//  max-width: 780px;
+//
+//}
+//.is-378x214 {
+//  width: 378px;
+//  height: 214px;
+//}
+//.is-266x152 {
+//  width: 266px;
+//  height: 152px;
+//}
 
 .is-340x146 {
   width: 340px;
   height: 146px;
 }
 
-.is-fullwidth {
-  width: 100%;
-}
 .media-content.is-center {
   text-align: center;
 }

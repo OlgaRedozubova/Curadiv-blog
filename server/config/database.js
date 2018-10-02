@@ -6,7 +6,7 @@ const Article = require('../models/article');
 const Podcast = require('../models/podcast');
 const db_model = require('../models/db_models');
 
-const url_db = process.env.MONGODB_URI || "mongodb://localhost/curadiv";
+const url_db = process.env.MONGODB_URI || "mongodb://localhost/curadiv1";
 logger.info(`url_db => ${url_db}`);
 
 

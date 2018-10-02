@@ -20,7 +20,7 @@ module.exports = {
                 const Acticle = db_model(Article, db);
                 const article = await Acticle.findById(article_id);
                 if (!article) {
-                    const msg = `User with id: '${article_id}' not found`;
+                    const msg = `Article with id: '${article_id}' not found`;
                     logger.warn(msg);
                     res.status(404).send({message: msg})
                 } else {

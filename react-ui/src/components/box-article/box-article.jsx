@@ -10,18 +10,18 @@ class BoxArticle extends Component {
         const { article } = this.props;
 
         return (
-            <Box onClick={()=>this.props.onClick(article)}>
+            <Box className="is-paddingless is-shadowless is-radiusless" onClick={()=>this.props.onClick(article)}>
                 <Link to={`/article/${article._id}`} className="navbar-brand">
                     <Columns>
-                        <Columns.Column>
+                        <Columns.Column narrow>
 
                                 {article.splash &&
-                                <Image src={require('../../assets/images/' + article.splash)} className="is-266x152"/>
+                                <Image src={require('../../assets/images/' + article.splash)} />
                                 }
 
 
                         </Columns.Column>
-                        <Columns.Column>
+                        <Columns.Column className="content">
 
                         <Content>
                             <h4 className="SURtitle">{article.SURtitle}</h4>

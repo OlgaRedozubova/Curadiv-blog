@@ -69,42 +69,27 @@ class Home extends Component {
                     </Container>
                 </Hero>
                 <Section className="is-paddingless section-one">
-                    <Container>
+                    <Container className="cards">
                         {articlesSection1 && articlesSection1.length > 0 &&
                         <BigBoxArticle article = {articlesSection1[0]} onClick={this.props.selectArticle}/>
                         }
                     </Container>
-                    <Container>
-                        <Columns className="is-desktop">
+                    <Container className="cards CardArticle">
+                        <Columns breakpoint="tablet" >
                             {articlesSection2 &&
                                 articlesSection2.map((article) =>
-                                <Columns.Column className="is-flex-tablet is-center">
+                                <Columns.Column>
                                     <CardArticle article = {article} onClick={this.props.selectArticle}/>
                                 </Columns.Column>
                                 )
                             }
                         </Columns>
                     </Container>
-
-                    {/*<Container>*/}
-                        {/*<Tile vertical>*/}
-
-                            {/*<Tile kind="parent" >*/}
-                                {/*{articlesSection2 &&*/}
-                                    {/*articlesSection2.map((article) =>*/}
-                                        {/*<Tile className="is-desktop" renderAs="article" kind="child" key={article._id}>*/}
-                                            {/*<CardArticle article = {article} onClick={this.props.selectArticle}/>*/}
-                                        {/*</Tile>*/}
-                                    {/*)*/}
-                                {/*}*/}
-                            {/*</Tile>*/}
-                        {/*</Tile>*/}
-                    {/*</Container>*/}
                 </Section>
 
 
                 <Section className="is-paddingless">
-                    <Container className="has-background-info">
+                    <Container className="Podcast has-background-info">
                         {podcast &&
                             <Podcast podcast={podcast[0]}/>
                         }
@@ -115,9 +100,9 @@ class Home extends Component {
 
                 {articlesSection3_1 &&
                     <Section className="is-paddingless section-two">
-                        <Container className="is-clearfix">
+                        <Container className="cards BoxArticle is-clearfix">
 
-                            <Columns className="is-desktop">
+                            <Columns className="is-paddingless is-desktop">
                                 <Columns.Column>
                                     {articlesSection3_1 &&
                                         articlesSection3_1.map((article) =>

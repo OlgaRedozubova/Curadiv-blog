@@ -6423,3 +6423,10 @@ body {
   margin: 0;
   padding: 0;
   font-family: sans-serif; }
+
+.is-full-width {
+  width: 100%; }
+
+.container.cards {
+  padding: 15px;
+  background: #f1f1f1; }
