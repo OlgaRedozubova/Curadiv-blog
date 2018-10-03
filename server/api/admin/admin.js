@@ -10,7 +10,7 @@ const something_wrong = (req, e) => {
 };
 
 module.exports = {
-    new: (db) => async (req, res) => {
+    newArticle: (db) => async (req, res) => {
         try {
             const data = { ...req.body,
                 splash: req.files.splash_f ? req.files.splash_f[0].filename : '',
@@ -26,7 +26,7 @@ module.exports = {
             something_wrong(req, e);
         }
     },
-    edit: (db) => async (req, res) => {
+    editArticle: (db) => async (req, res) => {
         try {
             const data = {...req.body};
             if (req.files.splash_f) {
@@ -56,6 +56,39 @@ module.exports = {
             const article = await db_Article.update(data);
 
             res.status(200).json(article);
+        } catch (e) {
+            something_wrong(req, e);
+        }
+    },
+    newPodcast: (db) => async (req, res) => {
+        try {
+            const data = { ...req.body,
+                splash: req.files.splash_f ? req.files.splash_f[0].filename : ''};
+
+            await archivedExistsPodcast(db);
+            const db_Podcast = db_model(Podcast, db);
+            const podcast = await db_Podcast.create(data);
+            res.status(200).json(podcast);
+        } catch (e) {
+            something_wrong(req, e);
+        }
+    },
+    editPodcast: (db) => async (req, res) => {
+        try {
+            const data = {...req.body};
+            if (req.files.splash_f) {
+                Object.assign(data, {splash: req.files.splash_f[0].filename});
+            } else {
+                if (!data.splash) {Object.assign(data, {splash: ''});}
+            }
+            Object.assign(data, {
+                edited: new Date()
+            });
+            logger.info(`podcast:edit: data =>(${JSON.stringify(data)}), req.body =>(${JSON.stringify(req.body)})`);
+            await archivedExistsPodcast(db);
+            const db_Podcast = db_model(Podcast, db);
+            const podcast = await db_Podcast.update(data);
+            res.status(200).json(podcast);
         } catch (e) {
             something_wrong(req, e);
         }
@@ -101,7 +134,7 @@ module.exports = {
             something_wrong(req, e);
         }
     },
-    showAllAdmin: (db) => async (req, res) => {
+    showAll: (db) => async (req, res) => {
         try {
 
             const data = await getAllData(db);

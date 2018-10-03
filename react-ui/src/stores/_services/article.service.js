@@ -2,6 +2,7 @@ export const articleService = {
     getAll,
     getById,
     getArticle,
+    getPodcast,
     getAdminArticles
 };
 
@@ -24,6 +25,11 @@ function getAdminArticles(){
 function getArticle(id){
     return fetch(`/api/articles/${id}`).then(handleErrors).then(res => res.json());
 }
+//getPodcast
+function getPodcast(id){
+    return fetch(`/api/podcast/${id}`).then(handleErrors).then(res => res.json());
+}
+
 
 function getById(id) {
     const requestOptions = {

@@ -16,13 +16,6 @@ export function selectArticle (article){
    }
 }
 
-export function editArticle (article) {
-    return {
-        type: C.EDIT_ARTICLE,
-        payload: { article }
-    }
-}
-
 //NEW_ARTICLE
 export function newArticle (article) {
     return {
@@ -114,7 +107,6 @@ export function addArchive(list) {
         if (list) {
             return axios.post('/api/admin/articles', {list, type:'archive'})
                 .then(res => {
-                    console.log('res=>', res.data);
                     dispatch(success(res.data, C.ADD_ARCHIVE_SUCCESS));
                     return res.data;
                 })
@@ -133,7 +125,6 @@ export function deleteArticles(list) {
         if (list) {
             return axios.post('/api/admin/articles', {list, type:'delete'})
                 .then(res => {
-                    console.log('res=>', res.data);
                     dispatch(success(res.data, C.DEL_ARTICLE_SUCCESS));
                     return res.data;
                 })
@@ -153,7 +144,6 @@ export function restoreArchive(list) {
         if (list) {
             return axios.post('/api/admin/articles', {list, type:'restore'})
                 .then(res => {
-                    console.log('res=>', res.data);
                     dispatch(success(res.data, C.RESTORE_ARCHIVE_SUCCESS));
                     return res.data;
                 })
@@ -176,4 +166,100 @@ export function fetchArticle(id) {
             .catch(error => dispatch(failure(error, C.FETCH_ARTICLE_FAILURE)));
     };
 }
+//-----------------
+export function fetchPodcast(id) {
+    return (dispatch) => {
+        dispatch(request(C.FETCH_PODCAST_BEGIN));
+        return articleService.getPodcast(id)
+            .then(json => {
+                dispatch(success(json, C.FETCH_PODCAST_SUCCESS));
+                return json;
+            })
+            .catch(error => dispatch(failure(error, C.FETCH_PODCAST_FAILURE)));
+    };
+}
 
+//------------------
+export function editArticle (article) {
+    return {
+        type: C.EDIT_ARTICLE,
+        payload: { article }
+    }
+}
+
+//ADD_ARCHIVE_BEGIN
+export function restore_editArticle(formData) {
+    return (dispatch) => {
+        dispatch(request(C.EDIT_ARTICLE_BEGIN));
+        if (formData) {
+            return axios.put('/api/admin/article', formData)
+                .then(res => {
+                    dispatch(success(res.data, C.EDIT_ARTICLE_SUCCESS));
+                    return res.data;
+                })
+                .catch(error => {
+                    dispatch(failure(error, C.EDIT_ARTICLE_FAILURE));
+                    return error
+                })
+        }
+    };
+}
+
+export function restore_newArticle(formData) {
+    return (dispatch) => {
+        dispatch(request(C.NEW_ARTICLE_BEGIN));
+        if (formData) {
+            return axios.post('/api/admin/article', formData)
+                .then(res => {
+                    dispatch(success(res.data, C.NEW_ARTICLE_SUCCESS));
+                    return res.data;
+                })
+                .catch(error => {
+                    dispatch(failure(error, C.NEW_ARTICLE_FAILURE));
+                    return error
+                })
+        }
+    };
+}
+
+
+export function restore_editPodcast(formData) {
+    return (dispatch) => {
+        dispatch(request(C.EDIT_PODCAST_BEGIN));
+        if (formData) {
+            return axios.put('/api/admin/podcast', formData)
+                .then(res => {
+                    dispatch(success(res.data, C.EDIT_PODCAST_SUCCESS));
+                    return res.data;
+                })
+                .catch(error => {
+                    dispatch(failure(error, C.EDIT_PODCAST_FAILURE));
+                    return error
+                })
+        }
+    };
+}
+
+export function restore_newPodcast(formData) {
+    return (dispatch) => {
+        dispatch(request(C.NEW_PODCAST_BEGIN));
+        if (formData) {
+            return axios.post('/api/admin/podcast', formData)
+                .then(res => {
+                    dispatch(success(res.data, C.NEW_PODCAST_SUCCESS));
+                    return res.data;
+                })
+                .catch(error => {
+                    dispatch(failure(error, C.NEW_PODCAST_FAILURE));
+                    return error
+                })
+        }
+    };
+}
+
+export function editPodcast (podcast) {
+    return {
+        type: C.EDIT_PODCAST,
+        payload: { podcast }
+    }
+}

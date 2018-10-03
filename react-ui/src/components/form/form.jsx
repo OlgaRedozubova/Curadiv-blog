@@ -3,7 +3,8 @@ import axios from 'axios';
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 
-import {fetchArticle, editArticle} from "../../stores/_actions/article";
+import {fetchArticle, editArticle,
+    restore_newArticle, restore_editArticle} from "../../stores/_actions/article";
 
 //components
 import { Button,   Columns} from 'react-bulma-components';
@@ -11,10 +12,6 @@ import { Field, Label, Control, Input, Textarea } from 'react-bulma-components/l
 
 //style
 import './form.css';
-
-
-
-
 
 class Form extends Component {
     constructor (props) {
@@ -38,7 +35,7 @@ class Form extends Component {
             body: '',
             deleted: false,
             archived: false,
-            isEdit: isEdit,
+            isEdit: isEdit
         };
     }
 
@@ -47,7 +44,6 @@ class Form extends Component {
         const {id, article} = this.props;
         if (id)
             if (!article) {
-                console.log('Component(Article) => componentWillMount => fetchArticle => id=', id);
                 this.props.fetchArticle(id)
                     .then((res) => {
                         this.setState({
@@ -61,9 +57,8 @@ class Form extends Component {
                             image2: res.image2,
                             body: res.body,
                             deleted: false,
-                            archived: false,
+                            archived: false
                         });
-                        console.log('>>> res=>', this.state);
                     });
             } else {
                 this.setState({
@@ -77,7 +72,7 @@ class Form extends Component {
                     image2: article.image2,
                     body: article.body,
                     deleted: false,
-                    archived: false,
+                    archived: false
                 });
 
             }
@@ -85,48 +80,31 @@ class Form extends Component {
     }
 
 
-
-
     onNewArticle (formData) {
-        console.log('history => ');
         if (formData) {
-            axios.post('/api/admin/article', formData)
-                .then(res => {
-                    const article = res.data;
-                    console.log('res=>', article);
-                    window.location.href = '/admin'
-                    //this.setState({ article });
-                })
-                .catch(err => {
-                    console.log('err => ', err);
+            this.props.restore_newArticle(formData)
+                .then( () => {
+                    if (!this.props.error) {
+                        window.location.href = '/admin'
+                    }
                 })
         }
-
     }
 
     onEditArticle (formData) {
-
         if (formData) {
-            axios.put('/api/admin/article', formData)
-                .then(res => {
-                    const article = res.data;
-                    console.log('res=>', article);
-                    //history.push(`/admin`);
-                    window.location.href = '/admin'
-                    //this.setState({ article });
-                })
-                .catch(err => {
-                    console.log('err => ', err);
-                })
+            this.props.restore_editArticle(formData)
+                .then( () => {
+                    if (!this.props.error) {
+                        window.location.href = '/admin'
+                    }
+                });
         }
 
     }
 
     onChange = (e) => {
-        // event to update state when form inputs change
         e.preventDefault();
-        console.log('e.target.name => ', e.target.value);
-        //editArticle()
 
         switch (e.target.name) {
             case 'splash_f':
@@ -171,15 +149,12 @@ class Form extends Component {
             default:
                 this.setState({ [e.target.name]: e.target.value });
         }
-
-        //console.log('e.target.files[0] => ', e.target.files[0].name);
     };
 
     onSubmit = (e) => {
         e.preventDefault();
-         const { title, subtitle, SURtitle, author, slot, splash, splash_f, image1, image1_f, image2, image2_f, body} = this.state;
+        const { title, subtitle, SURtitle, author, slot, splash, splash_f, image1, image1_f, image2, image2_f, body} = this.state;
         const {isEdit} = this.state;
-        // const { title, subtitle, author, slot, splash, image1, image2, body} = this.props.article;
 
         let formData = new FormData();
 
@@ -200,8 +175,6 @@ class Form extends Component {
         formData.append('deleted', false);
         formData.append('archived', false);
 
-        console.log('onContinue => ', formData);
-
         if (!isEdit) {
             return this.onNewArticle(formData)
         } else {
@@ -210,14 +183,14 @@ class Form extends Component {
     };
     render() {
         const { title, subtitle, SURtitle, author, slot, body, splash, image1, image2} = this.state;
-        const { loading, article, error } = this.props;
-
+        const { loading, error } = this.props;
         if (loading ) {
             return <div>Loading...</div>;
         }
         if (error) {
             return <div>Server Error... {error.message}</div>;
         }
+
 
         return (
             <div className="form__ArticleEdit">
@@ -363,7 +336,10 @@ const mapStateToProps = state =>
 const mapActionToProps = (dispatch) => {
     return {
         fetchArticle: bindActionCreators(fetchArticle, dispatch),
-        editArticle: bindActionCreators(editArticle, dispatch)
+        editArticle: bindActionCreators(editArticle, dispatch),
+
+        restore_editArticle: bindActionCreators(restore_editArticle, dispatch),
+        restore_newArticle: bindActionCreators(restore_newArticle, dispatch)
     }
 };
 

@@ -1,12 +1,12 @@
 import React from 'react';
 
 //components
-import Form from '../form/form';
+import FormPodcast from '../form/form-podcast';
 
 import { Container, Section, Hero, Heading} from 'react-bulma-components';
 
 
-export default class ArticleEdit extends React.Component {
+export default class AdminPodcast extends React.Component {
     render() {
         const { id='' } = this.props.match.params;
         const textHeader = id ? "Edit article" : "New article";
@@ -21,8 +21,8 @@ export default class ArticleEdit extends React.Component {
                 </Hero>
                 <Section>
                     <Container className="is-fluid">
-                        <Form id={id}/>
-                </Container>
+                        <FormPodcast id={id}/>
+                    </Container>
                 </Section>
             </div>
         );

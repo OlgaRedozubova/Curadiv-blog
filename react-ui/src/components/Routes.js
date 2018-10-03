@@ -6,7 +6,8 @@ import Home from "./home/home";
 import Login from "./login/login";
 import Admin from "./admin/admin";
 import Article from "./article/article";
-import ArticleEdit from "./article/article-edit";
+import AdminArticle from "./article/admin-article";
+import AdminPodcast from "./podcast/admin-podcast";
 
 export default class Routes extends Component {
     render() {
@@ -14,8 +15,10 @@ export default class Routes extends Component {
             <Switch>
                 <Route exact path="/" component={Home} />
                 <Route path="/admin" component={Admin} />
-                <Route path="/article-edit/:id" component={ArticleEdit} />
-                <Route path="/article-edit" component={ArticleEdit} />
+                <Route path="/admin-article/:id" component={AdminArticle} />
+                <Route path="/admin-article" component={AdminArticle} />
+                <Route path="/admin-podcast/:id" component={AdminPodcast} />
+                <Route path="/admin-podcast" component={AdminPodcast} />
                 <Route path="/login" component={Login} redirect/>
                 <Route path="/article/:id" component={Article} />
             </Switch>

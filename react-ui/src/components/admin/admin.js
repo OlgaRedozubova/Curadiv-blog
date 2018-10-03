@@ -4,6 +4,7 @@ import {connect} from "react-redux";
 import {fetchAdminArticles, addSelectArticles, delSelectArticles, clearSelectArticles, clearArticle,
     //selectArticle,
     editArticle,
+    editPodcast,
     newArticle,
     addArchive,
     restoreArchive,
@@ -39,6 +40,7 @@ class Admin extends Component {
             idArticle: '',
 
             selectArticleArchive: {},
+            selectPodcast: {},
             restoreSlot: '0'
         }
     }
@@ -73,6 +75,7 @@ class Admin extends Component {
             restoreSlot: article.slot});
     }
 
+
     editArticle = (e) => {
       const {selectArticles} = this.props;
       if(selectArticles && selectArticles.length===1) {
@@ -88,6 +91,20 @@ class Admin extends Component {
           }
       }
     };
+
+
+    editPodcast = (e) => {
+        const {podcast} = this.state;
+        console.log('podcast=?', podcast)
+        if(podcast) {
+            this.props.editPodcast(podcast[0]);
+        }
+        if ((!podcast || !podcast.length || podcast.length < 1) ) {
+            e.preventDefault();
+            alert('Not podcast!!!')
+        };
+    };
+
     onDelete = () => {
         const {selectArticles} = this.props;
 
@@ -218,7 +235,7 @@ class Admin extends Component {
                                 <th className="is-4">
                                     <div className="is-right">
 
-                                        <Link to={`/article-edit/${idArticle}`} onClick={this.editArticle}>
+                                        <Link to={`/admin-article/${idArticle}`} onClick={this.editArticle}>
                                             <Button className="is-text">
                                                 <Icon className="icon icon is-medium fa-lg">
                                                     <FontAwesomeIcon icon={faEdit} />
@@ -239,16 +256,13 @@ class Admin extends Component {
                                         </Button>
 
 
-                                        <Link to={`/article-edit`} onClick={()=>this.props.newArticle()}>
+                                        <Link to={`/admin-article`} onClick={()=>this.props.newArticle()}>
                                             <Button className="is-text">
                                                 <Icon className="icon icon is-medium fa-lg" color="info">
                                                     <FontAwesomeIcon icon={faPlusCircle} />
                                                 </Icon>
                                             </Button>
                                         </Link>
-
-
-                                        {/*<Button onClick={this.onClickDel}>Del</Button>*/}
                                     </div>
                                 </th>
                             </tr>
@@ -272,23 +286,47 @@ class Admin extends Component {
 
                             )
                             }
-                            { podcast && podcast.length > 0 &&
-                                podcast.map((podcast, index) =>
-                                    <tr key={index}>
-                                        <td>
-                                            <input type="checkbox" name="check"
-                                                   onChange={(e)=>this.onChange(e.target.checked, podcast, true)}
-                                            />
-                                        </td>
-                                        <td>
-                                            Podcast
-                                        </td>
-                                        <td>
-                                            {podcast.author}
-                                        </td>
-                                    </tr>
+                            </tbody>
+                        </Table>
+                    </Container>
+                    <Container className="notification">
+                        <Table>
+                            <thead>
+                            <tr>
+                                <th className="is-narrow">Podcast</th>
+                                <th className="is-4"></th>
+                                <th className="is-narrow"><div className="is-right">
+                                    <Link to={`/admin-podcast`} onClick={()=>this.props.newArticle()}>
+                                        <Button className="is-text">
+                                            <Icon className="icon icon is-medium fa-lg" color="info">
+                                                <FontAwesomeIcon icon={faPlusCircle} />
+                                            </Icon>
+                                        </Button>
+                                    </Link>
+                                </div></th>
+                            </tr>
+                            </thead>
+                            <tbody>
 
-                                )
+                            { podcast && podcast.length > 0 &&
+                            podcast.map((podcast, index) =>
+                                <tr key={index}>
+                                    <td></td>
+                                    <td>
+                                        {podcast.author}
+                                    </td>
+                                    <td>
+                                        <Link to={`/admin-podcast/${podcast._id}`} onClick={this.editPodcast}>
+                                            <Button className="is-text">
+                                                <Icon className="icon icon is-medium fa-lg">
+                                                    <FontAwesomeIcon icon={faEdit} />
+                                                </Icon>
+                                            </Button>
+                                        </Link>
+                                    </td>
+                                </tr>
+
+                            )
                             }
                             </tbody>
                         </Table>
@@ -421,6 +459,7 @@ const mapDispatchToProps = (dispatch) => {
         //selectArticle: bindActionCreators(selectArticle, dispatch),
 
         editArticle:  bindActionCreators(editArticle, dispatch),
+        editPodcast:  bindActionCreators(editPodcast, dispatch),
         newArticle:  bindActionCreators(newArticle, dispatch),
 
         //--------
