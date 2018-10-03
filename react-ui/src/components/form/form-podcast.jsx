@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
+import  ReactS3Uploader from 'react-s3-uploader';
 
 import {
     fetchPodcast, editArticle,
@@ -168,6 +169,18 @@ class FormPodcast extends Component {
                             <Label>{splash}</Label>
                         </Control>
                     </Field>
+
+
+
+                    {/*<ReactS3Uploader*/}
+                        {/*accept="image/*"*/}
+                        {/*uploadRequestHeaders={{*/}
+                            {/*'x-amz-acl': 'public-read'*/}
+                        {/*}}*/}
+                        {/*contentDisposition="auto"*/}
+                    {/*/>*/}
+
+
 
                     <div className="buttons is-right">
                         <Button className="is-danger" type="submit">

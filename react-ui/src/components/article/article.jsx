@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {connect} from "react-redux";
 import { bindActionCreators } from 'redux';
+import MarkDown from 'react-markdown';
 
 import { Hero, Container, Heading, Section, Media, Image, Content } from 'react-bulma-components';
 
@@ -11,24 +12,53 @@ import './article.css';
 
 
 class Article extends Component {
-    componentWillMount() {
+    constructor (props) {
+        super (props);
+        this.state = {
+            title: '',
+            subtitle: '',
+            SURtitle: '',
+            author: '',
+            splash:'',
+            image1:'',
+            image2:'',
+            body: '',
+        }
+    }
+
+    componentDidMount() {
         const {params} = this.props.match;
 
-        if (!this.props.article){
-            console.log('Component(Article) => componentWillMount => fetchArticle => id=', params.id);
-            this.props.fetchArticle(params.id);
-        }
+        this.props.fetchArticle(params.id)
+            .then((res) => {
+                console.log('res=>', res);
+                this.setState({
+                    title: res.title,
+                    subtitle: res.subtitle,
+                    SURtitle: res.SURtitle,
+                    author: res.author,
+                    splash: res.splash,
+                    image1: res.image1,
+                    image2: res.image2,
+                    body: res.body,
+                });
+            })
+        // if (!this.props.article){
+        //     console.log('Component(Article) => componentWillMount => fetchArticle => id=', params.id);
+        //     this.props.fetchArticle(params.id);
+        // }
     }
 
     render() {
         const { loading, article, error } = this.props;
 
-        if (loading || !article) {
+        if (loading) {
             return <div>Loading...</div>;
         }
         if (error) {
             return <div>Server Error... {error.message}</div>;
         }
+        const { title, subtitle, SURtitle, author, body, splash, image1, image2} = this.state;
 
         return(
             <div className="article">
@@ -43,9 +73,9 @@ class Article extends Component {
                     <Container className="is-fluid">
                         <Media>
                             <Media.Item className="is-fluid">
-                                {article.splash &&
+                                {splash &&
                                     <Image
-                                        src={require('../../assets/images/' + article.splash)}/>
+                                        src={require('../../assets/images/' + splash)}/>
                                 }
 
                             </Media.Item>
@@ -57,13 +87,11 @@ class Article extends Component {
                         <Media>
                             <Media.Item className="is-fluid">
                                 <Content>
-                                    <h1 className=".title">{article.title}</h1>
-                                    <h2 className=".subtitle">{article.subtitle}</h2>
-                                    <h3 className=".subtitle">{article.author}</h3>
+                                    <h1 className=".title">{title}</h1>
+                                    <h2 className=".subtitle">{subtitle}</h2>
+                                    <h3 className=".subtitle">{author}</h3>
 
-                                    <p>
-                                        {article.body}
-                                    </p>
+                                    <MarkDown>{body}</MarkDown>
                                 </Content>
                             </Media.Item>
                         </Media>

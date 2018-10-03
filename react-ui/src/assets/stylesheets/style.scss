@@ -11,7 +11,9 @@ body {
 .is-full-width {
   width: 100%;
 }
-
+.is-full-height {
+  height: 100%;
+}
 .container.cards {
   padding: 15px;
   background: $grey-soft;
