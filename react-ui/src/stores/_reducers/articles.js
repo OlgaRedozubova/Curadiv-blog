@@ -37,6 +37,7 @@ export const articles = (state = {}, action) => {
                 loading: false,
                 items: action.payload.data.articles,
                 archive: action.payload.data.archive,
+                archivePodcast: action.payload.data.archivePodcast,
                 podcast: action.payload.data.podcast
             };
         case C.FETCH_ADMIN_ARTICLES_FAILURE:
@@ -46,6 +47,7 @@ export const articles = (state = {}, action) => {
                 error: action.payload.error,
                 items: [],
                 archive: [],
+                archivePodcast: [],
                 podcast: []
             };
 //--------------------------------------------------------
@@ -60,7 +62,9 @@ export const articles = (state = {}, action) => {
                 ...state,
                 loading: false,
                 items: action.payload.data.articles,
-                archive: action.payload.data.archive
+                archive: action.payload.data.archive,
+                archivePodcast: action.payload.data.archivePodcast,
+                podcast: action.payload.data.podcast
             };
         case C.ADD_ARCHIVE_FAILURE:
             return {
@@ -68,7 +72,10 @@ export const articles = (state = {}, action) => {
                 loading: false,
                 error: action.payload.error,
                 items: [],
-                archive: []
+                archive: [],
+                archivePodcast: [],
+                podcast: []
+
             };
 //--------------------------------------------------------
         case C.RESTORE_ARCHIVE_BEGIN:
@@ -82,7 +89,9 @@ export const articles = (state = {}, action) => {
                 ...state,
                 loading: false,
                 items: action.payload.data.articles,
-                archive: action.payload.data.archive
+                archive: action.payload.data.archive,
+                archivePodcast: action.payload.data.archivePodcast,
+                podcast: action.payload.data.podcast
             };
         case C.RESTORE_ARCHIVE_FAILURE:
             return {
@@ -90,7 +99,10 @@ export const articles = (state = {}, action) => {
                 loading: false,
                 error: action.payload.error,
                 items: [],
-                archive: []
+                archive: [],
+                archive: [],
+                archivePodcast: [],
+                podcast: []
             };
 //DEL_ARTICLE
 //--------------------------------------------------------
@@ -105,7 +117,9 @@ export const articles = (state = {}, action) => {
                 ...state,
                 loading: false,
                 items: action.payload.data.articles,
-                archive: action.payload.data.archive
+                archive: action.payload.data.archive,
+                archivePodcast: action.payload.data.archivePodcast,
+                podcast: action.payload.data.podcast
             };
         case C.DEL_ARTICLE_FAILURE:
             return {
@@ -113,7 +127,9 @@ export const articles = (state = {}, action) => {
                 loading: false,
                 error: action.payload.error,
                 items: [],
-                archive: []
+                archive: [],
+                archivePodcast: [],
+                podcast: []
             };
 //----------------------------------------------------------------------------------------------------------------------
 

@@ -95,6 +95,21 @@ module.exports = function (table, db) {
         });
     };
 
+    const findOne = (params = {}) => {
+        return new Promise(async(resolve, reject) => {
+            let log_str = `[${table}:find(${JSON.stringify(params)}...)]`;
+            try {
+                table.findOne(params).exec(function (err, obj) {
+                    if (err) throw err;
+                    resolve(obj)
+                });
+            } catch (e) {
+                logger.error(`${log_str} Error: ${e.stack}`);
+                reject(e);
+            }
+        });
+    };
+
     const findById = (id) => {
         return new Promise(async(resolve, reject) => {
             let log_str = `[${table}:findById(${id})]`;
@@ -111,10 +126,11 @@ module.exports = function (table, db) {
 
     const deleteOne = (params = {}) => {
         return new Promise(async(resolve, reject) => {
-            let log_str = `[${table}:find(${JSON.deleteOne(params)}...)]`;
+            let log_str = `[:deleteOne => params:(${JSON.stringify(params)}...)]`;
             try {
                 table.deleteOne(params, function (err, obj) {
                     if (err) throw err;
+                    logger.info(`${log_str} has been deleted: ${JSON.stringify(obj)}`);
                     resolve(obj)
                 });
             } catch (e) {
@@ -126,7 +142,7 @@ module.exports = function (table, db) {
 
     const deleteMany = (params = {}) => {
         return new Promise(async(resolve, reject) => {
-            let log_str = `[${table}:find(${JSON.deleteMany(params)}...)]`;
+            let log_str = `[${table}:find(${JSON.stringify(params)}...)]`;
             try {
                 table.deleteMany(params, function (err, obj) {
                     if (err) throw err;
@@ -140,5 +156,5 @@ module.exports = function (table, db) {
     };
 
 
-    return {create, update, find,findById, deleteOne, deleteMany}
+    return {create, update, find, findOne, findById, deleteOne, deleteMany}
 };

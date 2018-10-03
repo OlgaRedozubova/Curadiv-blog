@@ -32,10 +32,12 @@ class Admin extends Component {
         this.state = {
             articles: [],
             archive: [],
+            podcast: [],
+            archivePodcast: [],
+
             articleList: [],
-            isChecked: false,
             idArticle: '',
-            selectedArticles: [],
+
             selectArticleArchive: {},
             restoreSlot: '0'
         }
@@ -46,10 +48,11 @@ class Admin extends Component {
         this.props.clearArticle();
         this.props.fetchAdminArticles()
             .then(res => {
-                // res.articles.map(item => Object.assign(item, {isChecked: false}));
                 this.setState({
                     articles: [...res.articles],
-                    archive: [...res.archive]
+                    archive: [...res.archive],
+                    podcast: [...res.podcast],
+                    archivePodcast: [...res.archivePodcast]
                 })
             });
     }
@@ -57,31 +60,25 @@ class Admin extends Component {
         console.log('onclick => ', article, e);
     };
 
-    onChange(value, article){
+    onChange(value, article, isPodcast = false){
         if (value) {
-            this.props.addSelectArticles(article);
+            this.props.addSelectArticles({...article, isPodcast: isPodcast});
         } else {
             this.props.delSelectArticles(article._id);
         }
-    }
-    onSelectArchive(value, article) {
-        console.log('1 onSelectArchive => ', value, article);
-        this.setState({selectArticleArchive: {...article},
+    };
+
+    onSelectArchive(value, article, isPodcast = false) {
+        this.setState({selectArticleArchive: {...article, isPodcast: isPodcast},
             restoreSlot: article.slot});
-        console.log('2 onSelectArchive => ', value, this.state.selectArticleArchive);
     }
 
     editArticle = (e) => {
       const {selectArticles} = this.props;
-      console.log('>>> editArticle >>> articleList =>', selectArticles, selectArticles.length);
-
-
       if(selectArticles && selectArticles.length===1) {
-          //this.props.selectArticle(selectArticles[0]);
           this.props.editArticle(selectArticles[0]);
       }
-
-      if (!selectArticles || !selectArticles.length || selectArticles.length < 1 ) {
+      if ((!selectArticles || !selectArticles.length || selectArticles.length < 1) && (!this.state.selectPodcast) ) {
             e.preventDefault();
             alert('Select article!!!')
       } else {
@@ -90,7 +87,6 @@ class Admin extends Component {
               alert('Select one article!!!')
           }
       }
-
     };
     onDelete = () => {
         const {selectArticles} = this.props;
@@ -100,10 +96,11 @@ class Admin extends Component {
         } else {
             this.props.deleteArticles(selectArticles)
                 .then(res => {
-                    // res.articles.map(item => Object.assign(item, {isChecked: false}));
                     this.setState({
                         articles: [...res.articles],
-                        archive: [...res.archive]
+                        archive: [...res.archive],
+                        podcast: [...res.podcast],
+                        archivePodcast: [...res.archivePodcast]
                     });
                     this.props.clearSelectArticles();
                 });
@@ -121,7 +118,9 @@ class Admin extends Component {
                 .then(res => {
                     this.setState({
                         articles: [...res.articles],
-                        archive: [...res.archive]
+                        archive: [...res.archive],
+                        podcast: [...res.podcast],
+                        archivePodcast: [...res.archivePodcast]
                     });
                     // this.props.clearSelectArticles();
                 });
@@ -137,10 +136,11 @@ class Admin extends Component {
         } else {
             this.props.addArchive(selectArticles)
                 .then(res => {
-                // res.articles.map(item => Object.assign(item, {isChecked: false}));
                     this.setState({
                         articles: [...res.articles],
-                        archive: [...res.archive]
+                        archive: [...res.archive],
+                        podcast: [...res.podcast],
+                        archivePodcast: [...res.archivePodcast]
                     });
                     this.props.clearSelectArticles();
             });
@@ -151,28 +151,40 @@ class Admin extends Component {
         //addArchive
         const { restoreSlot, selectArticleArchive } = this.state;
         console.log('3 onSelectArchive => ',restoreSlot, selectArticleArchive);
-        if (!restoreSlot) {
-            alert('Please input RestoreSlot');
-        }
-
 
         if (!selectArticleArchive) {
-            alert('Select article!!!')
-        } else {
-            this.props.restoreArchive(selectArticleArchive)
-                .then(res => {
-                    this.setState({
-                        articles: [...res.articles],
-                        archive: [...res.archive]
-                    });
-                   // this.props.clearSelectArticles();
-                });
+            alert('Select article!!!');
+            return;
         }
+
+        if (!selectArticleArchive.isPodcast) {
+            if (!restoreSlot) {
+                alert('Please input RestoreSlot');
+                return;
+            } else {
+                selectArticleArchive.slot = restoreSlot;
+            }
+        }
+
+        // let list = [];
+        // list.push(selectArticleArchive);
+        this.props.restoreArchive(selectArticleArchive)
+            .then(res => {
+                this.setState({
+                    articles: [...res.articles],
+                    archive: [...res.archive],
+                    podcast: [...res.podcast],
+                    archivePodcast: [...res.archivePodcast]
+                });
+               // this.props.clearSelectArticles();
+            });
+
     };
+
     onChangeSlot = (e) => {
         e.preventDefault();
         this.setState({ [e.target.name]: e.target.value });
-    }
+    };
 
     onClickDel = (e) => {
         const { articleList } = this.state;
@@ -186,7 +198,7 @@ class Admin extends Component {
     };
 
     render() {
-        const { error, loading, articles, archive, podcast } = this.props;
+        const { error, loading, articles, archive, podcast, archivePodcast } = this.props;
         const { restoreSlot } = this.state;
         if (error)   { return <div>Error! {error.message}</div> }
         if (loading || !articles ) { return <div>Loading...</div> }
@@ -247,7 +259,7 @@ class Admin extends Component {
                                 <tr key={index}>
                                     <td>
                                         <input type="checkbox" name="check"
-                                               onChange={(e)=>this.onChange(e.target.checked, article)}
+                                               onChange={(e)=>this.onChange(e.target.checked, article, false)}
                                         />
                                     </td>
                                     <td>
@@ -265,7 +277,7 @@ class Admin extends Component {
                                     <tr key={index}>
                                         <td>
                                             <input type="checkbox" name="check"
-                                                   onChange={(e)=>this.onChange(e.target.checked, podcast)}
+                                                   onChange={(e)=>this.onChange(e.target.checked, podcast, true)}
                                             />
                                         </td>
                                         <td>
@@ -288,7 +300,7 @@ class Admin extends Component {
                             <thead>
                             <tr>
                                 <th className="is-narrow"></th>
-
+                                <th className="is-narrow">Slot</th>
                                 <th className="is-4">
 
                                         <Level renderAs="nav">
@@ -346,12 +358,32 @@ class Admin extends Component {
                                 <tr key={index}>
                                     <td>
                                         <input type="radio" name="radio"
-                                               onChange={(e)=>this.onSelectArchive(e.target.checked, article)}
+                                               onChange={(e)=>this.onSelectArchive(e.target.checked, article, false)}
                                         />
                                     </td>
-
+                                    <td>
+                                        {article.slot}
+                                    </td>
                                     <td>
                                         {article.title}
+                                    </td>
+                                </tr>
+
+                            )
+                            }
+                            { archivePodcast && archivePodcast.length > 0 &&
+                            archivePodcast.map((podcast, index) =>
+                                <tr key={index}>
+                                    <td>
+                                        <input type="radio" name="radio"
+                                               onChange={(e)=>this.onSelectArchive(e.target.checked, podcast, true)}
+                                        />
+                                    </td>
+                                    <td>
+                                        Podcast
+                                    </td>
+                                    <td>
+                                        {podcast.author}
                                     </td>
                                 </tr>
 
@@ -372,6 +404,7 @@ const mapStateToProps = state =>
         articles: state.articles.items,
         archive: state.articles.archive,
         podcast: state.articles.podcast,
+        archivePodcast: state.articles.archivePodcast,
         loading: state.articles.loading,
         error: state.articles.error,
         selectArticles: state.selectArticles

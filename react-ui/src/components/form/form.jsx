@@ -26,6 +26,7 @@ class Form extends Component {
             form: {},
             title: '',
             subtitle: '',
+            SURtitle: '',
             author: '',
             slot: '0',
             splash:'',
@@ -52,6 +53,7 @@ class Form extends Component {
                         this.setState({
                             title: res.title,
                             subtitle: res.subtitle,
+                            SURtitle: res.SURtitle,
                             author: res.author,
                             slot: res.slot,
                             splash: res.splash,
@@ -67,6 +69,7 @@ class Form extends Component {
                 this.setState({
                     title: article.title,
                     subtitle: article.subtitle,
+                    SURtitle: article.SURtitle,
                     author: article.author,
                     slot: article.slot,
                     splash: article.splash,
@@ -87,7 +90,7 @@ class Form extends Component {
     onNewArticle (formData) {
         console.log('history => ');
         if (formData) {
-            axios.post('/api/articles', formData)
+            axios.post('/api/admin/article', formData)
                 .then(res => {
                     const article = res.data;
                     console.log('res=>', article);
@@ -104,7 +107,7 @@ class Form extends Component {
     onEditArticle (formData) {
 
         if (formData) {
-            axios.put('/api/articles', formData)
+            axios.put('/api/admin/article', formData)
                 .then(res => {
                     const article = res.data;
                     console.log('res=>', article);
@@ -127,22 +130,43 @@ class Form extends Component {
 
         switch (e.target.name) {
             case 'splash_f':
-                this.setState({
-                    splash_f: e.target.files[0],
-                    splash: e.target.files[0].name,
-                });
+                if (e.target.files[0]) {
+                    this.setState({
+                        splash_f: e.target.files[0],
+                        splash: e.target.files[0].name,
+                    });
+                } else {
+                    this.setState({
+                        splash_f: {},
+                        splash: '',
+                    });
+                }
                 break;
             case 'image1_f':
-                this.setState({
-                    image1_f: e.target.files[0],
-                    image1: e.target.files[0].name
-                });
+                if (e.target.files[0]) {
+                    this.setState({
+                        image1_f: e.target.files[0],
+                        image1: e.target.files[0].name
+                    });
+                } else {
+                    this.setState({
+                        image1_f: {},
+                        image1: '',
+                    });
+                }
                 break;
             case 'image2_f':
-                this.setState({
-                    image2_f: e.target.files[0],
-                    image2: e.target.files[0].name
-                });
+                if (e.target.files[0]) {
+                    this.setState({
+                        image2_f: e.target.files[0],
+                        image2: e.target.files[0].name
+                    });
+                } else {
+                    this.setState({
+                        image2_f: {},
+                        image2: '',
+                    });
+                }
                 break;
             default:
                 this.setState({ [e.target.name]: e.target.value });
@@ -153,20 +177,25 @@ class Form extends Component {
 
     onSubmit = (e) => {
         e.preventDefault();
-         const { title, subtitle, author, slot, splash_f, image1_f, image2_f, body} = this.state;
+         const { title, subtitle, SURtitle, author, slot, splash, splash_f, image1, image1_f, image2, image2_f, body} = this.state;
         const {isEdit} = this.state;
         // const { title, subtitle, author, slot, splash, image1, image2, body} = this.props.article;
 
         let formData = new FormData();
 
+        console.log('splash_f', splash_f);
         formData.append('_id', this.props.id);
         formData.append('title', title);
         formData.append('subtitle', subtitle);
+        formData.append('SURtitle', SURtitle);
         formData.append('author', author);
         formData.append('slot', slot);
+        formData.append('splash', splash);
         formData.append('splash_f', splash_f);
         formData.append('image1_f', image1_f);
+        formData.append('image1', image1);
         formData.append('image2_f', image2_f);
+        formData.append('image2', image2);
         formData.append('body', body);
         formData.append('deleted', false);
         formData.append('archived', false);
@@ -180,7 +209,7 @@ class Form extends Component {
         }
     };
     render() {
-        const { title, subtitle, author, slot, body, splash, image1, image2} = this.state;
+        const { title, subtitle, SURtitle, author, slot, body, splash, image1, image2} = this.state;
         const { loading, article, error } = this.props;
 
         if (loading ) {
@@ -206,7 +235,18 @@ class Form extends Component {
                         </Control>
                     </Field>
 
-
+                    <Field>
+                        <Control>
+                            <Input
+                                type="text"
+                                name="SURtitle"
+                                value={SURtitle}
+                                onChange={this.onChange}
+                                required={true}
+                                placeholder="SURtitle"
+                            />
+                        </Control>
+                    </Field>
                     <Field>
                         <Control>
                             <Input

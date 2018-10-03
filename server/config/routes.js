@@ -28,13 +28,10 @@ module.exports = (app, db) => {
     app.get('/api/admin/articles', admin_articles.showAllAdmin(db));
     app.post('/api/admin/articles', admin_articles.editArticles(db));
 
-    app.post('/api/admin/archive', admin_articles.addArchive(db));
-    app.post('/api/admin/restore', admin_articles.restoreArchive(db));
 
-
-    app.post("/api/articles", upload.fields([{ name: 'splash_f', maxCount: 1 }, { name: 'image1_f', maxCount: 1 }, { name: 'image2_f', maxCount: 1 }]),
+    app.post("/api/admin/article", upload.fields([{ name: 'splash_f', maxCount: 1 }, { name: 'image1_f', maxCount: 1 }, { name: 'image2_f', maxCount: 1 }]),
         admin_articles.new(db));
-    app.put("/api/articles", upload.fields([
+    app.put("/api/admin/article", upload.fields([
         { name: 'splash_f', maxCount: 1 },
         { name: 'image1_f', maxCount: 1 },
         { name: 'image2_f', maxCount: 1 }]), admin_articles.edit(db));

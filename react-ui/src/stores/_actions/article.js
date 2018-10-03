@@ -112,7 +112,7 @@ export function addArchive(list) {
     return (dispatch) => {
         dispatch(request(C.ADD_ARCHIVE_BEGIN));
         if (list) {
-            return axios.post('/api/admin/archive', list)
+            return axios.post('/api/admin/articles', {list, type:'archive'})
                 .then(res => {
                     console.log('res=>', res.data);
                     dispatch(success(res.data, C.ADD_ARCHIVE_SUCCESS));
@@ -147,11 +147,11 @@ export function deleteArticles(list) {
 
 
 //ADD_ARCHIVE_BEGIN
-export function restoreArchive(article) {
+export function restoreArchive(list) {
     return (dispatch) => {
         dispatch(request(C.RESTORE_ARCHIVE_BEGIN));
-        if (article) {
-            return axios.post('/api/admin/restore', article)
+        if (list) {
+            return axios.post('/api/admin/articles', {list, type:'restore'})
                 .then(res => {
                     console.log('res=>', res.data);
                     dispatch(success(res.data, C.RESTORE_ARCHIVE_SUCCESS));
