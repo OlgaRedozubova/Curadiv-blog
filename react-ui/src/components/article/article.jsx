@@ -2,14 +2,16 @@ import React, { Component } from 'react';
 import {connect} from "react-redux";
 import { bindActionCreators } from 'redux';
 import MarkDown from 'react-markdown';
+import htmlParser from 'react-markdown/plugins/html-parser';
 
-import { Hero, Container, Heading, Section, Media, Image, Content } from 'react-bulma-components';
+import { Hero, Container, Heading, Section, Media, Image} from 'react-bulma-components';
+import Content from 'react-bulma-components/lib/components/content';
 
 import {fetchArticle} from '../../stores/_actions/article';
 
 //style
 import './article.css';
-import getImage from "../image/image";
+import { getImageArticle } from "../image/image";
 
 
 class Article extends Component {
@@ -61,37 +63,47 @@ class Article extends Component {
         }
         const { title, subtitle, SURtitle, author, body, splash, image1, image2, slot} = this.state;
 
+        // const parseHtml = htmlParser({
+        //     isValidNode: node => node.type === 'image',
+        //     processingInstruction: [{
+        //         shouldProcessNode: function (node) {
+        //             return node.parent && node.parent.name && node.parent.name === 'h1';
+        //         }
+        //     }]
+        // });
+
         return(
             <div className="article">
                 <Hero color="info">
-                    <Container className="is-fluid">
+                    <Container>
                         <Hero.Body>
                             <Heading>Curadiv</Heading>
                         </Hero.Body>
                     </Container>
                 </Hero>
                 <Section className="is-paddingless">
-                    <Container className="is-fluid">
+                    <Container className="splash">
                         <Media>
                             <Media.Item className="is-fluid">
-                                {getImage(splash, slot)}
+                                {getImageArticle(splash, 'slot.png')}
                             </Media.Item>
                         </Media>
                     </Container>
                 </Section>
-                <Section className="is-paddingless">
-                    <Container className="is-fluid">
-                        <Media>
-                            <Media.Item className="is-fluid">
-                                <Content>
-                                    <h1 className="title">{title}</h1>
-                                    <h2 className="subtitle">{subtitle}</h2>
-                                    <h3 className="subtitle">{author}</h3>
-
-                                    <MarkDown>{body}</MarkDown>
-                                </Content>
-                            </Media.Item>
-                        </Media>
+                <Section >
+                    <Container>
+                        <Content>
+                            <h1 className="title">{title}</h1>
+                            <h2>{subtitle}</h2>
+                            <h3>{author}</h3>
+                            <MarkDown
+                                escapeHtml={false}
+                            >{body}</MarkDown>
+                            {/*<MarkDown*/}
+                                {/*escapeHtml={false}*/}
+                                {/*astPlugins={[parseHtml]}*/}
+                            {/*>{body}</MarkDown>*/}
+                        </Content>
                     </Container>
                 </Section>
             </div>

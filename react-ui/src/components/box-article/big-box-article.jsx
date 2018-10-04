@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
 import { Content, Box, Media,  Columns } from 'react-bulma-components';
-import  getImage  from '../image/image';
+import  { getImage }   from '../image/image';
 
 
 class BigBoxArticle extends Component {

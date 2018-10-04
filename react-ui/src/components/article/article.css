@@ -1,11 +1,13 @@
 .article .hero-body {
   padding: 0.5rem 1.5rem; }
 
-.article .image img {
-  height: 300px;
-  resizeMode: 'cover'; }
+.article .image {
+  max-height: 300px;
+  overflow: hidden; }
 
 .article .container {
   width: 100%; }
   .article .container .media {
     width: 100%; }
+  .article .container .content .title {
+    font-size: 2.2rem; }

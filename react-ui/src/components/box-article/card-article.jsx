@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
 import { Content, Box, Card, Tile } from 'react-bulma-components';
-
+import { getImage } from "../image/image";
 
 class CardArticle extends Component {
     render() {
@@ -12,9 +12,7 @@ class CardArticle extends Component {
             <Box className="is-shadowless is-pulled-right is-full-height" onClick={()=>this.props.onClick(article)}>
                 <Link to={`/article/${article._id}`} className="navbar-brand">
                     <Card className="is-shadowless">
-                        {article.splash &&
-                        <Card.Image src={require('../../assets/images/' + article.splash)}/>
-                        }
+                        { getImage(article.splash, article.slot)}
                         <Card.Content>
                             <Content>
                                 <h6 className="SURtitle">{article.SURtitle}</h6>

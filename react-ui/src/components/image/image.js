@@ -6,7 +6,7 @@ import env from 'dotenv';
 import {Image} from "react-bulma-components";
 const path = process.env.REACT_URL_IMG || 'https://curadiv-test.s3.amazonaws.com/';
 
-const getImage = (img = '', slot = 0) => {
+export const getImage = (img = '', slot = 0) => {
     console.log('getImage => ', img, slot);
     const imagesDef = [
         'podcast.png',
@@ -39,4 +39,16 @@ const getImage = (img = '', slot = 0) => {
     }
 };
 
-export default getImage;
+export const getImageArticle = (img = '', imgDef) => {
+    if (!img) {
+        const url = path + imgDef;
+        return (
+            <Image src={url}/>
+        )
+    } else {
+        const url = path + img;
+        return (
+            <Image src={url}/>
+        )
+    }
+};
