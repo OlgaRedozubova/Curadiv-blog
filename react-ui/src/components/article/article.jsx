@@ -9,6 +9,7 @@ import {fetchArticle} from '../../stores/_actions/article';
 
 //style
 import './article.css';
+import getImage from "../image/image";
 
 
 class Article extends Component {
@@ -58,7 +59,7 @@ class Article extends Component {
         if (error) {
             return <div>Server Error... {error.message}</div>;
         }
-        const { title, subtitle, SURtitle, author, body, splash, image1, image2} = this.state;
+        const { title, subtitle, SURtitle, author, body, splash, image1, image2, slot} = this.state;
 
         return(
             <div className="article">
@@ -73,11 +74,7 @@ class Article extends Component {
                     <Container className="is-fluid">
                         <Media>
                             <Media.Item className="is-fluid">
-                                {splash &&
-                                    <Image
-                                        src={require('../../assets/images/' + splash)}/>
-                                }
-
+                                {getImage(splash, slot)}
                             </Media.Item>
                         </Media>
                     </Container>
@@ -87,9 +84,9 @@ class Article extends Component {
                         <Media>
                             <Media.Item className="is-fluid">
                                 <Content>
-                                    <h1 className=".title">{title}</h1>
-                                    <h2 className=".subtitle">{subtitle}</h2>
-                                    <h3 className=".subtitle">{author}</h3>
+                                    <h1 className="title">{title}</h1>
+                                    <h2 className="subtitle">{subtitle}</h2>
+                                    <h3 className="subtitle">{author}</h3>
 
                                     <MarkDown>{body}</MarkDown>
                                 </Content>

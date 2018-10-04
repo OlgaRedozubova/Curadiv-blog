@@ -46,8 +46,8 @@ class Home extends Component {
         console.log('render => this =>', error, loading, articles);
         const articlesSection1 = this.slotToSection(articles, [1]);
         const articlesSection2 = this.slotToSection(articles, [2, 3, 4]);
-        const articlesSection3_1 = this.slotToSection(articles, [5, 7, 9]);
-        const articlesSection3_2 = this.slotToSection(articles, [6, 8, 10]);
+        const articlesSection3_1 = this.slotToSection(articles, [5, 7, 9, 11]);
+        const articlesSection3_2 = this.slotToSection(articles, [6, 8, 10, 12]);
 
         console.log('articlesSection1 => ', articlesSection1)
 

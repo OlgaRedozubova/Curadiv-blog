@@ -34,13 +34,6 @@ export const article = (state = {}, action) => {
                 loading: false,
                 items: action.payload.podcast
             };
-        case C.FETCH_ARTICLE_FAILURE:
-            return {
-                ...state,
-                loading: false,
-                error: action.payload.error,
-                items: []
-            };
 
         case C.SELECT_ARTICLE:
             return {

@@ -13,9 +13,9 @@ module.exports = {
     newArticle: (db) => async (req, res) => {
         try {
             const data = { ...req.body,
-                splash: req.files.splash_f ? req.files.splash_f[0].filename : '',
-                image1: req.files.image1_f ? req.files.image1_f[0].filename : '',
-                image2: req.files.image2_f ? req.files.image2_f[0].filename : ''};
+                splash: req.files.splash_f ? req.files.splash_f[0].key : '',
+                image1: req.files.image1_f ? req.files.image1_f[0].key : '',
+                image2: req.files.image2_f ? req.files.image2_f[0].key : ''};
 
             await archivedExistsArticle(db, data.slot);
             const db_Article = db_model(Article, db);
@@ -30,17 +30,17 @@ module.exports = {
         try {
             const data = {...req.body};
             if (req.files.splash_f) {
-                Object.assign(data, {splash: req.files.splash_f[0].filename});
+                Object.assign(data, {splash: req.files.splash_f[0].key});
             } else {
                 if (!data.splash) {Object.assign(data, {splash: ''});}
             }
             if (req.files.image1_f) {
-                Object.assign(data, {image1: req.files.image1_f[0].filename});
+                Object.assign(data, {image1: req.files.image1_f[0].key});
             } else {
                 if (!data.image1) {Object.assign(data, {image1: ''});}
             }
             if (req.files.image2_f) {
-                Object.assign(data, {image2: req.files.image2_f[0].filename});
+                Object.assign(data, {image2: req.files.image2_f[0].key});
             } else {
                 if (!data.image2) {Object.assign(data, {image2: ''});}
             }
@@ -63,7 +63,7 @@ module.exports = {
     newPodcast: (db) => async (req, res) => {
         try {
             const data = { ...req.body,
-                splash: req.files.splash_f ? req.files.splash_f[0].filename : ''};
+                splash: req.files.splash_f ? req.files.splash_f[0].key : ''};
 
             await archivedExistsPodcast(db);
             const db_Podcast = db_model(Podcast, db);
@@ -76,8 +76,9 @@ module.exports = {
     editPodcast: (db) => async (req, res) => {
         try {
             const data = {...req.body};
+            console.log('req.files =>', req.files, req.file);
             if (req.files.splash_f) {
-                Object.assign(data, {splash: req.files.splash_f[0].filename});
+                Object.assign(data, {splash: req.files.splash_f[0].key});
             } else {
                 if (!data.splash) {Object.assign(data, {splash: ''});}
             }

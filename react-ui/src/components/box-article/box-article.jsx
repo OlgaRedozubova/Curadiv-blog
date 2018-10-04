@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-import { Content, Box, Media, Image, Columns } from 'react-bulma-components';
-
-
+import { Content, Box, Media, Columns } from 'react-bulma-components';
+import getImage from "../image/image";
 
 class BoxArticle extends Component {
     render() {
@@ -14,12 +13,7 @@ class BoxArticle extends Component {
                 <Link to={`/article/${article._id}`} className="navbar-brand">
                     <Columns>
                         <Columns.Column narrow>
-
-                                {article.splash &&
-                                <Image src={require('../../assets/images/' + article.splash)} />
-                                }
-
-
+                            {getImage(article.splash, article.slot)}
                         </Columns.Column>
                         <Columns.Column className="content">
 
