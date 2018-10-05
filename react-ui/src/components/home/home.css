@@ -12,10 +12,19 @@
   border-right: none; }
 
 .home__section-one .CardArticle .box {
-  padding: 1.25rem 0; }
+  padding: 1.25rem 0;
+  width: 100%; }
+  .home__section-one .CardArticle .box .navbar-brand {
+    height: 100%; }
   .home__section-one .CardArticle .box__block {
     padding: 0 1.25rem;
-    border-right: 1px solid #d6d6d6; }
+    border-right: 1px solid #d6d6d6;
+    width: 100%; }
+    .home__section-one .CardArticle .box__block .card-content {
+      padding: 1rem;
+      max-height: 100px;
+      overflow: hidden;
+      text-overflow: ellipsis; }
     .home__section-one .CardArticle .box__block .content .title {
       font-size: 1rem; }
     .home__section-one .CardArticle .box__block .content .SURtitle {
