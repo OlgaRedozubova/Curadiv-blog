@@ -9,7 +9,7 @@ class BigBoxArticle extends Component {
     render() {
         const { article } = this.props;
         return (
-            <Box className="BigBoxArticle is-shadowless is-paddingless-bottom is-full-width" onClick={()=>this.props.onClick(article)}>
+            <Box className="BigBoxArticle is-radiusless is-shadowless is-paddingless-bottom is-full-width" onClick={()=>this.props.onClick(article)}>
                 <div className="is-border-bottom">
                     <Link to={`/article/${article._id}`} className="navbar-brand">
                         <Media className="is-full-width">

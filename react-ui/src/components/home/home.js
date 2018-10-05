@@ -56,8 +56,7 @@ class Home extends Component {
         }
 
         return (
-            <div>
-
+            <div className="home">
                 <Hero color="info">
                     <Container >
                     <Hero.Body>
@@ -68,14 +67,14 @@ class Home extends Component {
                     </Hero.Body>
                     </Container>
                 </Hero>
-                <Section className="is-paddingless section-one">
-                    <Container className="cards">
+                <Section className="is-paddingless home__section-one">
+                    <Container className="container_BigBoxArticle">
                         {articlesSection1 && articlesSection1.length > 0 &&
                         <BigBoxArticle article = {articlesSection1[0]} onClick={this.props.selectArticle}/>
                         }
                     </Container>
                     <Container className="cards CardArticle">
-                        <Columns breakpoint="tablet" >
+                        <Columns gapless breakpoint="tablet" >
                             {articlesSection2 &&
                                 articlesSection2.map((article) =>
                                 <Columns.Column>

@@ -14,11 +14,10 @@ body {
 .is-full-height {
   height: 100%;
 }
-.container.cards {
-  padding: 15px;
-  background: $grey-soft;
-}
-
 .is-space-between {
   justify-content: space-between;
+}
+
+.is-right {
+  text-align: right;
 }

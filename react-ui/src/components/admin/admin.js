@@ -20,6 +20,7 @@ import Icon from 'react-bulma-components/lib/components/icon';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit, faArchive, faTrashAlt, faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 
+import HeroCuradiv from '../hero-curadiv/hero-curadiv';
 
 //style
 import './admin.css';
@@ -224,9 +225,12 @@ class Admin extends Component {
 
         const idArticle = (this.props.selectArticles.length===1) ? this.props.selectArticles[0]._id : '';
         return (
-            <div >
-                <h1>Admin page</h1>
+            <div className="admin">
+                <HeroCuradiv />
                 <Section>
+                    <Container className="admin__container notification is-flex">
+                        <h1 className="title">Admin page</h1>
+                    </Container>
                     <Container className="notification">
                         <Table>
                             <thead>

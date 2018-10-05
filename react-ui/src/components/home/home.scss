@@ -1,46 +1,97 @@
 @import "../../assets/stylesheets/css_variables";
 
-.hero {
-  .hero-body {
-    padding: 1.5rem;
+.home{
+  .hero {
+    .hero-body {
+      padding: 1.5rem;
+    }
+  }
+  &__section-one {
+    .BigBoxArticle {
+      .image {
+        max-width: 853px;
+      }
+    }
+    .container.container_BigBoxArticle {
+      padding: 15px 15px 0 15px;
+      background: $grey-soft;
+    }
+    .column {
+      &:last-child {
+        .box__block {
+          border-right: none;
+        }
+      }
+    }
+    .CardArticle {
+      .box {
+        padding: 1.25rem 0;
+        &__block {
+          padding: 0 1.25rem;
+          border-right: 1px solid $grey-light;
+
+          .content {
+            .title {
+              font-size: 1rem;
+            }
+            .SURtitle {
+              font-size: 0.8rem;
+            }
+          }
+        }
+      }
+      @media #{$media-tablet}{
+        .columns {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          .box__block {
+            border-right: none;
+          }
+        }
+      }
+      .image {
+        max-width: 432px;
+        margin: 0 auto;
+      }
+    }
+    .is-box {
+      padding: 0 1.25rem;
+    }
+
+
   }
 }
+
+.container.cards {
+  padding: 0 15px 0 15px;
+  background: $grey-soft;
+}
+
+
 .section-two {
   .card {
     min-height: 315px;
   }
 }
-.section-one {
-  .BigBoxArticle{
-    .image {
-      max-width: 853px;
-    }
-  }
-  .CardArticle {
-    @media #{$media-tablet}{
-      .columns{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-      }
-    }
-    .image {
-      max-width: 432px;
-      margin: 0 auto;
-    }
-  }
-  .is-box {
-    padding: 0 1.25rem;
-  }
-}
+
 .BoxArticle {
   .box{
-    height: 200px;
+     min-height: 180px;
     .image {
       max-width: 266px;
     }
     .content.column{
       padding: 15px;
+    }
+  }
+  .content{
+    padding: 0.8rem 0.5rem 0.5rem 0;
+    .SURtitle {
+      font-size: 0.8rem;
+    }
+    .title {
+      font-size: 1rem;
     }
   }
 
@@ -66,23 +117,7 @@
     font-size: 1rem
   }
 }
-//.is-780x440 {
-//  max-width: 780px;
-//
-//}
-//.is-378x214 {
-//  width: 378px;
-//  height: 214px;
-//}
-//.is-266x152 {
-//  width: 266px;
-//  height: 152px;
-//}
 
-.is-340x146 {
-  width: 340px;
-  height: 146px;
-}
 
 .media-content.is-center {
   text-align: center;
@@ -91,7 +126,7 @@
 .box {
   .is-border-bottom {
     padding-bottom: 1.25rem;
-    border-bottom: 1px solid lightgray;
+    border-bottom: 1px solid $grey-light;
   }
 }
 

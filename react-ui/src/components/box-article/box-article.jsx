@@ -16,12 +16,12 @@ class BoxArticle extends Component {
                         <Columns.Column narrow>
                             {getImage(article.splash, article.slot)}
                         </Columns.Column>
-                        <Columns.Column className="content">
+                        <Columns.Column >
 
-                        <Content>
-                            <h4 className="SURtitle">{article.SURtitle}</h4>
-                            <h3 className="title">{article.title}</h3>
-                        </Content>
+                            <Content>
+                                <h4 className="SURtitle">{article.SURtitle}</h4>
+                                <h3 className="title">{article.title}</h3>
+                            </Content>
 
                         </Columns.Column>
                     </Columns>

@@ -2,15 +2,18 @@ import React, { Component } from 'react';
 import {connect} from "react-redux";
 import { bindActionCreators } from 'redux';
 
-import { Hero, Container, Heading, Section, Media} from 'react-bulma-components';
+import { Container, Section, Media} from 'react-bulma-components';
 import Content from 'react-bulma-components/lib/components/content';
 
 import {fetchArticle} from '../../stores/_actions/article';
 
-//style
-import './article.css';
 import { getImageArticle } from "../image/image";
 import ArticleBody from "./article-body";
+import HeroCuradiv from '../hero-curadiv/hero-curadiv';
+
+//style
+import './article.css';
+
 
 
 class Article extends Component {
@@ -65,16 +68,10 @@ class Article extends Component {
 
         return(
             <div className="article">
-                <Hero color="info">
-                    <Container>
-                        <Hero.Body>
-                            <Heading>Curadiv</Heading>
-                        </Hero.Body>
-                    </Container>
-                </Hero>
+                <HeroCuradiv />
                 <Section className="is-paddingless">
-                    <Container className="splash">
-                        <Media>
+                    <Container className="splash is-full-width">
+                        <Media className="is-full-width">
                             <Media.Item className="is-fluid">
                                 {getImageArticle(splash, 'slot.png')}
                             </Media.Item>
@@ -84,7 +81,7 @@ class Article extends Component {
                 <Section >
                     <Container>
                         <Content>
-                            <h1 className="title">{title}</h1>
+                            <h1 className="article__title">{title}</h1>
                             <h2>{subtitle}</h2>
                             <h3>{author}</h3>
 

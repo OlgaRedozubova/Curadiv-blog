@@ -1,3 +1,5 @@
-.is-right {
-  text-align: right;
+.admin {
+  &__container{
+    justify-content: center;
+  }
 }

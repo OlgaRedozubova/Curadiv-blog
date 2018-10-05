@@ -5,12 +5,8 @@
   max-height: 300px;
   overflow: hidden; }
 
-.article .container {
-  width: 100%; }
-  .article .container .media {
-    width: 100%; }
-  .article .container .content .title {
-    font-size: 2.2rem; }
+.article__title {
+  font-size: 2.2rem; }
 
 .article__body .image {
   max-width: 230px; }

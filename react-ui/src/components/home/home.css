@@ -1,31 +1,61 @@
-.hero .hero-body {
+.home .hero .hero-body {
   padding: 1.5rem; }
+
+.home__section-one .BigBoxArticle .image {
+  max-width: 853px; }
+
+.home__section-one .container.container_BigBoxArticle {
+  padding: 15px 15px 0 15px;
+  background: #f1f1f1; }
+
+.home__section-one .column:last-child .box__block {
+  border-right: none; }
+
+.home__section-one .CardArticle .box {
+  padding: 1.25rem 0; }
+  .home__section-one .CardArticle .box__block {
+    padding: 0 1.25rem;
+    border-right: 1px solid #d6d6d6; }
+    .home__section-one .CardArticle .box__block .content .title {
+      font-size: 1rem; }
+    .home__section-one .CardArticle .box__block .content .SURtitle {
+      font-size: 0.8rem; }
+
+@media screen and (max-width: 769px) {
+  .home__section-one .CardArticle .columns {
+    display: flex;
+    flex-direction: column;
+    align-items: center; }
+    .home__section-one .CardArticle .columns .box__block {
+      border-right: none; } }
+
+.home__section-one .CardArticle .image {
+  max-width: 432px;
+  margin: 0 auto; }
+
+.home__section-one .is-box {
+  padding: 0 1.25rem; }
+
+.container.cards {
+  padding: 0 15px 0 15px;
+  background: #f1f1f1; }
 
 .section-two .card {
   min-height: 315px; }
 
-.section-one .BigBoxArticle .image {
-  max-width: 853px; }
-
-@media screen and (max-width: 769px) {
-  .section-one .CardArticle .columns {
-    display: flex;
-    flex-direction: column;
-    align-items: center; } }
-
-.section-one .CardArticle .image {
-  max-width: 432px;
-  margin: 0 auto; }
-
-.section-one .is-box {
-  padding: 0 1.25rem; }
-
 .BoxArticle .box {
-  height: 200px; }
+  min-height: 180px; }
   .BoxArticle .box .image {
     max-width: 266px; }
   .BoxArticle .box .content.column {
     padding: 15px; }
+
+.BoxArticle .content {
+  padding: 0.8rem 0.5rem 0.5rem 0; }
+  .BoxArticle .content .SURtitle {
+    font-size: 0.8rem; }
+  .BoxArticle .content .title {
+    font-size: 1rem; }
 
 .Podcast .image {
   max-width: 340px; }
@@ -42,16 +72,12 @@
 .content .subtitle {
   font-size: 1rem; }
 
-.is-340x146 {
-  width: 340px;
-  height: 146px; }
-
 .media-content.is-center {
   text-align: center; }
 
 .box .is-border-bottom {
   padding-bottom: 1.25rem;
-  border-bottom: 1px solid lightgray; }
+  border-bottom: 1px solid #d6d6d6; }
 
 .box.is-paddingless-bottom {
   padding-bottom: 0; }
