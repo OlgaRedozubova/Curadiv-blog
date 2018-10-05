@@ -26,8 +26,15 @@
     display: flex;
     flex-direction: column;
     align-items: center; }
+    .home__section-one .CardArticle .columns .column {
+      width: 100%; }
+      .home__section-one .CardArticle .columns .column .box {
+        width: 100%; }
+        .home__section-one .CardArticle .columns .column .box__block {
+          width: 100%; }
     .home__section-one .CardArticle .columns .box__block {
-      border-right: none; } }
+      border-right: none;
+      border-bottom: 1px solid #d6d6d6; } }
 
 .home__section-one .CardArticle .image {
   max-width: 432px;
@@ -56,6 +63,23 @@
     font-size: 0.8rem; }
   .BoxArticle .content .title {
     font-size: 1rem; }
+
+@media screen and (max-width: 880px) {
+  .BoxArticle .columns {
+    margin: 0 auto;
+    width: 100%; }
+    .BoxArticle .columns .column {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: inherit; }
+      .BoxArticle .columns .column .box {
+        width: 100%; }
+        .BoxArticle .columns .column .box__block {
+          width: 100%; }
+    .BoxArticle .columns .box__block {
+      border-right: none;
+      border-bottom: 1px solid #d6d6d6; } }
 
 .Podcast .image {
   max-width: 340px; }

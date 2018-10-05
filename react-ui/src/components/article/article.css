@@ -10,3 +10,11 @@
 
 .article__body .image {
   max-width: 230px; }
+
+.article__body .image.is-left {
+  display: inline-block;
+  float: left; }
+
+.article__body .image.is-right {
+  display: inline-block;
+  float: right; }

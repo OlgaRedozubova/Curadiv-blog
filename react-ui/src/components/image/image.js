@@ -34,16 +34,16 @@ export const getImage = (img = '', slot = 0) => {
     }
 };
 
-export const getImageArticle = (img = '', imgDef) => {
+export const getImageArticle = (img = '', imgDef='', className) => {
     if (!img) {
         const url = path + imgDef;
         return (
-            <Image src={url}/>
+            <Image src={url} className={className}/>
         )
     } else {
         const url = path + img;
         return (
-            <Image src={url}/>
+            <Image src={url} className={className}/>
         )
     }
 };

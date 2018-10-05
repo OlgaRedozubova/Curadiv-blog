@@ -13,5 +13,13 @@
     .image {
       max-width: 230px;
     }
+    .image.is-left {
+      display: inline-block;
+      float: left;
+    }
+    .image.is-right {
+      display: inline-block;
+      float: right;
+    }
   }
 }

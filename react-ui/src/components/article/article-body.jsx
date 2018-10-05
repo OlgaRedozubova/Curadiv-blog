@@ -8,10 +8,10 @@ class ArticleBody extends Component {
         const { body, image1='01.png', image2='02.png' } = this.props;
 
         const Image1 = () => (
-            getImageArticle(image1)
+            getImageArticle(image1, '',"is-left")
         );
         const Image2 = () => (
-            getImageArticle(image2)
+            getImageArticle(image2, '',"is-right")
         );
 
         return(
