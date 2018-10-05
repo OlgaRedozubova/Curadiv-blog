@@ -6,8 +6,8 @@ import Home from "./home/home";
 import Login from "./login/login";
 import Admin from "./admin/admin";
 import Article from "./article/article";
-import AdminArticle from "./article/admin-article";
-import AdminPodcast from "./podcast/admin-podcast";
+import AdminArticle from "./admin/admin-article";
+import AdminPodcast from "./admin/admin-podcast";
 
 export default class Routes extends Component {
     render() {

@@ -100,7 +100,6 @@ export const articles = (state = {}, action) => {
                 error: action.payload.error,
                 items: [],
                 archive: [],
-                archive: [],
                 archivePodcast: [],
                 podcast: []
             };
@@ -132,21 +131,6 @@ export const articles = (state = {}, action) => {
                 podcast: []
             };
 //----------------------------------------------------------------------------------------------------------------------
-
-        // case C.ADD_ARCHIVE:
-        //     return {
-        //         ...state,
-        //         loading: false,
-        //         items: action.payload.data.articles,
-        //         archive: action.payload.data.archive
-        //     };
-        // case C.DEL_ARCHIVE:
-        //     return {
-        //         ...state,
-        //         loading: false,
-        //         items: action.payload.data.articles,
-        //         archive: action.payload.data.archive
-        //     };
         default:
             return state
     }

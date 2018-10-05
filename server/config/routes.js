@@ -9,11 +9,13 @@ const admin = require('../api/admin/admin');
 const upload = require('../config/s3');
 
 module.exports = (app, db) => {
-    app.post("/api/admin/podcast", upload.fields([
-        { name: 'splash_f', maxCount: 1 }]),admin.newPodcast(db));
     app.get('/api/articles', articles.showAll(db));
     app.get("/api/articles/:id", articles.show(db));
+
     app.get("/api/podcast/:id", podcast.show(db));
+
+    app.post("/api/admin/podcast", upload.fields([
+        { name: 'splash_f', maxCount: 1 }]),admin.newPodcast(db));
     app.get('/api/admin/articles', admin.showAll(db));
     app.post('/api/admin/articles', admin.editArticles(db));
     app.post("/api/admin/article", upload.fields([

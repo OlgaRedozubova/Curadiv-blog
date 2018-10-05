@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-import { Content, Box, Media, Columns } from 'react-bulma-components';
+import { Content, Box, Columns } from 'react-bulma-components/lib/';
+
 import { getImage } from "../image/image";
 
 class BoxArticle extends Component {

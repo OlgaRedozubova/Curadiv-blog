@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 
-import { Content, Box, Media,  Columns } from 'react-bulma-components';
+import { Box, Columns } from 'react-bulma-components';
 import { getImage } from "../image/image";
 
 
-class Podcast extends Component {
+class BoxPodcast extends Component {
     render() {
         const { author, splash } = this.props.podcast;
 
@@ -24,4 +24,4 @@ class Podcast extends Component {
     }
 }
 
-export default Podcast;
+export default BoxPodcast;

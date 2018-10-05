@@ -1,21 +1,20 @@
 import React, { Component } from 'react';
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
+import  Button  from 'react-bulma-components/lib/components/button';
+
+//components
+import FieldFile from './field-file';
+import FieldText from './field-text';
 
 import {
     fetchPodcast, editArticle,
     restore_newPodcast,
-    restore_editPodcast, restore_editArticle, restore_newArticle,
+    restore_editPodcast,
 } from "../../stores/_actions/article";
-
-//components
-import { Button,   Columns} from 'react-bulma-components';
-import { Field, Label, Control, Input, Textarea } from 'react-bulma-components/lib/components/form';
 
 //style
 import './form.css';
-
-
 
 
 
@@ -26,41 +25,36 @@ class FormPodcast extends Component {
         this.form = React.createRef();
 
         this.state = {
-            author: '',
-            splash:'',
-            splash_f:'',
-            archived: false,
-            isEdit: isEdit
+            isEdit: isEdit,
+            podcast:{}
+
         };
     }
 
     componentDidMount() {
         const {id, article} = this.props;
-        if (id)
+        if (id) {
             if (!article) {
-                console.log('Component(Article) => componentWillMount => fetchArticle => id=', id);
                 this.props.fetchPodcast(id)
                     .then((res) => {
                         this.setState({
-                            author: res.author,
-                            splash: res.splash,
-                            archived: false
+                            podcast: {
+                                ...res,
+                                splash_f: {}
+                            }
                         });
-                        console.log('>>> res=>', this.state);
                     });
             } else {
                 this.setState({
-                    author: article.author,
-                    splash: article.splash,
-                    archived: false
+                    podcast: {
+                        ...article,
+                        splash_f: {}
+                    }
                 });
 
             }
-
+        }
     }
-
-
-
 
     onNew (formData) {
         if (formData) {
@@ -88,38 +82,35 @@ class FormPodcast extends Component {
 
     onChange = (e) => {
         e.preventDefault();
+        const podcast = {...this.state.podcast};
 
         switch (e.target.name) {
             case 'splash_f':
                 if (e.target.files[0]) {
-                    this.setState({
-                        splash_f: e.target.files[0],
-                        splash: e.target.files[0].name,
-                    });
+                    podcast.splash_f = e.target.files[0];
+                    podcast.splash = e.target.files[0].name;
                 } else {
-                    this.setState({
-                        splash_f: {},
-                        splash: '',
-                    });
+                    podcast.splash_f = {};
+                    podcast.splash = '';
                 }
                 break;
             default:
-                this.setState({ [e.target.name]: e.target.value });
+                podcast[e.target.name] = e.target.value;
         }
+        this.setState({podcast: podcast});
     };
 
     onSubmit = (e) => {
         e.preventDefault();
-        const { author, splash, splash_f} = this.state;
-        const {isEdit} = this.state;
+        const { isEdit, podcast} = this.state;
+        const {_id, author, splash, splash_f} = podcast;
 
         let formData = new FormData();
 
-        formData.append('_id', this.props.id);
+        formData.append('_id', _id);
         formData.append('author', author);
         formData.append('splash', splash);
         formData.append('splash_f', splash_f);
-        formData.append('archived', false);
 
         if (!isEdit) {
             return this.onNew(formData)
@@ -129,7 +120,6 @@ class FormPodcast extends Component {
     };
 
     render() {
-        const { author, splash } = this.state;
         const { loading, error } = this.props;
         if (loading ) {
             return <div>Loading...</div>;
@@ -137,36 +127,29 @@ class FormPodcast extends Component {
         if (error) {
             return <div>Server Error... {error.message}</div>;
         }
+        const { podcast } = this.state;
+        const { author, splash } = podcast;
 
         return (
             <div className="form__ArticleEdit">
                 <form className="form__ArticleEdit" onSubmit={this.onSubmit}>
-                    <Field>
-                        <Control>
-                            <Input
-                                type="text"
-                                name="author"
-                                value={author}
-                                onChange={this.onChange}
-                                required={true}
-                                placeholder="Author"
-                            />
-                        </Control>
-                    </Field>
+                    <div className="buttons is-space-between">
+                        <h1 className="title">{this.props.title}</h1>
+                    </div>
 
-                    <Field>
-                        <Label>Splash image</Label>
-                        <Control>
-
-                            <input
-                                type="file"
-                                name="splash_f"
-                                accept=".png"
-                                onChange={this.onChange}
-                            />
-                            <Label>{splash}</Label>
-                        </Control>
-                    </Field>
+                    <FieldText
+                        name="author"
+                        value={author}
+                        onChange={this.onChange}
+                        required={true}
+                        placeholder="Author"
+                    />
+                    <FieldFile
+                        label="Splash image"
+                        name="splash_f"
+                        onChange={this.onChange}
+                        splash={splash}
+                    />
 
                     <div className="buttons is-right">
                         <Button className="is-danger" type="submit">

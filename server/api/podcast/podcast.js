@@ -11,13 +11,12 @@ const something_wrong = (req, e) => {
 module.exports = {
     show: (db) => async (req, res) => {
         try {
-            const article_id = req.params.id;
-
-            if (!article_id) {
+            const podcast_id = req.params.id;
+            if (!podcast_id) {
                 res.status(404).send({message: 'Podcast not found'})
             } else {
-                const Podcast = db_model(Podcast, db);
-                const podcast = await Podcast.findById(podcast_id);
+                const db_Podcast = db_model(Podcast, db);
+                const podcast = await db_Podcast.findById(podcast_id);
                 if (!podcast) {
                     const msg = `Podcast with id: '${podcast_id}' not found`;
                     logger.warn(msg);

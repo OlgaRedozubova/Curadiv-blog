@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-import { Content, Box, Card, Tile } from 'react-bulma-components';
+import { Content, Box, Card } from 'react-bulma-components';
 import { getImage } from "../image/image";
 
 class CardArticle extends Component {

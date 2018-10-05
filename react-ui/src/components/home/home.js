@@ -3,14 +3,14 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import {connect} from "react-redux";
 import { selectArticle, fetchArticles } from '../../stores/_actions/article';
-import { Hero, Container, Heading, Section, Columns, Tile, Content, Box, Level, Media, Image } from 'react-bulma-components';
+import { Hero, Container, Heading, Section, Columns} from 'react-bulma-components';
 
 
 //#components
 import BoxArticle from  '../box-article/box-article';
 import CardArticle from  '../box-article/card-article';
 import BigBoxArticle from "../box-article/big-box-article";
-import Podcast from "./podcast";
+import BoxPodcast from "../box-article/box-podcast";
 
 //style
 import './home.css';
@@ -91,7 +91,7 @@ class Home extends Component {
                 <Section className="is-paddingless">
                     <Container className="Podcast has-background-info">
                         {podcast &&
-                            <Podcast podcast={podcast[0]}/>
+                            <BoxPodcast podcast={podcast[0]}/>
                         }
                     </Container>
                 </Section>

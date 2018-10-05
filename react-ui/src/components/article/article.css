@@ -11,3 +11,6 @@
     width: 100%; }
   .article .container .content .title {
     font-size: 2.2rem; }
+
+.article__body .image {
+  max-width: 230px; }

@@ -1,13 +1,10 @@
 import React  from "react";
-import env from 'dotenv';
 
-//require('dotenv').config();
-
-import {Image} from "react-bulma-components";
+import Image from "react-bulma-components/lib/components/image";
 const path = process.env.REACT_URL_IMG || 'https://curadiv-test.s3.amazonaws.com/';
 
 export const getImage = (img = '', slot = 0) => {
-    console.log('getImage => ', img, slot);
+
     const imagesDef = [
         'podcast.png',
         '01.png',
@@ -23,8 +20,6 @@ export const getImage = (img = '', slot = 0) => {
         '05.png',
         '05.png',
         '05.png'];
-    //const path = process.env.REACT_URL_IMG || '/static/media/';
-    console.log('ENV => ', path);
     if (!img) {
         const url = path + imagesDef[+slot];
         return (

@@ -10,6 +10,7 @@ const something_wrong = (req, e) => {
 };
 
 module.exports = {
+    //---/api/admin/article
     newArticle: (db) => async (req, res) => {
         try {
             const data = { ...req.body,
@@ -17,7 +18,7 @@ module.exports = {
                 image1: req.files.image1_f ? req.files.image1_f[0].key : '',
                 image2: req.files.image2_f ? req.files.image2_f[0].key : ''};
 
-            await archivedExistsArticle(db, data.slot);
+            await archivedExistsArticle(db, data.slot, data._id);
             const db_Article = db_model(Article, db);
             const article = await db_Article.create(data);
 
@@ -26,6 +27,7 @@ module.exports = {
             something_wrong(req, e);
         }
     },
+    //--/api/admin/article
     editArticle: (db) => async (req, res) => {
         try {
             const data = {...req.body};
@@ -51,7 +53,7 @@ module.exports = {
 
             logger.info(`article:edit: data =>(${JSON.stringify(data)}), req.body =>(${JSON.stringify(req.body)})`);
 
-            await archivedExistsArticle(db, data.slot);
+            await archivedExistsArticle(db, data.slot, data._id);
             const db_Article = db_model(Article, db);
             const article = await db_Article.update(data);
 
@@ -60,12 +62,13 @@ module.exports = {
             something_wrong(req, e);
         }
     },
+    //--/api/admin/podcast--
     newPodcast: (db) => async (req, res) => {
         try {
             const data = { ...req.body,
                 splash: req.files.splash_f ? req.files.splash_f[0].key : ''};
 
-            await archivedExistsPodcast(db);
+            await archivedExistsPodcast(db, data._id);
             const db_Podcast = db_model(Podcast, db);
             const podcast = await db_Podcast.create(data);
             res.status(200).json(podcast);
@@ -73,10 +76,10 @@ module.exports = {
             something_wrong(req, e);
         }
     },
+    //---/api/admin/podcast
     editPodcast: (db) => async (req, res) => {
         try {
             const data = {...req.body};
-            console.log('req.files =>', req.files, req.file);
             if (req.files.splash_f) {
                 Object.assign(data, {splash: req.files.splash_f[0].key});
             } else {
@@ -86,7 +89,7 @@ module.exports = {
                 edited: new Date()
             });
             logger.info(`podcast:edit: data =>(${JSON.stringify(data)}), req.body =>(${JSON.stringify(req.body)})`);
-            await archivedExistsPodcast(db);
+            await archivedExistsPodcast(db, data._id);
             const db_Podcast = db_model(Podcast, db);
             const podcast = await db_Podcast.update(data);
             res.status(200).json(podcast);
@@ -94,6 +97,7 @@ module.exports = {
             something_wrong(req, e);
         }
     },
+    //---/api/admin/articles
     editArticles: (db) => async (req, res) => {
         try {
             const list = req.body.list;
@@ -118,59 +122,13 @@ module.exports = {
             } else {
                 res.status(200).json(data);
             }
-
-            // if (type === 'delete') {
-            //     await articlesDelete(db, list);
-            //
-            //     const data = await getAllData(db);
-            //
-            //     if (!data.articles || !data.archive) {
-            //         res.status(404).send({message: 'Articles not found'})
-            //     } else {
-            //         res.status(200).json(data);
-            //     }
-            // }
-
         } catch (e) {
             something_wrong(req, e);
         }
     },
+    //--/api/admin/articles
     showAll: (db) => async (req, res) => {
         try {
-
-            const data = await getAllData(db);
-
-            if (!data.articles || !data.archive) {
-                res.status(404).send({message: 'Articles not found'})
-            } else {
-                res.status(200).json(data);
-            }
-
-        } catch (e) {
-            something_wrong(req, e);
-        }
-    },
-
-    restoreArchive: (db) => async(req, res) => {
-        try {
-            await articlesArchivedOne(db, req.body, false);
-            const data = await getAllData(db);
-
-            if (!data.articles || !data.archive) {
-                res.status(404).send({message: 'Articles not found'})
-            } else {
-                res.status(200).json(data);
-            }
-        } catch (e) {
-            something_wrong(req, e);
-        }
-    },
-
-    addArchive: (db) => async(req, res) => {
-        try {
-            const list = req.body;
-
-            await articlesArchived(db, list, true);
 
             const data = await getAllData(db);
 
@@ -204,13 +162,12 @@ const  articlesArchivedOne = async(db, article, isArchived = false) => {
         const data = {..._.omit(article, "isPodcast"), archived: isArchived};
         const db_Podcast = db_model(Podcast, db);
 
-        await archivedExistsPodcast(db);
+        await archivedExistsPodcast(db, data._id);
         await db_Podcast.update(data);
 
     } else {
         const data = {..._.omit(article, "isPodcast"), archived: isArchived};
-
-        await archivedExistsArticle(db, data.slot);
+        await archivedExistsArticle(db, data.slot, data._id);
 
         const db_Article = db_model(Article, db);
         await db_Article.update(data);
@@ -218,24 +175,25 @@ const  articlesArchivedOne = async(db, article, isArchived = false) => {
 
 };
 
-const archivedExistsArticle = async(db, slot) => {
+const archivedExistsArticle = async(db, slot, _id='') => {
     const db_Article = db_model(Article, db);
-
     const obj = await db_Article.findOne({slot: slot, archived: false});
-
     if (obj){
-        obj.archived= true;
-        await db_Article.update(obj);
+        if (_id != obj._id) {
+            obj.archived= true;
+            await db_Article.update(obj);
+        }
     }
 };
 
-const archivedExistsPodcast = async(db) => {
+const archivedExistsPodcast = async(db, _id) => {
     const db_Podcast = db_model(Podcast, db);
-
     const obj = await db_Podcast.findOne({archived: false});
     if (obj){
-        obj.archived= true;
-        await db_Podcast.update(obj);
+        if (_id != obj._id) {
+            obj.archived = true;
+            await db_Podcast.update(obj);
+        }
     }
 };
 

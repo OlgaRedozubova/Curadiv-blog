@@ -17,4 +17,9 @@
       }
     }
   }
+  &__body {
+    .image {
+      max-width: 230px;
+    }
+  }
 }

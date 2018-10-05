@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import {connect} from "react-redux";
 import { bindActionCreators } from 'redux';
-import MarkDown from 'react-markdown';
-import htmlParser from 'react-markdown/plugins/html-parser';
 
-import { Hero, Container, Heading, Section, Media, Image} from 'react-bulma-components';
+import { Hero, Container, Heading, Section, Media} from 'react-bulma-components';
 import Content from 'react-bulma-components/lib/components/content';
 
 import {fetchArticle} from '../../stores/_actions/article';
@@ -12,12 +10,15 @@ import {fetchArticle} from '../../stores/_actions/article';
 //style
 import './article.css';
 import { getImageArticle } from "../image/image";
+import ArticleBody from "./article-body";
 
 
 class Article extends Component {
     constructor (props) {
         super (props);
         this.state = {
+            article: null,
+            isLoading: false,
             title: '',
             subtitle: '',
             SURtitle: '',
@@ -29,13 +30,14 @@ class Article extends Component {
         }
     }
 
-    componentDidMount() {
+    componentWillMount() {
         const {params} = this.props.match;
 
         this.props.fetchArticle(params.id)
             .then((res) => {
                 console.log('res=>', res);
                 this.setState({
+                    article: res,
                     title: res.title,
                     subtitle: res.subtitle,
                     SURtitle: res.SURtitle,
@@ -44,33 +46,22 @@ class Article extends Component {
                     image1: res.image1,
                     image2: res.image2,
                     body: res.body,
+                    isLoading: true,
                 });
             })
-        // if (!this.props.article){
-        //     console.log('Component(Article) => componentWillMount => fetchArticle => id=', params.id);
-        //     this.props.fetchArticle(params.id);
-        // }
     }
 
     render() {
-        const { loading, article, error } = this.props;
+        const { loading,  error } = this.props;
 
-        if (loading) {
+        if (loading || !this.state.isLoading) {
             return <div>Loading...</div>;
         }
         if (error) {
             return <div>Server Error... {error.message}</div>;
         }
-        const { title, subtitle, SURtitle, author, body, splash, image1, image2, slot} = this.state;
+        const { title, subtitle, author, body, splash, image1, image2} = this.state.article;
 
-        // const parseHtml = htmlParser({
-        //     isValidNode: node => node.type === 'image',
-        //     processingInstruction: [{
-        //         shouldProcessNode: function (node) {
-        //             return node.parent && node.parent.name && node.parent.name === 'h1';
-        //         }
-        //     }]
-        // });
 
         return(
             <div className="article">
@@ -96,13 +87,9 @@ class Article extends Component {
                             <h1 className="title">{title}</h1>
                             <h2>{subtitle}</h2>
                             <h3>{author}</h3>
-                            <MarkDown
-                                escapeHtml={false}
-                            >{body}</MarkDown>
-                            {/*<MarkDown*/}
-                                {/*escapeHtml={false}*/}
-                                {/*astPlugins={[parseHtml]}*/}
-                            {/*>{body}</MarkDown>*/}
+
+                            <ArticleBody body={body} image1={image1} image2={image2}/>
+
                         </Content>
                     </Container>
                 </Section>
