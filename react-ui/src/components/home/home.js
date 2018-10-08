@@ -69,6 +69,8 @@ class Home extends Component {
                 </Hero>
                 <Section className="is-paddingless home__section-one">
                     <Container className="container_BigBoxArticle">
+
+
                         {articlesSection1 && articlesSection1.length > 0 &&
                         <BigBoxArticle article = {articlesSection1[0]} onClick={this.props.selectArticle}/>
                         }
@@ -101,7 +103,7 @@ class Home extends Component {
                     <Section className="is-paddingless section-two">
                         <Container className="cards BoxArticle is-clearfix">
 
-                            <Columns className="is-paddingless">
+                            <Columns breakpoint="mobile" className="is-paddingless">
                                 <Columns.Column>
                                     {articlesSection3_1 &&
                                         articlesSection3_1.map((article) =>

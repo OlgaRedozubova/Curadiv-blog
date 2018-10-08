@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import { Box, Columns } from 'react-bulma-components';
-import { getImage } from "../image/image";
+import { getImagePodcast } from "../image/image";
 
 
 class BoxPodcast extends Component {
@@ -15,8 +15,8 @@ class BoxPodcast extends Component {
                         <h1 className="title has-text-white">curadiv<strong className="has-text-black">podcast</strong></h1>
                         <h2 className="subtitle has-text-white"> {author}</h2>
                     </Columns.Column>
-                    <Columns.Column className="is-flex-mobile is-center">
-                        {getImage(splash, 'podcast')}
+                    <Columns.Column className="is-center">
+                        {getImagePodcast(splash, 'podcast')}
                     </Columns.Column>
                 </Columns>
             </Box>

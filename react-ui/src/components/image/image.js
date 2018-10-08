@@ -23,13 +23,39 @@ export const getImage = (img = '', slot = 0) => {
     if (!img) {
         const url = path + imagesDef[+slot];
         return (
-            <Image src={url}/>
+            <div className="responsive-img">
+                <img src={url}/>
+            </div>
         )
     } else {
         const url = path + img;
         console.log('url => ', url);
         return (
-            <Image src={url}/>
+            <div className="responsive-img">
+                <img src={url}/>
+            </div>
+        )
+    }
+};
+
+export const getImagePodcast = (img = '', slot = 0) => {
+
+    const imagesDef = [
+        'podcast.png'];
+    if (!img) {
+        const url = path + imagesDef[+slot];
+        return (
+            <div className="responsive-img podcast">
+                <img src={url}/>
+            </div>
+        )
+    } else {
+        const url = path + img;
+        console.log('url => ', url);
+        return (
+            <div className="responsive-img podcast">
+                <img src={url}/>
+            </div>
         )
     }
 };
