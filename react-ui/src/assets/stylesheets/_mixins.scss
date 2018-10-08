@@ -1,0 +1,11 @@
+@mixin height($width, $value) {
+
+  height: ($width/$value);
+  $totalWidth: 0;
+}
+
+@mixin bottom-shadow() {
+  //border-bottom: 1px solid $grey-light;
+  border-bottom: 1px solid $grey-washed;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+}

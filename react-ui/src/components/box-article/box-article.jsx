@@ -13,7 +13,7 @@ class BoxArticle extends Component {
             <Box className="is-paddingless is-shadowless is-radiusless" onClick={()=>this.props.onClick(article)}>
                 <Link to={`/article/${article._id}`} className="navbar-brand">
                     <Columns>
-                        <Columns.Column narrow>
+                        <Columns.Column narrow className="column__Img">
                             {getImage(article.splash, article.slot)}
                         </Columns.Column>
                         <Columns.Column >

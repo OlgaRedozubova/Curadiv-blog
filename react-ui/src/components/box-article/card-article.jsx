@@ -9,7 +9,7 @@ class CardArticle extends Component {
         const { article } = this.props;
 
         return (
-            <Box className="is-radiusless is-shadowless is-pulled-right is-full-height" onClick={()=>this.props.onClick(article)}>
+            <Box className="is-paddingless is-radiusless is-shadowless is-pulled-right is-full-height" onClick={()=>this.props.onClick(article)}>
                 <Link to={`/article/${article._id}`} className="navbar-brand">
                     <div className="box__block">
                         <Card className="is-shadowless">

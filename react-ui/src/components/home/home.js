@@ -74,7 +74,7 @@ class Home extends Component {
                         }
                     </Container>
                     <Container className="cards CardArticle">
-                        <Columns gapless breakpoint="tablet" >
+                        <Columns gapless >
                             {articlesSection2 &&
                                 articlesSection2.map((article) =>
                                 <Columns.Column>
@@ -101,7 +101,7 @@ class Home extends Component {
                     <Section className="is-paddingless section-two">
                         <Container className="cards BoxArticle is-clearfix">
 
-                            <Columns className="is-paddingless is-desktop">
+                            <Columns className="is-paddingless">
                                 <Columns.Column>
                                     {articlesSection3_1 &&
                                         articlesSection3_1.map((article) =>

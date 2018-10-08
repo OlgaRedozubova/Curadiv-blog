@@ -1,9 +1,23 @@
 $grey-soft: #f1f1f1;
 $grey-light: #d6d6d6;
+$grey-washed: #DDD8D8;
 $red: #F1104D;
 
+//@media screen and (min-width: $tablet), print
 $media-tablet : "screen and (max-width: 769px)";
 $media-desktop-short : "screen and (max-width: 880px)";
 
+$media-mobile-small: "only screen and (max-width : 340px)";
+$media-mobile: "only screen and (max-width : 400px)";
+$media-mobile-portrait: "only screen and (max-width : 580px)";
+$media-mobile-landscape: "only screen and (max-width : 680px)";
+$media-between-tablet-and-mobile: "(max-width:960px) and (min-width:680px)";
+//$desktop: 960px + (2 * $gap) !default
+$media-desktop: "screen and (max-width: 960px)";
 
 
+
+
+//$tablet: 769px !default
+$max-width-img-large: 853px;
+$max-width-img-medium: 432px;

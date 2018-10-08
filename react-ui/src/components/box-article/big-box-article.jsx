@@ -9,46 +9,23 @@ class BigBoxArticle extends Component {
     render() {
         const { article } = this.props;
         return (
-            <Box className="BigBoxArticle is-radiusless is-shadowless is-paddingless-bottom is-full-width" onClick={()=>this.props.onClick(article)}>
-                <div className="is-border-bottom">
-                    <Link to={`/article/${article._id}`} className="navbar-brand">
-                        <Media className="is-full-width">
-                            <Columns gapless breakpoint="tablet" className="is-full-width">
-                                <Columns.Column>
-                                    <Media.Item>
-                                        <Content>
-                                            <h5 className="SURtitle">{article.SURtitle}</h5>
-                                            <h1 className="title">{article.title}</h1>
-                                            <p className="subtitle"><i>{article.subtitle}</i></p>
+            <Box className="BigBoxArticle is-radiusless is-shadowless is-full-width" onClick={()=>this.props.onClick(article)}>
+                <Link to={`/article/${article._id}`} className="navbar-brand">
+                        <Columns gapless className="is-full-width">
+                            <Columns.Column className="columns__Content">
+                                    <Content>
+                                        <h5 className="SURtitle">{article.SURtitle}</h5>
+                                        <h1 className="title">{article.title}</h1>
+                                        <p className="subtitle"><i>{article.subtitle}</i></p>
 
-                                        </Content>
-                                    </Media.Item>
+                                    </Content>
 
-                                </Columns.Column>
-                                <Columns.Column
-                                                // mobile={{
-                                                //     size: 'three-quarters',
-                                                // }}
-                                                tablet={{
-                                                    size: 'two-thirds',
-                                                }}
-                                                desktop={{
-                                                    size: 'two-thirds',
-                                                }}
-                                                widescreen={{
-                                                    size: 'two-thirds',
-                                                }}
-                                                fullhd={{
-                                                    size: 'two-thirds',
-                                                }}>
-                                    <Media.Item position="right">
-                                        {getImage(article.splash)}
-                                    </Media.Item>
-                                </Columns.Column>
-                            </Columns>
-                        </Media>
-                    </Link>
-                </div>
+                            </Columns.Column>
+                            <Columns.Column className="column__Img">
+                                    {getImage(article.splash)}
+                            </Columns.Column>
+                        </Columns>
+                </Link>
             </Box>
         )
     }
