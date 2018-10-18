@@ -2,8 +2,8 @@ import random
 import losswise
 import time
 losswise.set_api_key('WY92FQJ03') # api_key for 'Curadiv blog'
-
 session = losswise.Session(max_iter=10)
+
 graph = session.graph('loss', kind='min')
 for x in range(10):
     train_loss = 2. / (0.1 + x + 0.1 * random.random())
