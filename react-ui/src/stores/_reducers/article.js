@@ -22,6 +22,20 @@ export const article = (state = {}, action) => {
                 error: action.payload.error,
                 items: []
             };
+        case C.SELECT_ARTICLE:
+            return {
+                ...state,
+                loading: false,
+                items: action.payload.article,
+            };
+
+        case C.EDIT_ARTICLE:
+            return {
+                ...state,
+                loading: false,
+                items: action.payload.article,
+            };
+
         default:
             return state
     }

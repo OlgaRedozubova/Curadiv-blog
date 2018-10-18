@@ -13,27 +13,22 @@ export default class NavBar extends Component {
         const { className, sticky } = this.props;
         const newClassName = ClassNames('NavBar', className, {
             sticky: sticky,
-            //active: sticky && uiStore.scrollPosition > 80
         });
 
         return(
             <div className={newClassName}>
                 <Navbar className="nav-right nav-menu is-flex is-hidden-mobile" color = 'info'>
-                    <Navbar.Item className="nav-items">
-                        <NavLink className="is-tab is-hidden-mobile is-active" to="/" activeClassName="selected">
-                            {i18n.t('menu.home')}
-                        </NavLink>
-                    </Navbar.Item>
-                    <Navbar.Item >
-                        <NavLink className="NavBar-link" to="/admin" activeClassName="selected">
-                            Admin
-                        </NavLink>
-                    </Navbar.Item>
-                    <Navbar.Item >
-                        <NavLink className="NavBar-link" to="/login" activeClassName="selected">
-                            {i18n.t('menu.login')}
-                        </NavLink>
-                    </Navbar.Item>
+                    <NavLink className="navbar-item" to="/" activeClassName="selected">
+                        {i18n.t('menu.home')}
+                    </NavLink>
+
+                    <NavLink className="navbar-item" to="/admin" activeClassName="selected">
+                        Admin
+                    </NavLink>
+
+                    <NavLink className="navbar-item" to="/login" activeClassName="selected">
+                        {i18n.t('menu.login')}
+                    </NavLink>
                 </Navbar>
             </div>
         )

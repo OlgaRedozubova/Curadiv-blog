@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-//components
+import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
 
-
+import {fetchArticle, editArticle} from "../../stores/_actions/article";
 
 //components
 import { Button,   Columns} from 'react-bulma-components';
@@ -10,6 +11,8 @@ import { Field, Label, Control, Input, Textarea } from 'react-bulma-components/l
 
 //style
 import './form.css';
+
+
 
 
 
@@ -27,40 +30,83 @@ class Form extends Component {
             splash:'',
             image1:'',
             image2:'',
+            splash_f:'',
+            image1_f:'',
+            image2_f:'',
             body: '',
             deleted: false,
             archived: false,
             isEdit: isEdit,
         };
     }
-    componentDidMount() {
-        const {id} = this.props;
-        if (id) {
-            console.log('!!componentDidMount=>')
-            axios.get(`/api/articles/${id}`)
-                .then(res => {
-                    const article = res.data;
-                    console.log('res=>', res);
-                    this.setState({
-                        title: article.title,
-                        subtitle: article.subtitle,
-                        author: article.author,
-                        slot: article.slot,
-                        splash: article.splash,
-                        image1: article.image1,
-                        image2: article.image2,
-                        body: article.body,
-                        // deleted: false,
-                        // archived: false,
-                        // isEdit: isEdit,
-                    });
-                })
-                .catch(err => {
-                    console.log('err => ', err);
-                })
-            }
 
+
+    componentDidMount() {
+        const {id, article} = this.props;
+        if (!article){
+            console.log('Component(Article) => componentWillMount => fetchArticle => id=', id);
+            this.props.fetchArticle(id)
+                .then((res) => {
+                    this.setState({
+                        title: res.title,
+                        subtitle: res.subtitle,
+                        author: res.author,
+                        slot: res.slot,
+                        splash: res.splash,
+                        image1: res.image1,
+                        image2: res.image2,
+                        body: res.body,
+                        deleted: false,
+                        archived: false,
+                    });
+                    console.log('>>> res=>', this.state);
+                });
+        } else {
+            this.setState({
+                title: article.title,
+                subtitle: article.subtitle,
+                author: article.author,
+                slot: article.slot,
+                splash: article.splash,
+                image1: article.image1,
+                image2: article.image2,
+                body: article.body,
+                deleted: false,
+                archived: false,
+            });
+
+        }
     }
+
+
+    // componentDidMount() {
+    //     const {id} = this.props;
+    //     if (id) {
+    //         console.log('!!componentDidMount=>')
+    //         axios.get(`/api/articles/${id}`)
+    //             .then(res => {
+    //                 const article = res.data;
+    //                 console.log('res=>', res);
+    //                 this.setState({
+    //                     title: article.title,
+    //                     subtitle: article.subtitle,
+    //                     author: article.author,
+    //                     slot: article.slot,
+    //                     splash: article.splash,
+    //                     image1: article.image1,
+    //                     image2: article.image2,
+    //                     body: article.body,
+    //                     // deleted: false,
+    //                     // archived: false,
+    //                     // isEdit: isEdit,
+    //                 });
+    //             })
+    //             .catch(err => {
+    //                 console.log('err => ', err);
+    //             })
+    //         }
+    //
+    // }
 
     onNewArticle (formData) {
         console.log('history => ');
@@ -100,49 +146,72 @@ class Form extends Component {
     onChange = (e) => {
         // event to update state when form inputs change
         e.preventDefault();
+        console.log('e.target.name => ', e.target.value);
+        //editArticle()
+
         switch (e.target.name) {
-            case 'splash':
-                this.setState({ splash: e.target.files[0] });
+            case 'splash_f':
+                this.setState({
+                    splash_f: e.target.files[0],
+                    splash: e.target.files[0].name,
+                });
                 break;
-            case 'image1':
-                this.setState({ image1: e.target.files[0] });
+            case 'image1_f':
+                this.setState({
+                    image1_f: e.target.files[0],
+                    image1: e.target.files[0].name
+                });
                 break;
-            case 'image2':
-                this.setState({ image2: e.target.files[0] });
+            case 'image2_f':
+                this.setState({
+                    image2_f: e.target.files[0],
+                    image2: e.target.files[0].name
+                });
                 break;
             default:
                 this.setState({ [e.target.name]: e.target.value });
         }
+
+        //console.log('e.target.files[0] => ', e.target.files[0].name);
     };
 
     onSubmit = (e) => {
         e.preventDefault();
-        const { title, subtitle, author, slot, splash, image1, image2, body} = this.state;
+         const { title, subtitle, author, slot, splash_f, image1_f, image2_f, body} = this.state;
+        const {isEdit} = this.state;
+        // const { title, subtitle, author, slot, splash, image1, image2, body} = this.props.article;
+
         let formData = new FormData();
-        console.log('this.state => ', this.state, title);
 
         formData.append('id', this.props.id);
         formData.append('title', title);
         formData.append('subtitle', subtitle);
         formData.append('author', author);
         formData.append('slot', slot);
-        formData.append('splash', splash);
-        formData.append('image1', image1);
-        formData.append('image2', image2);
+        formData.append('splash_f', splash_f);
+        formData.append('image1_f', image1_f);
+        formData.append('image2_F', image2_f);
         formData.append('body', body);
 
         console.log('onContinue => ', formData);
-        const {isEdit} = this.state;
+
         if (!isEdit) {
-            //New Article
             return this.onNewArticle(formData)
         } else {
             return this.onEditArticle(formData)
         }
-
-    }
+    };
     render() {
-        const { title, subtitle, author, slot, body} = this.state;
+        const { title, subtitle, author, slot, body, splash, image1, image2} = this.state;
+        const { loading, article, error } = this.props;
+
+        if (loading || !article) {
+            return <div>Loading...</div>;
+        }
+        if (error) {
+            return <div>Server Error... {error.message}</div>;
+        }
+
         return (
             <div className="form__ArticleEdit">
                 <form className="form__ArticleEdit" onSubmit={this.onSubmit}>
@@ -193,9 +262,11 @@ class Form extends Component {
 
                                     <input
                                         type="file"
-                                        name="splash"
+                                        name="splash_f"
+                                        accept=".png"
                                         onChange={this.onChange}
                                     />
+                                    <Label>{splash}</Label>
                                 </Control>
                             </Field>
                             <Field>
@@ -203,9 +274,11 @@ class Form extends Component {
                                 <Control>
                                     <input
                                         type="file"
-                                        name="image1"
+                                        name="image1_f"
+                                        accept=".png"
                                         onChange={this.onChange}
                                     />
+                                    <Label>{image1}</Label>
                                 </Control>
                             </Field>
                             <Field>
@@ -213,9 +286,11 @@ class Form extends Component {
                                 <Control>
                                     <input
                                         type="file"
-                                        name="image2"
+                                        name="image2_f"
+                                        accept=".png"
                                         onChange={this.onChange}
                                     />
+                                    <Label>{image2}</Label>
                                 </Control>
                             </Field>
                         </Columns.Column>
@@ -260,4 +335,19 @@ class Form extends Component {
     }
 }
 
-export default Form;
+const mapStateToProps = state =>
+    ({
+        article: state.article.items,
+        loading: state.article.loading,
+        error: state.article.error,
+    });
+
+const mapActionToProps = (dispatch) => {
+    return {
+        fetchArticle: bindActionCreators(fetchArticle, dispatch),
+        editArticle: bindActionCreators(editArticle, dispatch)
+    }
+};
+
+export default connect(mapStateToProps, mapActionToProps)(Form);
+

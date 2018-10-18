@@ -9,12 +9,40 @@ export const articleActions = {
 //ActionsCreators
 
 export function selectArticle (article){
-   alert("Now is article: " + article.title);
    return {
        type: C.SELECT_ARTICLE,
        payload: { article }
    }
 };
+
+export function addSelectArticles (article){
+    return {
+        type: C.ADD_SELECT_ARTICLES,
+        payload: { article }
+    }
+};
+
+export function delSelectArticles (id){
+    return {
+        type: C.DEL_SELECT_ARTICLES,
+        payload: { id }
+    }
+};
+
+export function clearSelectArticles (){
+    return {
+        type: C.CLEAR_SELECT_ARTICLES,
+    }
+};
+
+
+export function editArticle (article) {
+    return {
+        type: C.EDIT_ARTICLE,
+        payload: { article }
+    }
+}
+
 //-----------------------------------------------------
 function request(){
     return {type: C.FETCH_ARTICLES_BEGIN}
@@ -43,7 +71,10 @@ export function fetchArticles() {
                 dispatch(success(json));
                 return json;
             })
-            .catch(error => dispatch(failure(error)));
+            .catch(error => {
+                dispatch(failure(error))
+                return error
+            });
     };
 }
 

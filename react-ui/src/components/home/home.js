@@ -18,9 +18,7 @@ import './home.css';
 class Home extends Component {
 
     componentDidMount() {
-        // this.props.dispatch(articleActions.fetchArticles());
         this.props.fetchArticles();
-        console.log('componentDidMount => this =>', this);
     }
 
     slotToSection = (articles = {}, arrSlot = []) => {
@@ -83,7 +81,7 @@ class Home extends Component {
                         <Container className="is-fluid is-clearfix">
                             <Columns>
                                 {articlesSection2 &&
-                                    articlesSection2.map((article, index) =>
+                                    articlesSection2.map((article) =>
                                         <Columns.Column key={article._id}>
                                             <CardArticle article = {article} onClick={this.props.selectArticle}/>
                                         </Columns.Column>
@@ -112,7 +110,7 @@ class Home extends Component {
                             <Columns>
                                 <Columns.Column>
                                     {articlesSection3_1 &&
-                                        articlesSection3_1.map((article, index) =>
+                                        articlesSection3_1.map((article) =>
                                             <BoxArticle key={article._id} article = {article} onClick={this.props.selectArticle}/>
                                         )
                                     }
@@ -120,7 +118,7 @@ class Home extends Component {
 
                                 <Columns.Column>
                                     {articlesSection3_2 &&
-                                        articlesSection3_2.map((article, index) =>
+                                        articlesSection3_2.map((article) =>
                                             <BoxArticle key={article._id} article = {article} onClick={this.props.selectArticle}/>
                                         )
                                     }
@@ -140,7 +138,6 @@ const mapStateToProps = state =>
         articles: state.articles.items,
         loading: state.articles.loading,
         error: state.articles.error,
-        selectArticle: state.articles.selectArticle,
     });
 
 const mapActionToProps = (dispatch) => {

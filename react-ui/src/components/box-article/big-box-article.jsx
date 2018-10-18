@@ -23,8 +23,11 @@ class BigBoxArticle extends Component {
                         </Media.Item>
 
                         <Media.Item position="right" size={5} style={{ width: '70%' }}>
+                            {article.splash &&
                             <Image
                                 src={require('../../assets/images/' + article.splash)}/>
+                            }
+
                         </Media.Item>
                     </Media>
                 </Link>

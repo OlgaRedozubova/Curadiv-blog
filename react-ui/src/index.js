@@ -2,13 +2,9 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import App from './components/App';
-
-// import storeFactory from './stores';
 import store from './stores';
 
-import './index.css';
-
-// const store = storeFactory();
+import '../src/assets/stylesheets/style.css';
 
 render(
     <Provider store={store}>

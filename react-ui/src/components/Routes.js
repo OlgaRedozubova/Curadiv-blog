@@ -31,7 +31,7 @@ class Route extends React.Component{
 
     render() {
         const { ...restProps } = this.props;
-        // const { isLoggedIn = false, isCheckingAuth = false} = this.props.auth;
+
          const  isLoggedIn = false;
         if (!isLoggedIn && !this.props.public) return <Redirect to={'/login'} />;
         if (this.props.public && this.props.redirect && isLoggedIn) return <Redirect to={'/'} />;

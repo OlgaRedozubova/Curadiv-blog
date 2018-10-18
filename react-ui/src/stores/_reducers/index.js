@@ -1,20 +1,14 @@
 import { combineReducers } from 'redux';
 
-import configure from './configure';
-import auth from './auth';
-import users from './users';
-import sort from './sort';
 import articles from './articles';
 import article from './article';
+import selectArticles from './selectArticles';
 
 
 const stores = combineReducers({
     articles,
     article,
-    configure,
-    auth,
-    users,
-    sort,
+    selectArticles
 });
 
 export default stores;

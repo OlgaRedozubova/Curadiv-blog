@@ -13,18 +13,21 @@ import './article.css';
 class Article extends Component {
     componentWillMount() {
         const {params} = this.props.match;
-        console.log('componentWillMount=>', this.props);
-        this.props.fetchArticle(params.id);
-        // if (!this.props.selectArticle){
-        //     this.props.fetchArticle();
-        // }
+
+        if (!this.props.article){
+            console.log('Component(Article) => componentWillMount => fetchArticle => id=', params.id);
+            this.props.fetchArticle(params.id);
+        }
     }
 
     render() {
-        const { selectArticle, loading, article } = this.props;
+        const { loading, article, error } = this.props;
 
         if (loading || !article) {
             return <div>Loading...</div>;
+        }
+        if (error) {
+            return <div>Server Error... {error.message}</div>;
         }
 
         return(
@@ -74,7 +77,6 @@ class Article extends Component {
 
 const mapStateToProps = state =>
     ({
-        selectArticle: state.articles.selectArticle,
         article: state.article.items,
         loading: state.article.loading,
         error: state.article.error,
